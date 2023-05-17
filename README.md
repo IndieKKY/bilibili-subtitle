@@ -61,3 +61,10 @@ node版本：18.15.0
 ## 许可证
 
 该项目采用 **MIT 许可证**，详情请参阅许可证文件。
+
+## 截图
+
+![列表视图](./screenshot/列表视图.png)
+![文章视图](./screenshot/文章视图.png)
+![总结](./screenshot/总结.png)
+![翻译](./screenshot/翻译.png)

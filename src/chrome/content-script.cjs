@@ -1,0 +1,238 @@
+const {TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX} = require("../const");
+var totalHeight = TOTAL_HEIGHT_DEF
+
+const getVideoElement = () => {
+  const videoWrapper = document.getElementById('bilibili-player')
+  return videoWrapper.querySelector('video')
+}
+
+var danmukuBoxLoaded = false
+setInterval(function () {
+  if (danmukuBoxLoaded) return
+
+  var danmukuBox = document.getElementById('danmukuBox')
+  if (danmukuBox) {
+    danmukuBoxLoaded = true
+    setTimeout(function () {
+      var vKey = ''
+      for (const key in danmukuBox?.dataset) {
+        if (key.startsWith('v-')) {
+          vKey = key
+          break
+        }
+      }
+
+      const iframe = document.createElement('iframe')
+      iframe.id = 'bilibili-subtitle-iframe'
+      iframe.src = chrome.runtime.getURL('index.html')
+      iframe.style = 'border: none; width: 100%; height: 44px;'
+      iframe.allow = 'clipboard-read; clipboard-write;'
+      if (vKey) {
+        iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
+      }
+      //insert before first child
+      danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+    }, 1500)
+  }
+}, 1000)
+
+let aid = 0
+let title = ''
+let pages = []
+let pagesMap = {}
+
+let lastAidOrBvid = null
+const refreshVideoInfo = async () => {
+  const iframe = document.getElementById('bilibili-subtitle-iframe')
+  if (!iframe) return
+
+  let path = location.pathname
+  if (path.endsWith('/')) {
+    path = path.slice(0, -1)
+  }
+  const paths = path.split('/')
+  const aidOrBvid = paths[paths.length - 1]
+
+  if (aidOrBvid !== lastAidOrBvid) {
+    // console.debug('refreshVideoInfo')
+
+    lastAidOrBvid = aidOrBvid
+    if (aidOrBvid) {
+      //aid,pages
+      let cid
+      let subtitles
+      if (aidOrBvid.toLowerCase().startsWith('av')) {//avxxx
+        title = ''
+        aid = aidOrBvid.slice(2)
+        cid = 1
+        pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, {credentials: 'include'}).then(res => res.json()).then(res => res.data)
+        subtitles = await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {credentials: 'include'}).then(res => res.json()).then(res => res.data.subtitle.subtitles)
+      } else {//bvxxx
+        pages = await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${aidOrBvid}`, {credentials: 'include'}).then(res => res.json()).then(res => {
+          title = res.data.title
+          aid = res.data.aid
+          cid = res.data.cid
+          subtitles = res.data.subtitle.list
+          return res.data.pages
+        })
+      }
+
+      //pagesMap
+      pagesMap = {}
+      pages.forEach(page => {
+        pagesMap[page.page + ''] = page
+      })
+
+      console.debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
+
+      //send setVideoInfo
+      iframe.contentWindow.postMessage({
+        type: 'setVideoInfo',
+        title,
+        aid,
+        pages,
+        infos: subtitles,
+      }, '*')
+    }
+  }
+}
+
+let lastAid = null
+let lastCid = null
+const refreshSubtitles = () => {
+  const iframe = document.getElementById('bilibili-subtitle-iframe')
+  if (!iframe) return
+
+  const urlSearchParams = new URLSearchParams(window.location.search)
+  const p = urlSearchParams.get('p') || 1
+  const page = pagesMap[p]
+  if (!page) return
+  const cid = page.cid
+
+  if (aid !== lastAid || cid !== lastCid) {
+    console.debug('refreshSubtitles', aid, cid)
+
+    lastAid = aid
+    lastCid = cid
+    if (aid && cid) {
+      fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {
+        credentials: 'include',
+      })
+        .then(res => res.json())
+        .then(res => {
+          // console.log('refreshSubtitles: ', aid, cid, res)
+          iframe.contentWindow.postMessage({
+            type: 'setInfos',
+            infos: res.data.subtitle.subtitles
+          }, '*')
+        })
+    }
+  }
+}
+
+// 监听消息
+window.addEventListener("message", (event) => {
+  const {data} = event
+
+  if (data.type === 'fold') {
+    const iframe = document.getElementById('bilibili-subtitle-iframe')
+    iframe.style.height = (data.fold ? HEADER_HEIGHT : totalHeight) + 'px'
+  }
+
+  if (data.type === 'move') {
+    const video = getVideoElement()
+    if (video) {
+      video.currentTime = data.time
+    }
+  }
+
+  //刷新视频信息
+  if (data.type === 'refreshVideoInfo') {
+    refreshVideoInfo().catch(console.error)
+  }
+  //刷新字幕
+  if (data.type === 'refreshSubtitles') {
+    refreshSubtitles()
+  }
+  if (data.type === 'getSubtitle') {
+    let url = data.info.subtitle_url
+    if (url.startsWith('http://')) {
+      url = url.replace('http://', 'https://')
+    }
+    fetch(url).then(res => res.json()).then(res => {
+      event.source.postMessage({
+        data: {
+          info: data.info,
+          data: res,
+        }, type: 'setSubtitle'
+      }, '*')
+    })
+  }
+
+  if (data.type === 'getCurrentTime') {
+    const video = getVideoElement()
+    if (video) {
+      event.source.postMessage({
+        data: {
+          currentTime: video.currentTime
+        }, type: 'setCurrentTime'
+      }, '*')
+    }
+  }
+
+  if (data.type === 'getSettings') {
+    const videoElement = getVideoElement()
+    totalHeight = videoElement ? Math.min(Math.max(videoElement.offsetHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX) : TOTAL_HEIGHT_DEF
+    event.source.postMessage({
+      data: {
+        noVideo: !videoElement,
+        totalHeight,
+      }, type: 'setSettings'
+    }, '*')
+  }
+
+  if (data.type === 'downloadAudio') {
+    const html = document.getElementsByTagName('html')[0].innerHTML
+    const playInfo = JSON.parse(html.match(/window.__playinfo__=(.+?)<\/script/)[1])
+    const audioUrl = playInfo.data.dash.audio[0].baseUrl
+
+    fetch(audioUrl).then(res => res.blob()).then(blob => {
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = `${title}.m4s`
+      a.click()
+    })
+  }
+
+  if (data.type === 'updateTransResult') {
+    const trans = data.result??''
+    let text = document.getElementById('trans-result-text')
+    if (text) {
+      text.innerHTML = trans
+    } else {
+      const container = document.getElementsByClassName('bpx-player-subtitle-panel-wrap')?.[0]
+      if (container) {
+        const div = document.createElement('div')
+        div.style.display = 'flex'
+        div.style.justifyContent = 'center'
+        div.style.margin = '2px'
+        text = document.createElement('text')
+        text.id = 'trans-result-text'
+        text.innerHTML = trans
+        text.style.fontSize = '1rem'
+        text.style.padding = '5px'
+        text.style.color = 'white'
+        text.style.background = 'rgba(0, 0, 0, 0.4)'
+        div.append(text)
+
+        container.append(div)
+      }
+    }
+    text.style.display = trans ? 'block' : 'none'
+  }
+}, false);
+
+setInterval(() => {
+  refreshVideoInfo().catch(console.error)
+  refreshSubtitles()
+}, 1000)

@@ -1,0 +1,277 @@
+import devData from '../data/data.json'
+import {APP_DOM_ID} from '../const'
+import {isDarkMode} from '@kky002/kky-util'
+import toast from 'react-hot-toast'
+import {findIndex} from 'lodash-es'
+
+/**
+ * 获取译文
+ */
+export const getTransText = (transResult: TransResult, hideOnDisableAutoTranslate: boolean | undefined, autoTranslate: boolean | undefined) => {
+  if (transResult && (!transResult.code || transResult.code === '200') && (autoTranslate === true || !hideOnDisableAutoTranslate) && transResult.data) {
+    return transResult.data
+  }
+}
+
+export const getDisplay = (transDisplay_: EnvData['transDisplay'], content: string, transText: string | undefined) => {
+  const transDisplay = transDisplay_ ?? 'originPrimary'
+  let main, sub
+  // main
+  if (transText && (transDisplay === 'targetPrimary' || transDisplay === 'target')) {
+    main = transText
+  } else {
+    main = content
+  }
+  // sub
+  switch (transDisplay) {
+    case 'originPrimary':
+      sub = transText
+      break
+    case 'targetPrimary':
+      if (transText) {
+        sub = content
+      }
+      break
+    default:
+      break
+  }
+  // return
+  return {
+    main,
+    sub,
+  }
+}
+
+export const getWholeText = (items: string[]) => {
+  return items.join(',').replaceAll('\n', ' ')
+}
+
+export const getLastTime = (seconds: number) => {
+  if (seconds > 60 * 60) {
+    return `${Math.floor(seconds / 60 / 60)}小时`
+  }
+  if (seconds > 60) {
+    return `${Math.floor(seconds / 60)}分钟`
+  }
+  return `${Math.floor(seconds)}秒`
+}
+
+/**
+ * 00:00:00
+ */
+export const getTimeDisplay = (seconds: number) => {
+  const h = Math.floor(seconds / 60 / 60)
+  const m = Math.floor(seconds / 60 % 60)
+  const s = Math.floor(seconds % 60)
+  return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`
+}
+
+export const getDevData = () => {
+  // add idx
+  const body = devData.body.map((item, idx) => ({
+    ...item,
+    idx,
+  }))
+  return {
+    ...devData,
+    body,
+  }
+}
+
+export const isSummaryEmpty = (summary: Summary) => {
+  if (summary.type === 'overview') {
+    const content: OverviewItem[] = summary.content??[]
+    return content.length === 0
+  } else if (summary.type === 'keypoint') {
+    const content: string[] = summary.content??[]
+    return content.length === 0
+  } else if (summary.type === 'brief') {
+    const content: string[] = summary.content??''
+    return content.length === 0
+  }
+  return true
+}
+
+export const getSummaryStr = (summary: Summary) => {
+  let s = ''
+  if (summary.type === 'overview') {
+    const content: OverviewItem[] = summary.content ?? []
+    for (const overviewItem of content) {
+      s += (overviewItem.emoji ?? '') + overviewItem.time + ' ' + overviewItem.key + '\n'
+    }
+  } else if (summary.type === 'keypoint') {
+    const content: string[] = summary.content ?? []
+    for (const keypoint of content) {
+      s += '- ' + keypoint + '\n'
+    }
+  } else if (summary.type === 'brief') {
+    const content: { summary: string } = summary.content ?? {
+      summary: ''
+    }
+    s += content.summary
+  }
+  return s
+}
+
+export const getServerUrl = (serverUrl?: string) => {
+  if (!serverUrl) {
+    return 'https://api.openai.com'
+  }
+  if (serverUrl.endsWith('/')) {
+    serverUrl = serverUrl.slice(0, -1)
+  }
+  return serverUrl
+}
+
+export const setTheme = (theme: EnvData['theme']) => {
+  const appRoot = document.getElementById(APP_DOM_ID)
+  if (appRoot != null) {
+    // system
+    theme = theme ?? 'system'
+    if (!theme || theme === 'system') {
+      theme = isDarkMode() ? 'dark' : 'light'
+    }
+
+    appRoot.setAttribute('data-theme', theme)
+    if (theme === 'dark') {
+      appRoot.classList.add('dark')
+      appRoot.classList.remove('light')
+    } else {
+      appRoot.classList.add('light')
+      appRoot.classList.remove('dark')
+    }
+  }
+}
+
+export const getSummarize = (title: string | undefined, segments: Segment[] | undefined, type: SummaryType): [boolean, string] => {
+  if (segments == null) {
+    return [false, '']
+  }
+
+  let content = `${title ?? ''}\n\n`
+  let success = false
+  for (const segment of segments) {
+    if (segment.items.length > 0) {
+      content += `${getTimeDisplay(segment.items[0].from)}\n`
+    }
+    const summary = segment.summaries[type]
+    if (summary && !isSummaryEmpty(summary)) {
+      success = true
+      content += getSummaryStr(summary)
+    } else {
+      content += '无总结\n'
+    }
+
+    content += '\n'
+  }
+
+  if (!success) {
+    toast.error('未找到总结')
+  }
+
+  return [success, content]
+}
+
+/**
+ * @param time '03:10'
+ */
+export const parseStrTimeToSeconds = (time: string): number => {
+  const parts = time.split(':')
+  return parseInt(parts[0]) * 60 + parseInt(parts[1])
+}
+
+/**
+ * @param time '00:04:11,599' or '00:04:11.599' or '04:11,599' or '04:11.599'
+ * @return seconds, 4.599
+ */
+export const parseTime = (time: string): number => {
+  const separator = time.includes(',') ? ',' : '.'
+  const parts = time.split(':')
+  const ms = parts[parts.length-1].split(separator)
+  if (parts.length === 3) {
+    return parseInt(parts[0]) * 60 * 60 + parseInt(parts[1]) * 60 + parseInt(ms[0]) + parseInt(ms[1]) / 1000
+  } else {
+    return parseInt(parts[0]) * 60 + parseInt(ms[0]) + parseInt(ms[1]) / 1000
+  }
+}
+
+export const parseTranscript = (filename: string, text: string | ArrayBuffer): Transcript => {
+  const items: TranscriptItem[] = []
+  // convert /r/n to /n
+  text = (text as string).trim().replace(/\r\n/g, '\n')
+  // .srt:
+  if (filename.toLowerCase().endsWith('.srt')) {
+    const lines = text.split('\n\n')
+    for (const line of lines) {
+      const lines = line.split('\n')
+      if (lines.length >= 3) {
+        const time = lines[1].split(' --> ')
+        const from = parseTime(time[0])
+        const to = parseTime(time[1])
+        const content = lines.slice(2).join('\n')
+        items.push({
+          from,
+          to,
+          content,
+          idx: items.length,
+        })
+      }
+    }
+  }
+  // .vtt:
+  if (filename.toLowerCase().endsWith('.vtt')) {
+    const lines = text.split('\n\n')
+    for (const line of lines) {
+      const lines = line.split('\n')
+      const timeIdx = findIndex(lines, (line) => line.includes('-->'))
+      if (timeIdx >= 0) {
+        const time = lines[timeIdx].split(' --> ')
+        const from = parseTime(time[0])
+        const to = parseTime(time[1])
+        const content = lines.slice(timeIdx + 1).join('\n')
+        items.push({
+          from,
+          to,
+          content,
+          idx: items.length,
+        })
+      }
+    }
+  }
+  // return
+  return {
+    body: items,
+  }
+}
+
+export const extractJsonObject = (content: string) => {
+  // get content between ``` and ```
+  const start = content.indexOf('```')
+  const end = content.lastIndexOf('```')
+  if (start >= 0 && end >= 0) {
+    content = content.slice(start + 3, end)
+  }
+  // get content between { and }
+  const start2 = content.indexOf('{')
+  const end2 = content.lastIndexOf('}')
+  if (start2 >= 0 && end2 >= 0) {
+    content = content.slice(start2, end2 + 1)
+  }
+  return content
+}
+
+export const extractJsonArray = (content: string) => {
+  // get content between ``` and ```
+  const start = content.indexOf('```')
+  const end = content.lastIndexOf('```')
+  if (start >= 0 && end >= 0) {
+    content = content.slice(start + 3, end)
+  }
+  // get content between [ and ]
+  const start3 = content.indexOf('[')
+  const end3 = content.lastIndexOf(']')
+  if (start3 >= 0 && end3 >= 0) {
+    content = content.slice(start3, end3 + 1)
+  }
+  return content
+}

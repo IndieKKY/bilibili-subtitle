@@ -1,0 +1,278 @@
+import React, {MouseEvent, useCallback, useContext, useRef, useState} from 'react'
+import {useClickAway} from 'ahooks'
+import {
+  AiFillWechat,
+  BsFillChatDotsFill,
+  FiMoreVertical,
+  ImDownload3,
+  IoMdSettings,
+  RiFileCopy2Line
+} from 'react-icons/all'
+import Popover from '../components/Popover'
+import {Placement} from '@popperjs/core/lib/enums'
+import {useAppDispatch, useAppSelector} from '../hooks/redux'
+import {setDownloadType, setEnvData, setPage} from '../redux/envReducer'
+import {EventBusContext} from '../Router'
+import {EVENT_EXPAND, PAGE_SETTINGS} from '../const'
+import {formatSrtTime, formatTime, formatVttTime} from '../util/util'
+import {downloadText, openUrl} from '@kky002/kky-util'
+import toast from 'react-hot-toast'
+import {getSummarize} from '../util/biz_util'
+
+interface Props {
+  placement: Placement
+}
+
+const DownloadTypes = [
+  {
+    type: 'text',
+    name: '列表',
+  },
+  {
+    type: 'textWithTime',
+    name: '列表(带时间)',
+  },
+  {
+    type: 'article',
+    name: '文章',
+  },
+  {
+    type: 'srt',
+    name: 'srt',
+  },
+  {
+    type: 'vtt',
+    name: 'vtt',
+  },
+  {
+    type: 'json',
+    name: '原始json',
+  },
+  {
+    type: 'summarize',
+    name: '总结',
+  },
+]
+
+const MoreBtn = (props: Props) => {
+  const {placement} = props
+  const dispatch = useAppDispatch()
+
+  const moreRef = useRef(null)
+  const data = useAppSelector(state => state.env.data)
+  const envReady = useAppSelector(state => state.env.envReady)
+  const envData = useAppSelector(state => state.env.envData)
+  const downloadType = useAppSelector(state => state.env.downloadType)
+  const [moreVisible, setMoreVisible] = useState(false)
+  const eventBus = useContext(EventBusContext)
+  const segments = useAppSelector(state => state.env.segments)
+  const title = useAppSelector(state => state.env.title)
+  const curSummaryType = useAppSelector(state => state.env.curSummaryType)
+
+  const downloadCallback = useCallback((download: boolean) => {
+    if (data == null) {
+      return
+    }
+
+    let s, fileName
+    if (!downloadType || downloadType === 'text') {
+      s = ''
+      for (const item of data.body) {
+        s += item.content + '\n'
+      }
+      fileName = 'download.txt'
+    } else if (downloadType === 'textWithTime') {
+      s = ''
+      for (const item of data.body) {
+        s += formatTime(item.from) + ' ' + item.content + '\n'
+      }
+      fileName = 'download.txt'
+    } else if (downloadType === 'article') {
+      s = ''
+      for (const item of data.body) {
+        s += item.content + ', '
+      }
+      s = s.substring(0, s.length - 1) // remove last ','
+      fileName = 'download.txt'
+    } else if (downloadType === 'srt') {
+      /**
+       * 1
+       * 00:05:00,400 --> 00:05:15,300
+       * This is an example of
+       * a subtitle.
+       *
+       * 2
+       * 00:05:16,400 --> 00:05:25,300
+       * This is an example of
+       * a subtitle - 2nd subtitle.
+       */
+      s = ''
+      for (const item of data.body) {
+        const ss = (item.idx + 1) + '\n' + formatSrtTime(item.from) + ' --> ' + formatSrtTime(item.to) + '\n' + ((item.content?.trim()) ?? '') + '\n\n'
+        s += ss
+      }
+      s = s.substring(0, s.length - 1)// remove last '\n'
+      fileName = 'download.srt'
+    } else if (downloadType === 'vtt') {
+      /**
+       * WEBVTT title
+       *
+       * 1
+       * 00:05:00.400 --> 00:05:15.300
+       * This is an example of
+       * a subtitle.
+       *
+       * 2
+       * 00:05:16.400 --> 00:05:25.300
+       * This is an example of
+       * a subtitle - 2nd subtitle.
+       */
+      s = `WEBVTT ${title ?? ''}\n\n`
+      for (const item of data.body) {
+        const ss = (item.idx + 1) + '\n' + formatVttTime(item.from) + ' --> ' + formatVttTime(item.to) + '\n' + ((item.content?.trim()) ?? '') + '\n\n'
+        s += ss
+      }
+      s = s.substring(0, s.length - 1)// remove last '\n'
+      fileName = 'download.vtt'
+    } else if (downloadType === 'json') {
+      s = JSON.stringify(data)
+      fileName = 'download.json'
+    } else if (downloadType === 'summarize') {
+      const [success, content] = getSummarize(title, segments, curSummaryType)
+      if (!success) return
+      s = content
+      fileName = '总结.txt'
+    } else {
+      return
+    }
+    if (download) {
+      downloadText(s, fileName)
+    } else {
+      navigator.clipboard.writeText(s).then(() => {
+        toast.success('复制成功')
+      }).catch(console.error)
+    }
+    setMoreVisible(false)
+  }, [curSummaryType, data, downloadType, segments, title])
+
+  const downloadAudioCallback = useCallback(() => {
+    window.parent.postMessage({
+      type: 'downloadAudio',
+    }, '*')
+  }, [])
+
+  const selectCallback = useCallback((e: any) => {
+    dispatch(setDownloadType(e.target.value))
+  }, [dispatch])
+
+  const preventCallback = useCallback((e: any) => {
+    e.stopPropagation()
+  }, [])
+
+  const moreCallback = useCallback((e: MouseEvent) => {
+    e.stopPropagation()
+    if (!envData.flagDot) {
+      dispatch(setEnvData({
+        ...envData,
+        flagDot: true,
+      }))
+    }
+    setMoreVisible(!moreVisible)
+    // 显示菜单时自动展开，防止菜单显示不全
+    if (!moreVisible) {
+      eventBus.emit({
+        type: EVENT_EXPAND
+      })
+    }
+  }, [dispatch, envData, eventBus, moreVisible])
+  useClickAway(() => {
+    setMoreVisible(false)
+  }, moreRef)
+
+  return <>
+  <div ref={moreRef} onClick={moreCallback}>
+    <div className='indicator flex items-center'>
+      {envReady && !envData.flagDot && <span className="indicator-item bg-secondary w-1.5 h-1.5 rounded-full"></span>}
+      <FiMoreVertical className='desc transform ease-in duration-300 hover:text-primary' title='更多'/>
+    </div>
+  </div>
+  {moreVisible &&
+    <Popover refElement={moreRef.current} className='bg-neutral text-neutral-content py-1 z-[1000]' options={{
+      placement
+    }}>
+      <ul className='menu menu-compact'>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            downloadCallback(false)
+          }}>
+            <RiFileCopy2Line className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            复制
+            <select className='select select-ghost select-xs' value={downloadType} onChange={selectCallback}
+                    onClick={preventCallback}>
+              {DownloadTypes?.map((item: any) => <option key={item.type} value={item.type}>{item.name}</option>)}
+            </select>
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            downloadCallback(true)
+          }}>
+            <ImDownload3 className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            下载
+            <select className='select select-ghost select-xs' value={downloadType} onChange={selectCallback}
+                    onClick={preventCallback}>
+              {DownloadTypes?.map((item: any) => <option key={item.type} value={item.type}>{item.name}</option>)}
+            </select>
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            downloadAudioCallback()
+          }}>
+            <ImDownload3 className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            下载音频(m4s)
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            openUrl('https://jq.qq.com/?_wv=1027&k=RJyFABPF')
+          }}>
+            <BsFillChatDotsFill className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            QQ交流群(194536885)
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            openUrl('https://static.ssstab.com/images/indiekky_public.png')
+          }}>
+            <AiFillWechat className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            微信公众号(IndieKKY)
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            dispatch(setPage(PAGE_SETTINGS))
+            setMoreVisible(false)
+            e.preventDefault()
+            e.stopPropagation()
+          }}>
+            <IoMdSettings className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
+            设置
+          </a>
+        </li>
+      </ul>
+    </Popover>}
+</>
+}
+
+export default MoreBtn

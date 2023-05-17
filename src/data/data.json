@@ -1,0 +1,864 @@
+{
+  "font_size": 0.4,
+  "font_color": "#FFFFFF",
+  "background_alpha": 0.5,
+  "background_color": "#9C27B0",
+  "Stroke": "none",
+  "type": "AIsubtitle",
+  "lang": "zh",
+  "version": "a1.3.0.2",
+  "body": [
+    {
+      "from": 0.666,
+      "to": 1.799,
+      "location": 0,
+      "content": "各位听众朋友大家好"
+    },
+    {
+      "from": 1.8,
+      "to": 4.3,
+      "location": 0,
+      "content": "欢迎来到旧世代电台我是Lunmos"
+    },
+    {
+      "from": 4.4,
+      "to": 5.466,
+      "location": 0,
+      "content": "我们这期呢"
+    },
+    {
+      "from": 5.466,
+      "to": 6.966,
+      "location": 0,
+      "content": "来聊一个真正的"
+    },
+    {
+      "from": 6.966,
+      "to": 9.766,
+      "location": 0,
+      "content": "我觉得可能是新旧世代"
+    },
+    {
+      "from": 10.3,
+      "to": 12.333,
+      "location": 0,
+      "content": "分界线的这么一件事情"
+    },
+    {
+      "from": 12.733,
+      "to": 15.133,
+      "location": 0,
+      "content": "那首先呢还是来一个思维实验"
+    },
+    {
+      "from": 15.2,
+      "to": 17.5,
+      "location": 0,
+      "content": "上期其实我们也已经提到了"
+    },
+    {
+      "from": 17.5,
+      "to": 19.7,
+      "location": 0,
+      "content": "就是一个上世纪末的人"
+    },
+    {
+      "from": 19.7,
+      "to": 22.4,
+      "location": 0,
+      "content": "如果穿越到了2023年的现在"
+    },
+    {
+      "from": 22.733,
+      "to": 24.766,
+      "location": 0,
+      "content": "我们已经发展了20多年的"
+    },
+    {
+      "from": 24.8,
+      "to": 26.3,
+      "location": 0,
+      "content": "这么一个21世纪"
+    },
+    {
+      "from": 26.333,
+      "to": 27.766,
+      "location": 0,
+      "content": "就在此时此刻"
+    },
+    {
+      "from": 28,
+      "to": 28.8,
+      "location": 0,
+      "content": "那么"
+    },
+    {
+      "from": 29.7,
+      "to": 31.966,
+      "location": 0,
+      "content": "你问他他会被什么东西"
+    },
+    {
+      "from": 32.4,
+      "to": 34.533,
+      "location": 0,
+      "content": "所吓尿所吓到"
+    },
+    {
+      "from": 35.4,
+      "to": 35.933,
+      "location": 0,
+      "content": "那当然了"
+    },
+    {
+      "from": 35.933,
+      "to": 37.133,
+      "location": 0,
+      "content": "看过上期电台的朋友"
+    },
+    {
+      "from": 37.133,
+      "to": 39.099,
+      "location": 0,
+      "content": "已经知道我想说的那个答案了"
+    },
+    {
+      "from": 39.1,
+      "to": 41.3,
+      "location": 0,
+      "content": "不妨我们可以先来试试"
+    },
+    {
+      "from": 41.466,
+      "to": 42.966,
+      "location": 0,
+      "content": "感觉一下其他方面"
+    },
+    {
+      "from": 42.966,
+      "to": 45.599,
+      "location": 0,
+      "content": "我们有哪些地方发展的还算可以"
+    },
+    {
+      "from": 46.133,
+      "to": 47.599,
+      "location": 0,
+      "content": "比如说航空航天"
+    },
+    {
+      "from": 47.6,
+      "to": 51.066,
+      "location": 0,
+      "content": "他会被现在的航空航天科技所震惊吗"
+    },
+    {
+      "from": 51.066,
+      "to": 52.199,
+      "location": 0,
+      "content": "我觉得"
+    },
+    {
+      "from": 52.6,
+      "to": 53.366,
+      "location": 0,
+      "content": "不见得对吧"
+    },
+    {
+      "from": 53.366,
+      "to": 55.966,
+      "location": 0,
+      "content": "现在虽然说有了一些可回收的"
+    },
+    {
+      "from": 55.966,
+      "to": 57.499,
+      "location": 0,
+      "content": "航空航天的一些"
+    },
+    {
+      "from": 57.733,
+      "to": 59.599,
+      "location": 0,
+      "content": "科技虽然说有了一些"
+    },
+    {
+      "from": 59.6,
+      "to": 61,
+      "location": 0,
+      "content": "当时人们可能没太"
+    },
+    {
+      "from": 61,
+      "to": 62.466,
+      "location": 0,
+      "content": "见到的一些科技路线"
+    },
+    {
+      "from": 62.466,
+      "to": 63.266,
+      "location": 0,
+      "content": "但是"
+    },
+    {
+      "from": 63.966,
+      "to": 64.733,
+      "location": 0,
+      "content": "总体上来说"
+    },
+    {
+      "from": 64.733,
+      "to": 65.099,
+      "location": 0,
+      "content": "还是"
+    },
+    {
+      "from": 65.1,
+      "to": 67.8,
+      "location": 0,
+      "content": "现在的人被那个时候吓得还差不多"
+    },
+    {
+      "from": 67.8,
+      "to": 69.666,
+      "location": 0,
+      "content": "上个时期的美苏争霸时期"
+    },
+    {
+      "from": 69.666,
+      "to": 71.299,
+      "location": 0,
+      "content": "人们是有意愿在"
+    },
+    {
+      "from": 71.566,
+      "to": 73.866,
+      "location": 0,
+      "content": "航空航天的科技上去点科技术的"
+    },
+    {
+      "from": 73.866,
+      "to": 76.133,
+      "location": 0,
+      "content": "无论是为意志形态服务宣传也好"
+    },
+    {
+      "from": 76.133,
+      "to": 76.933,
+      "location": 0,
+      "content": "还是为了"
+    },
+    {
+      "from": 77.1,
+      "to": 78.9,
+      "location": 0,
+      "content": "真实可能存在的一种"
+    },
+    {
+      "from": 79.133,
+      "to": 79.666,
+      "location": 0,
+      "content": "更高的"
+    },
+    {
+      "from": 79.666,
+      "to": 82.666,
+      "location": 0,
+      "content": "所谓说更高维度的战争的形态也好"
+    },
+    {
+      "from": 82.866,
+      "to": 84.766,
+      "location": 0,
+      "content": "那么人类愿意去倾斜资源"
+    },
+    {
+      "from": 84.766,
+      "to": 86.966,
+      "location": 0,
+      "content": "去让那些在这些科技中"
+    },
+    {
+      "from": 87.466,
+      "to": 90.266,
+      "location": 0,
+      "content": "引领了发展进步的人成为英雄"
+    },
+    {
+      "from": 90.266,
+      "to": 91.399,
+      "location": 0,
+      "content": "那么这样"
+    },
+    {
+      "from": 91.4,
+      "to": 91.9,
+      "location": 0,
+      "content": "才能够"
+    },
+    {
+      "from": 91.9,
+      "to": 94.533,
+      "location": 0,
+      "content": "如愿以偿的得到他们想要的结果"
+    },
+    {
+      "from": 96.066,
+      "to": 97.466,
+      "location": 0,
+      "content": "好航空航天不太行"
+    },
+    {
+      "from": 97.466,
+      "to": 100.666,
+      "location": 0,
+      "content": "那么我们引以为豪的移动互联网"
+    },
+    {
+      "from": 100.666,
+      "to": 101.666,
+      "location": 0,
+      "content": "社交网络"
+    },
+    {
+      "from": 101.666,
+      "to": 103.366,
+      "location": 0,
+      "content": "这个你觉得可以吗"
+    },
+    {
+      "from": 103.366,
+      "to": 104.766,
+      "location": 0,
+      "content": "我觉得也不太行对吧"
+    },
+    {
+      "from": 104.766,
+      "to": 106.999,
+      "location": 0,
+      "content": "我们甚至很多现代人都觉得"
+    },
+    {
+      "from": 107.566,
+      "to": 108.699,
+      "location": 0,
+      "content": "从这些移动互联网"
+    },
+    {
+      "from": 108.7,
+      "to": 110.966,
+      "location": 0,
+      "content": "从这些社交网络中涉及到的东西"
+    },
+    {
+      "from": 110.966,
+      "to": 113.366,
+      "location": 0,
+      "content": "不一定是一个什么那么好的东西"
+    },
+    {
+      "from": 113.366,
+      "to": 114.466,
+      "location": 0,
+      "content": "那么他呢"
+    },
+    {
+      "from": 114.466,
+      "to": 116.133,
+      "location": 0,
+      "content": "当然也会觉得很新奇"
+    },
+    {
+      "from": 116.366,
+      "to": 118.266,
+      "location": 0,
+      "content": "但是他不会觉得这是一件"
+    },
+    {
+      "from": 118.7,
+      "to": 121.133,
+      "location": 0,
+      "content": "多么真正的了不起的事情"
+    },
+    {
+      "from": 121.133,
+      "to": 122.866,
+      "location": 0,
+      "content": "那无非就是把以前的摩尔定律"
+    },
+    {
+      "from": 122.866,
+      "to": 123.999,
+      "location": 0,
+      "content": "继续进行下去"
+    },
+    {
+      "from": 124,
+      "to": 126.266,
+      "location": 0,
+      "content": "然后不断的缩小计算机的体积"
+    },
+    {
+      "from": 126.866,
+      "to": 127.266,
+      "location": 0,
+      "content": "最终呢"
+    },
+    {
+      "from": 127.266,
+      "to": 129.533,
+      "location": 0,
+      "content": "总会能够实现的这么一件事对吧"
+    },
+    {
+      "from": 129.533,
+      "to": 130.733,
+      "location": 0,
+      "content": "手机能上网"
+    },
+    {
+      "from": 130.733,
+      "to": 132.266,
+      "location": 0,
+      "content": "无线网络如此之发达"
+    },
+    {
+      "from": 132.4,
+      "to": 134.466,
+      "location": 0,
+      "content": "也是一个基础设施的扩展"
+    },
+    {
+      "from": 134.466,
+      "to": 136.599,
+      "location": 0,
+      "content": "基础设施的扩张所能实现的事"
+    },
+    {
+      "from": 136.7,
+      "to": 139.166,
+      "location": 0,
+      "content": "那么人们其实并不会太折服于"
+    },
+    {
+      "from": 139.166,
+      "to": 140.899,
+      "location": 0,
+      "content": "使用大规模基础建设"
+    },
+    {
+      "from": 140.9,
+      "to": 143.166,
+      "location": 0,
+      "content": "就能够实现的某件事情"
+    },
+    {
+      "from": 143.166,
+      "to": 145.966,
+      "location": 0,
+      "content": "因为人们总会预期未来"
+    },
+    {
+      "from": 146.466,
+      "to": 147.333,
+      "location": 0,
+      "content": "未来的某一天"
+    },
+    {
+      "from": 147.333,
+      "to": 150.699,
+      "location": 0,
+      "content": "或慢或快的总会出现那么一个时代的"
+    },
+    {
+      "from": 150.7,
+      "to": 152.466,
+      "location": 0,
+      "content": "那就比如说大航海时代的人"
+    },
+    {
+      "from": 152.733,
+      "to": 153.799,
+      "location": 0,
+      "content": "他们也会想"
+    },
+    {
+      "from": 153.8,
+      "to": 156.5,
+      "location": 0,
+      "content": "未来的航路海运可能会非常的发达"
+    },
+    {
+      "from": 156.5,
+      "to": 158.733,
+      "location": 0,
+      "content": "那未来可能遍地都是像阿姆斯特丹"
+    },
+    {
+      "from": 158.733,
+      "to": 160.299,
+      "location": 0,
+      "content": "像伦敦这样的港口"
+    },
+    {
+      "from": 160.666,
+      "to": 161.799,
+      "location": 0,
+      "content": "虽然现在不是这样"
+    },
+    {
+      "from": 161.8,
+      "to": 162.166,
+      "location": 0,
+      "content": "但是"
+    },
+    {
+      "from": 162.166,
+      "to": 164.866,
+      "location": 0,
+      "content": "处在他们能想象的社会发展的极限"
+    },
+    {
+      "from": 165,
+      "to": 166.333,
+      "location": 0,
+      "content": "那我们也提到过游戏"
+    },
+    {
+      "from": 166.333,
+      "to": 168.533,
+      "location": 0,
+      "content": "但也就像有朋友在弹幕中提到的"
+    },
+    {
+      "from": 168.533,
+      "to": 170.599,
+      "location": 0,
+      "content": "想想时之笛是什么年代的游戏"
+    },
+    {
+      "from": 170.6,
+      "to": 171.3,
+      "location": 0,
+      "content": "那现在呢"
+    },
+    {
+      "from": 171.3,
+      "to": 174.066,
+      "location": 0,
+      "content": "甚至还在很多的游戏排行榜中"
+    },
+    {
+      "from": 174.066,
+      "to": 174.899,
+      "location": 0,
+      "content": "排在第一"
+    },
+    {
+      "from": 175.3,
+      "to": 176.8,
+      "location": 0,
+      "content": "那你想让那个时候的人"
+    },
+    {
+      "from": 176.8,
+      "to": 178.933,
+      "location": 0,
+      "content": "真正折服于现在的游戏呢"
+    },
+    {
+      "from": 179.466,
+      "to": 180.599,
+      "location": 0,
+      "content": "也没有那么容易对吧"
+    },
+    {
+      "from": 180.6,
+      "to": 181.7,
+      "location": 0,
+      "content": "在图形学上"
+    },
+    {
+      "from": 181.866,
+      "to": 182.399,
+      "location": 0,
+      "content": "我们也提到"
+    },
+    {
+      "from": 182.4,
+      "to": 183.3,
+      "location": 0,
+      "content": "图形学的发展"
+    },
+    {
+      "from": 183.3,
+      "to": 185.4,
+      "location": 0,
+      "content": "是不断把离线变成实时的过程"
+    },
+    {
+      "from": 185.666,
+      "to": 187.333,
+      "location": 0,
+      "content": "那么他们见过离线的东西"
+    },
+    {
+      "from": 187.333,
+      "to": 188.299,
+      "location": 0,
+      "content": "他们可以预测"
+    },
+    {
+      "from": 188.3,
+      "to": 191.4,
+      "location": 0,
+      "content": "这样的离线动画在将来会变成实时"
+    },
+    {
+      "from": 191.6,
+      "to": 193.166,
+      "location": 0,
+      "content": "那所以呢也不会觉得"
+    },
+    {
+      "from": 193.666,
+      "to": 194.899,
+      "location": 0,
+      "content": "超出认知对吧"
+    },
+    {
+      "from": 195.466,
+      "to": 196.933,
+      "location": 0,
+      "content": "那比如说生物医疗呢"
+    },
+    {
+      "from": 196.966,
+      "to": 198.899,
+      "location": 0,
+      "content": "那虽然说可以说有不少的进"
+    },
+    {
+      "from": 198.9,
+      "to": 199.566,
+      "location": 0,
+      "content": "展但还"
+    },
+    {
+      "from": 199.566,
+      "to": 201.733,
+      "location": 0,
+      "content": "是建立在去完善20世纪"
+    },
+    {
+      "from": 201.733,
+      "to": 203.066,
+      "location": 0,
+      "content": "这样一个科学大厦"
+    },
+    {
+      "from": 203.066,
+      "to": 204.566,
+      "location": 0,
+      "content": "生物大厦的基础上"
+    },
+    {
+      "from": 204.566,
+      "to": 205.866,
+      "location": 0,
+      "content": "对他进行了一些完善"
+    },
+    {
+      "from": 206.2,
+      "to": 208.166,
+      "location": 0,
+      "content": "你要说那些折磨着现代人的"
+    },
+    {
+      "from": 208.166,
+      "to": 209.399,
+      "location": 0,
+      "content": "各种各样的疾病"
+    },
+    {
+      "from": 209.466,
+      "to": 210.733,
+      "location": 0,
+      "content": "那个时候没有攻克的"
+    },
+    {
+      "from": 210.733,
+      "to": 213.366,
+      "location": 0,
+      "content": "现在有多少是被真正攻克了的呢"
+    },
+    {
+      "from": 213.366,
+      "to": 215.133,
+      "location": 0,
+      "content": "那其实也很少对吧"
+    },
+    {
+      "from": 215.266,
+      "to": 217.733,
+      "location": 0,
+      "content": "甚至可能我们连他的致病机理"
+    },
+    {
+      "from": 217.733,
+      "to": 219.499,
+      "location": 0,
+      "content": "还没有完全的搞清楚"
+    },
+    {
+      "from": 220.466,
+      "to": 221.699,
+      "location": 0,
+      "content": "其他可能还有一些比如"
+    },
+    {
+      "from": 221.933,
+      "to": 223.199,
+      "location": 0,
+      "content": "像可控核聚变"
+    },
+    {
+      "from": 223.2,
+      "to": 225.533,
+      "location": 0,
+      "content": "想更高效的电池技术这些"
+    },
+    {
+      "from": 226.3,
+      "to": 228.766,
+      "location": 0,
+      "content": "那就是目前可能还在发展的地方"
+    },
+    {
+      "from": 228.766,
+      "to": 229.899,
+      "location": 0,
+      "content": "怎么怎么说呢"
+    },
+    {
+      "from": 229.9,
+      "to": 230.733,
+      "location": 0,
+      "content": "就是到他"
+    },
+    {
+      "from": 230.733,
+      "to": 233.166,
+      "location": 0,
+      "content": "真正的出现了可以使用的成果之后呢"
+    },
+    {
+      "from": 233.166,
+      "to": 235.866,
+      "location": 0,
+      "content": "我们才能够去拿下来"
+    },
+    {
+      "from": 235.866,
+      "to": 238.533,
+      "location": 0,
+      "content": "让那些旧世代人的那些人"
+    },
+    {
+      "from": 238.533,
+      "to": 239.599,
+      "location": 0,
+      "content": "感到比较的震惊"
+    },
+    {
+      "from": 239.6,
+      "to": 239.9,
+      "location": 0,
+      "content": "但是"
+    },
+    {
+      "from": 239.9,
+      "to": 243.266,
+      "location": 0,
+      "content": "现在可能还没到那个完成的时间点吧"
+    },
+    {
+      "from": 244.4,
+      "to": 245.133,
+      "location": 0,
+      "content": "那么延续了"
+    },
+    {
+      "from": 245.133,
+      "to": 247.466,
+      "location": 0,
+      "content": "上个世纪的第三次科技革命中的"
+    },
+    {
+      "from": 247.466,
+      "to": 249.366,
+      "location": 0,
+      "content": "计算机软硬件的发展呢"
+    },
+    {
+      "from": 249.566,
+      "to": 251.599,
+      "location": 0,
+      "content": "其实惊喜也没有那么多"
+    },
+    {
+      "from": 251.6,
+      "to": 253.766,
+      "location": 0,
+      "content": "就上世纪的那些互联网应用"
+    },
+    {
+      "from": 253.9,
+      "to": 256.133,
+      "location": 0,
+      "content": "那很多时候其实已经挺好用了"
+    },
+    {
+      "from": 256.266,
+      "to": 257.733,
+      "location": 0,
+      "content": "论坛是上世纪的"
+    },
+    {
+      "from": 257.8,
+      "to": 260.133,
+      "location": 0,
+      "content": "那么i m软件是上世纪的"
+    },
+    {
+      "from": 260.133,
+      "to": 261.066,
+      "location": 0,
+      "content": "现在的互联网呢"
+    },
+    {
+      "from": 261.066,
+      "to": 264.766,
+      "location": 0,
+      "content": "是把他更多的做的是大规模是吧是吧"
+    },
+    {
+      "from": 264.766,
+      "to": 267.499,
+      "location": 0,
+      "content": "越来越多的人纳入到了这个体系中"
+    },
+    {
+      "from": 267.5,
+      "to": 269.566,
+      "location": 0,
+      "content": "所产生的这么一个规模效应"
+    },
+    {
+      "from": 269.933,
+      "to": 272.399,
+      "location": 0,
+      "content": "就当年操作系统能完成能做的事情呢"
+    }
+  ]
+}

@@ -63,7 +63,4 @@ node版本：18.15.0
 
 ## 截图
 
-![列表视图](./screenshot/列表视图.png)
-![文章视图](./screenshot/文章视图.png)
-![总结](./screenshot/总结.png)
-![翻译](./screenshot/翻译.png)
+![完整截图](./screenshot/完整截图.png)

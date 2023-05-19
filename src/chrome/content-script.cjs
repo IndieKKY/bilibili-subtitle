@@ -1,4 +1,4 @@
-const {TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX} = require("../const");
+const {TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID} = require("../const");
 var totalHeight = TOTAL_HEIGHT_DEF
 
 const getVideoElement = () => {
@@ -23,7 +23,7 @@ setInterval(function () {
       }
 
       const iframe = document.createElement('iframe')
-      iframe.id = 'bilibili-subtitle-iframe'
+      iframe.id = IFRAME_ID
       iframe.src = chrome.runtime.getURL('index.html')
       iframe.style = 'border: none; width: 100%; height: 44px;'
       iframe.allow = 'clipboard-read; clipboard-write;'
@@ -43,15 +43,24 @@ let pagesMap = {}
 
 let lastAidOrBvid = null
 const refreshVideoInfo = async () => {
-  const iframe = document.getElementById('bilibili-subtitle-iframe')
+  const iframe = document.getElementById(IFRAME_ID)
   if (!iframe) return
 
-  let path = location.pathname
-  if (path.endsWith('/')) {
-    path = path.slice(0, -1)
+  // fix: https://github.com/IndieKKY/bilibili-subtitle/issues/5
+  // 处理稍后再看的url( https://www.bilibili.com/list/watchlater?bvid=xxx&oid=xxx )
+  const pathSearchs = {}
+  location.search.slice(1).replace(/([^=&]*)=([^=&]*)/g, (matchs, a, b, c) => pathSearchs[a] = b)
+
+  // bvid
+  let aidOrBvid = pathSearchs.bvid // 默认为稍后再看
+  if (!aidOrBvid) {
+    let path = location.pathname
+    if (path.endsWith('/')) {
+      path = path.slice(0, -1)
+    }
+    const paths = path.split('/')
+    aidOrBvid = paths[paths.length - 1]
   }
-  const paths = path.split('/')
-  const aidOrBvid = paths[paths.length - 1]
 
   if (aidOrBvid !== lastAidOrBvid) {
     // console.debug('refreshVideoInfo')
@@ -100,7 +109,7 @@ const refreshVideoInfo = async () => {
 let lastAid = null
 let lastCid = null
 const refreshSubtitles = () => {
-  const iframe = document.getElementById('bilibili-subtitle-iframe')
+  const iframe = document.getElementById(IFRAME_ID)
   if (!iframe) return
 
   const urlSearchParams = new URLSearchParams(window.location.search)
@@ -135,7 +144,7 @@ window.addEventListener("message", (event) => {
   const {data} = event
 
   if (data.type === 'fold') {
-    const iframe = document.getElementById('bilibili-subtitle-iframe')
+    const iframe = document.getElementById(IFRAME_ID)
     iframe.style.height = (data.fold ? HEADER_HEIGHT : totalHeight) + 'px'
   }
 

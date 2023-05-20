@@ -13,8 +13,11 @@ import {
 import {
   LANGUAGE_DEFAULT,
   LANGUAGES_MAP,
+  PROMPT_DEFAULTS,
+  PROMPT_TYPE_TRANSLATE,
   SUMMARIZE_LANGUAGE_DEFAULT,
   SUMMARIZE_THRESHOLD,
+  SUMMARIZE_TYPE_TO_PROMPT_TYPE,
   TRANSLATE_COOLDOWN,
   TRANSLATE_FETCH_DEFAULT,
 } from '../const'
@@ -32,6 +35,7 @@ const useTranslate = () => {
   const envData = useAppSelector(state => state.env.envData)
   const language = LANGUAGES_MAP[envData.language??LANGUAGE_DEFAULT]
   const summarizeLanguage = LANGUAGES_MAP[envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT]
+  const title = useAppSelector(state => state.env.title)
 
   /**
    * 获取下一个需要翻译的行
@@ -69,6 +73,13 @@ const useTranslate = () => {
         })
         let lineStr = JSON.stringify(linesMap).replaceAll('\n', '')
         lineStr = '```' + lineStr + '```'
+
+        let prompt: string = envData.prompts?.[PROMPT_TYPE_TRANSLATE]??PROMPT_DEFAULTS[PROMPT_TYPE_TRANSLATE]
+        // replace params
+        prompt = prompt.replaceAll('{{language}}', language.name)
+        prompt = prompt.replaceAll('{{title}}', title??'')
+        prompt = prompt.replaceAll('{{subtitles}}', lineStr)
+
         const taskDef: TaskDef = {
           type: 'chatComplete',
           serverUrl: envData.serverUrl,
@@ -76,21 +87,8 @@ const useTranslate = () => {
             model: 'gpt-3.5-turbo',
             messages: [
               {
-                role: 'system',
-                content: 'You are a professional translator.'
-              },
-              {
                 role: 'user',
-                content: `Translate following video subtitles to language '${language.name}'.
-Preserve incomplete sentence.
-Translate in the same json format.
-Answer in markdown json format.
-
-video subtitles:
-
-\`\`\`
-${lineStr}
-\`\`\``
+                content: prompt,
               }
             ],
             temperature: 0,
@@ -118,85 +116,23 @@ ${lineStr}
         dispatch(addTaskId(task.id))
       }
     }
-  }, [data?.body, dispatch, envData.apiKey, envData.fetchAmount, envData.serverUrl, language.name])
+  }, [data?.body, dispatch, envData.apiKey, envData.fetchAmount, envData.serverUrl, envData.prompts, title, language.name])
 
-  const addSummarizeTask = useCallback(async (title: string | undefined, type: SummaryType, segment: Segment) => {
+  const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD && envData.apiKey) {
-      const title_ = title?`The video's title is '${title}'.`:''
       let subtitles = ''
       for (const item of segment.items) {
         subtitles += formatTime(item.from) + ' ' + item.content + '\n'
       }
-      let content
-      if (type === 'overview') {
-        content = `You are a helpful assistant that summarize key points of video subtitle.
-Summarize 3 to 8 brief key points in language '${summarizeLanguage.name}'.
-Answer in markdown json format.
-The emoji should be related to the key point and 1 char length.
+      // @ts-expect-error
+      const promptType: keyof typeof PROMPT_DEFAULTS = SUMMARIZE_TYPE_TO_PROMPT_TYPE[type]
+      let prompt: string = envData.prompts?.[promptType]??PROMPT_DEFAULTS[promptType]
+      // replace params
+      prompt = prompt.replaceAll('{{language}}', summarizeLanguage.name)
+      prompt = prompt.replaceAll('{{title}}', title??'')
+      prompt = prompt.replaceAll('{{subtitles}}', subtitles)
+      prompt = prompt.replaceAll('{{segment}}', segment.text)
 
-example output format:
-
-\`\`\`json
-[
-  {
-    "time": "03:00",
-    "emoji": "👍",
-    "key": "key point 1"
-  },
-  {
-    "time": "10:05",
-    "emoji": "😊",
-    "key": "key point 2"
-  }
-]
-\`\`\`
-
-The video's title: '''${title_}'''.
-The video's subtitles:
-
-'''
-${subtitles}
-'''`
-      } else if (type === 'keypoint') {
-        content = `You are a helpful assistant that summarize key points of video subtitle.
-Summarize brief key points in language '${summarizeLanguage.name}'.
-Answer in markdown json format.
-
-example output format:
-
-\`\`\`json
-[
-  "key point 1",
-  "key point 2"
-]
-\`\`\`
-
-The video's title: '''${title_}'''.
-The video's subtitles:
-
-'''
-${segment.text}
-'''`
-      } else if (type === 'brief') {
-        content = `You are a helpful assistant that summarize video subtitle.
-Summarize in language '${summarizeLanguage.name}'.
-Answer in markdown json format.
-
-example output format:
-
-\`\`\`json
-{
-  "summary": "brief summary"
-}
-\`\`\`
-
-The video's title: '''${title_}'''.
-The video's subtitles:
-
-'''
-${segment.text}
-'''`
-      }
       const taskDef: TaskDef = {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
@@ -205,7 +141,7 @@ ${segment.text}
           messages: [
             {
               role: 'user',
-              content,
+              content: prompt,
             }
           ],
           temperature: 0,
@@ -225,7 +161,7 @@ ${segment.text}
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData.apiKey, envData.serverUrl, summarizeLanguage.name])
+  }, [dispatch, envData.apiKey, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
 
   const handleTranslate = useMemoizedFn((task: Task, content: string) => {
     let map: {[key: string]: string} = {}

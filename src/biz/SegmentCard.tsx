@@ -68,18 +68,17 @@ const Summarize = (props: {
   const dispatch = useAppDispatch()
   const apiKey = useAppSelector(state => state.env.envData.apiKey)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
-  const title = useAppSelector(state => state.env.title)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const {addSummarizeTask} = useTranslate()
 
   const onGenerate = useCallback(() => {
     if (apiKey) {
-      addSummarizeTask(title, curSummaryType, segment).catch(console.error)
+      addSummarizeTask(curSummaryType, segment).catch(console.error)
     } else {
       dispatch(setPage(PAGE_SETTINGS))
       toast.error('需要先设置ApiKey!')
     }
-  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segment, title])
+  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segment])
 
   const onCopy = useCallback(() => {
     if (summary != null) {

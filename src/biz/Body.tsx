@@ -31,7 +31,6 @@ const Body = () => {
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
-  const title = useAppSelector(state => state.env.title)
   const {addSummarizeTask} = useTranslate()
   const bodyRef = useRef<any>()
   const curOffsetTop = useAppSelector(state => state.env.curOffsetTop)
@@ -71,11 +70,11 @@ const Body = () => {
     }
     if (segments_.length < SUMMARIZE_ALL_THRESHOLD || confirm(`确定总结${segments_.length}个段落?`)) {
       for (const segment of segments_) {
-        addSummarizeTask(title, curSummaryType, segment).catch(console.error)
+        addSummarizeTask(curSummaryType, segment).catch(console.error)
       }
       toast.success(`已添加${segments_.length}个总结任务!`)
     }
-  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segments, title])
+  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segments])
 
   const onFoldAll = useCallback(() => {
     dispatch(setFoldAll(!foldAll))

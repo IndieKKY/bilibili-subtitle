@@ -5,6 +5,108 @@ export const IFRAME_ID = 'bilibili-subtitle-iframe'
 export const STORAGE_ENV = 'bilibili-subtitle_env'
 export const STORAGE_TEMP = 'bilibili-subtitle_temp'
 
+export const PROMPT_TYPE_TRANSLATE = 'translate'
+export const PROMPT_TYPE_SUMMARIZE_OVERVIEW = 'summarize_overview'
+export const PROMPT_TYPE_SUMMARIZE_KEYPOINT = 'summarize_keypoint'
+export const PROMPT_TYPE_SUMMARIZE_BRIEF = 'summarize_brief'
+export const PROMPT_TYPES = [{
+  name: '翻译',
+  type: PROMPT_TYPE_TRANSLATE,
+}, {
+  name: '概览',
+  type: PROMPT_TYPE_SUMMARIZE_OVERVIEW,
+}, {
+  name: '要点',
+  type: PROMPT_TYPE_SUMMARIZE_KEYPOINT,
+}, {
+  name: '总结',
+  type: PROMPT_TYPE_SUMMARIZE_BRIEF,
+}]
+
+export const SUMMARIZE_TYPE_TO_PROMPT_TYPE = {
+  overview: PROMPT_TYPE_SUMMARIZE_OVERVIEW,
+  keypoint: PROMPT_TYPE_SUMMARIZE_KEYPOINT,
+  brief: PROMPT_TYPE_SUMMARIZE_BRIEF,
+}
+
+export const PROMPT_DEFAULTS = {
+  [PROMPT_TYPE_TRANSLATE]: `You are a professional translator. Translate following video subtitles to language '{{language}}'.
+Preserve incomplete sentence.
+Translate in the same json format.
+Answer in markdown json format.
+
+video subtitles:
+
+\`\`\`
+{{subtitles}}
+\`\`\``,
+  [PROMPT_TYPE_SUMMARIZE_OVERVIEW]: `You are a helpful assistant that summarize key points of video subtitle.
+Summarize 3 to 8 brief key points in language '{{language}}'.
+Answer in markdown json format.
+The emoji should be related to the key point and 1 char length.
+
+example output format:
+
+\`\`\`json
+[
+  {
+    "time": "03:00",
+    "emoji": "👍",
+    "key": "key point 1"
+  },
+  {
+    "time": "10:05",
+    "emoji": "😊",
+    "key": "key point 2"
+  }
+]
+\`\`\`
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{subtitles}}
+'''`,
+  [PROMPT_TYPE_SUMMARIZE_KEYPOINT]: `You are a helpful assistant that summarize key points of video subtitle.
+Summarize brief key points in language '{{language}}'.
+Answer in markdown json format.
+
+example output format:
+
+\`\`\`json
+[
+  "key point 1",
+  "key point 2"
+]
+\`\`\`
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{segment}}
+'''`,
+  [PROMPT_TYPE_SUMMARIZE_BRIEF]: `You are a helpful assistant that summarize video subtitle.
+Summarize in language '{{language}}'.
+Answer in markdown json format.
+
+example output format:
+
+\`\`\`json
+{
+  "summary": "brief summary"
+}
+\`\`\`
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{segment}}
+'''`
+}
+
 export const EVENT_EXPAND = 'expand'
 
 export const TASK_EXPIRE_TIME = 15*60*1000

@@ -14,6 +14,10 @@ interface EnvData {
   summarizeFloat?: boolean
   theme?: 'system' | 'light' | 'dark'
   fontSize?: 'normal' | 'large'
+
+  prompts?: {
+    [key: string]: string
+  }
 }
 
 interface TempData {

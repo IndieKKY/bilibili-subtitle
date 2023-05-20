@@ -6,6 +6,8 @@ import {
   LANGUAGE_DEFAULT,
   LANGUAGES,
   PAGE_MAIN,
+  PROMPT_DEFAULTS,
+  PROMPT_TYPES,
   SERVER_URL_THIRD,
   SUMMARIZE_LANGUAGE_DEFAULT,
   TRANSLATE_FETCH_DEFAULT,
@@ -69,8 +71,10 @@ const Settings = () => {
   const [wordsValue, setWordsValue] = useState(envData.words??WORDS_DEFAULT)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
   const [moreFold, {toggle: toggleMoreFold}] = useBoolean(true)
+  const [promptsFold, {toggle: togglePromptsFold}] = useBoolean(true)
   const fold = useAppSelector(state => state.env.fold)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
+  const [promptsValue, setPromptsValue] = useState<{[key: string]: string}>(envData.prompts??{})
   const wordsList = useMemo(() => {
     const list = []
     for (let i = WORDS_MIN; i <= WORDS_MAX; i += WORDS_STEP) {
@@ -106,10 +110,11 @@ const Settings = () => {
       words: wordsValue,
       fetchAmount: fetchAmountValue,
       fontSize: fontSizeValue,
+      prompts: promptsValue,
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [fontSizeValue, apiKeyValue, autoExpandValue, dispatch, fetchAmountValue, hideOnDisableAutoTranslateValue, languageValue, serverUrlValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, themeValue, transDisplayValue, translateEnableValue, wordsValue])
+  }, [promptsValue, fontSizeValue, apiKeyValue, autoExpandValue, dispatch, fetchAmountValue, hideOnDisableAutoTranslateValue, languageValue, serverUrlValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, themeValue, transDisplayValue, translateEnableValue, wordsValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -201,6 +206,28 @@ const Settings = () => {
             <li>支持代理(配合ApiKey)：<a className='link' href='https://key-rental.bowen.cool/' target='_blank' rel="noreferrer">Key Rental</a> | <a className='link' onClick={() => setServerUrlValue('https://key-rental-api.bowen.cool/openai')} rel='noreferrer'>点击设置</a></li>
             <li>支持其他第三方代理，有问题可加群交流</li>
           </ul>
+        </div>}
+        <div className='flex justify-center'>
+          <a className='link text-xs' onClick={togglePromptsFold}>{promptsFold?'点击查看提示词':'点击折叠提示词'}</a>
+        </div>
+        {!promptsFold && <div>
+          {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
+            <div>{item.name}</div>
+            <div className='link text-xs' onClick={() => {
+              setPromptsValue({
+                ...promptsValue,
+                // @ts-expect-error
+                [item.type]: PROMPT_DEFAULTS[item.type]??''
+              })
+            }}>点击填充默认</div>
+          </div>} htmlFor={`prompt-${item.type}`}>
+            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full' placeholder='留空使用默认提示词' value={promptsValue[item.type]??''} onChange={(e) => {
+              setPromptsValue({
+                ...promptsValue,
+                [item.type]: e.target.value
+              })
+            }}/>
+          </FormItem>)}
         </div>}
       </Section>
       <Section title={<div className='flex items-center'>

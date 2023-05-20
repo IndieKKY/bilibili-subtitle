@@ -11,7 +11,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.bilibili.com/video/*"],
+      "matches": ["https://www.bilibili.com/video/*", "https://www.bilibili.com/list/watchlater*"],
       "js": ["src/chrome/content-script.cjs"]
     }
   ],

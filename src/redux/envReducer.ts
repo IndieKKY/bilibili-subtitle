@@ -7,6 +7,9 @@ interface EnvState {
   envData: EnvData
   envReady: boolean
 
+  tempData: TempData
+  tempReady: boolean
+
   fold: boolean // fold app
   foldAll?: boolean // fold all segments
   page?: string
@@ -30,7 +33,6 @@ interface EnvState {
   uploadedTranscript?: Transcript
   segments?: Segment[]
   title?: string
-  curSummaryType: SummaryType
 
   taskIds?: string[]
   transResults: {[key: number]: TransResult}
@@ -45,14 +47,17 @@ const initialState: EnvState = {
     summarizeEnable: true,
     theme: 'light',
   },
+  tempData: {
+    curSummaryType: 'overview',
+  },
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
   currentTime: import.meta.env.VITE_ENV === 'web-dev'? 30: undefined,
   envReady: false,
+  tempReady: false,
   fold: true,
   data: import.meta.env.VITE_ENV === 'web-dev'? getDevData(): undefined,
   transResults: {},
-  curSummaryType: 'overview',
 }
 
 export const slice = createSlice({
@@ -68,14 +73,20 @@ export const slice = createSlice({
     setEnvReady: (state) => {
       state.envReady = true
     },
+    setTempData: (state, action: PayloadAction<TempData>) => {
+      state.tempData = {
+        ...state.tempData,
+        ...action.payload,
+      }
+    },
+    setTempReady: (state) => {
+      state.tempReady = true
+    },
     setFloatKeyPointsSegIdx: (state, action: PayloadAction<number | undefined>) => {
       state.floatKeyPointsSegIdx = action.payload
     },
     setFoldAll: (state, action: PayloadAction<boolean>) => {
       state.foldAll = action.payload
-    },
-    setCurSummaryType: (state, action: PayloadAction<SummaryType>) => {
-      state.curSummaryType = action.payload
     },
     setCompact: (state, action: PayloadAction<boolean>) => {
       state.compact = action.payload
@@ -241,6 +252,6 @@ export const slice = createSlice({
   },
 })
 
-export const { setCurSummaryType, setUploadedTranscript, setTotalHeight, setCheckAutoScroll, setCurOffsetTop, setFloatKeyPointsSegIdx, setFoldAll, setCompact, setSegmentFold, setSummaryContent, setSummaryStatus, setSummaryError, setTitle, setSegments, setLastSummarizeTime, setPage, setLastTransTime, clearTransResults, addTransResults, addTaskId, delTaskId, setTaskIds, setDownloadType, setAutoTranslate, setAutoScroll, setNoVideo, setNeedScroll, setCurIdx, setEnvData, setEnvReady, setCurrentTime, setInfos, setCurInfo, setCurFetched, setData, setFold } = slice.actions
+export const { setTempReady, setTempData, setUploadedTranscript, setTotalHeight, setCheckAutoScroll, setCurOffsetTop, setFloatKeyPointsSegIdx, setFoldAll, setCompact, setSegmentFold, setSummaryContent, setSummaryStatus, setSummaryError, setTitle, setSegments, setLastSummarizeTime, setPage, setLastTransTime, clearTransResults, addTransResults, addTaskId, delTaskId, setTaskIds, setDownloadType, setAutoTranslate, setAutoScroll, setNoVideo, setNeedScroll, setCurIdx, setEnvData, setEnvReady, setCurrentTime, setInfos, setCurInfo, setCurFetched, setData, setFold } = slice.actions
 
 export default slice.reducer

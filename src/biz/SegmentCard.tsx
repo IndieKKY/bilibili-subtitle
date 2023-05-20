@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setCurSummaryType, setFloatKeyPointsSegIdx, setPage, setSegmentFold} from '../redux/envReducer'
+import {setFloatKeyPointsSegIdx, setPage, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
 import {FaClipboardList} from 'react-icons/fa'
 import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD} from '../const'
@@ -69,7 +69,7 @@ const Summarize = (props: {
   const apiKey = useAppSelector(state => state.env.envData.apiKey)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const title = useAppSelector(state => state.env.title)
-  const curSummaryType = useAppSelector(state => state.env.curSummaryType)
+  const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const {addSummarizeTask} = useTranslate()
 
   const onGenerate = useCallback(() => {
@@ -141,7 +141,7 @@ const SegmentCard = (props: {
   const compact = useAppSelector(state => state.env.compact)
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const showCurrent = useMemo(() => curIdx != null && segment.startIdx <= curIdx && curIdx <= segment.endIdx, [curIdx, segment.endIdx, segment.startIdx])
-  const curSummaryType = useAppSelector(state => state.env.curSummaryType)
+  const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const summary = useMemo(() => {
     const result = segment.summaries[curSummaryType]
     if (result) {
@@ -171,15 +171,21 @@ const SegmentCard = (props: {
   }, [dispatch, fold, inViewport, page, segment.startIdx, showCurrent, summarizeFloat, summary])
 
   const onSelBrief = useCallback(() => {
-    dispatch(setCurSummaryType('brief'))
+    dispatch(setTempData({
+      curSummaryType: 'brief'
+    }))
   }, [dispatch])
 
   const onSelOverview = useCallback(() => {
-    dispatch(setCurSummaryType('overview'))
+    dispatch(setTempData({
+      curSummaryType: 'overview'
+    }))
   }, [dispatch])
 
   const onSelKeypoint = useCallback(() => {
-    dispatch(setCurSummaryType('keypoint'))
+    dispatch(setTempData({
+      curSummaryType: 'keypoint'
+    }))
   }, [dispatch])
 
   return <div

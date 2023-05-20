@@ -38,7 +38,7 @@ const Body = () => {
   const checkAutoScroll = useAppSelector(state => state.env.checkAutoScroll)
   const needScroll = useAppSelector(state => state.env.needScroll)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
-  const curSummaryType = useAppSelector(state => state.env.curSummaryType)
+  const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
   const normalCallback = useCallback(() => {
     dispatch(setCompact(false))

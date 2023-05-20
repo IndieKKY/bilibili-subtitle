@@ -16,6 +16,10 @@ interface EnvData {
   fontSize?: 'normal' | 'large'
 }
 
+interface TempData {
+  curSummaryType: SummaryType
+}
+
 interface TaskDef {
   type: 'chatComplete'
   serverUrl?: string

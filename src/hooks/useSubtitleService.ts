@@ -39,8 +39,6 @@ const useSubtitleService = () => {
   const hideOnDisableAutoTranslate = useAppSelector(state => state.env.envData.hideOnDisableAutoTranslate)
   const autoTranslate = useAppSelector(state => state.env.autoTranslate)
 
-  // 设置屏安具
-
   // 监听消息
   useEffect(() => {
     const listener = (event: MessageEvent) => {

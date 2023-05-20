@@ -3,6 +3,7 @@ export const APP_DOM_ID = 'bilibili-subtitle'
 export const IFRAME_ID = 'bilibili-subtitle-iframe'
 
 export const STORAGE_ENV = 'bilibili-subtitle_env'
+export const STORAGE_TEMP = 'bilibili-subtitle_temp'
 
 export const EVENT_EXPAND = 'expand'
 

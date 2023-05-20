@@ -67,7 +67,7 @@ const MoreBtn = (props: Props) => {
   const eventBus = useContext(EventBusContext)
   const segments = useAppSelector(state => state.env.segments)
   const title = useAppSelector(state => state.env.title)
-  const curSummaryType = useAppSelector(state => state.env.curSummaryType)
+  const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
   const downloadCallback = useCallback((download: boolean) => {
     if (data == null) {

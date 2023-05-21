@@ -6,30 +6,34 @@ const getVideoElement = () => {
   return videoWrapper.querySelector('video')
 }
 
-let danmukuBox = null
 const timerIframe = setInterval(function () {
-  if (danmukuBox) return clearInterval(timerIframe)
-
-  danmukuBox = document.getElementById('danmukuBox')
+  var danmukuBox = document.getElementById('danmukuBox')
   if (danmukuBox) {
-    var vKey = ''
-    for (const key in danmukuBox?.dataset) {
-      if (key.startsWith('v-')) {
-        vKey = key
-        break
-      }
-    }
+    clearInterval(timerIframe)
 
-    const iframe = document.createElement('iframe')
-    iframe.id = IFRAME_ID
-    iframe.src = chrome.runtime.getURL('index.html')
-    iframe.style = 'border: none; width: 100%; height: 44px;'
-    iframe.allow = 'clipboard-read; clipboard-write;'
-    if (vKey) {
-      iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
-    }
-    //insert before first child
-    danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+    //延迟插入iframe（插入太快，网络较差时容易出现b站网页刷新，原因暂时未知，可能b站的某种机制？）
+    setTimeout(() => {
+      var vKey = ''
+      for (const key in danmukuBox?.dataset) {
+        if (key.startsWith('v-')) {
+          vKey = key
+          break
+        }
+      }
+
+      const iframe = document.createElement('iframe')
+      iframe.id = IFRAME_ID
+      iframe.src = chrome.runtime.getURL('index.html')
+      iframe.style = 'border: none; width: 100%; height: 44px;'
+      iframe.allow = 'clipboard-read; clipboard-write;'
+      if (vKey) {
+        iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
+      }
+      //insert before first child
+      danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+
+      console.debug('iframe inserted')
+    }, 1500)
   }
 }, 1000)
 

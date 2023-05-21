@@ -234,7 +234,7 @@ window.addEventListener("message", (event) => {
         container.append(div)
       }
     }
-    text.style.display = trans ? 'block' : 'none'
+    text && (text.style.display = trans ? 'block' : 'none')
   }
 }, false);
 

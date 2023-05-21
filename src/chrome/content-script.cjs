@@ -6,33 +6,30 @@ const getVideoElement = () => {
   return videoWrapper.querySelector('video')
 }
 
-var danmukuBoxLoaded = false
-setInterval(function () {
-  if (danmukuBoxLoaded) return
+let danmukuBox = null
+const timerIframe = setInterval(function () {
+  if (danmukuBox) return clearInterval(timerIframe)
 
-  var danmukuBox = document.getElementById('danmukuBox')
+  danmukuBox = document.getElementById('danmukuBox')
   if (danmukuBox) {
-    danmukuBoxLoaded = true
-    setTimeout(function () {
-      var vKey = ''
-      for (const key in danmukuBox?.dataset) {
-        if (key.startsWith('v-')) {
-          vKey = key
-          break
-        }
+    var vKey = ''
+    for (const key in danmukuBox?.dataset) {
+      if (key.startsWith('v-')) {
+        vKey = key
+        break
       }
+    }
 
-      const iframe = document.createElement('iframe')
-      iframe.id = IFRAME_ID
-      iframe.src = chrome.runtime.getURL('index.html')
-      iframe.style = 'border: none; width: 100%; height: 44px;'
-      iframe.allow = 'clipboard-read; clipboard-write;'
-      if (vKey) {
-        iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
-      }
-      //insert before first child
-      danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
-    }, 1500)
+    const iframe = document.createElement('iframe')
+    iframe.id = IFRAME_ID
+    iframe.src = chrome.runtime.getURL('index.html')
+    iframe.style = 'border: none; width: 100%; height: 44px;'
+    iframe.allow = 'clipboard-read; clipboard-write;'
+    if (vKey) {
+      iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
+    }
+    //insert before first child
+    danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
   }
 }, 1000)
 
@@ -237,7 +234,7 @@ window.addEventListener("message", (event) => {
         container.append(div)
       }
     }
-    text.style.display = trans ? 'block' : 'none'
+    text && (text.style.display = trans ? 'block' : 'none')
   }
 }, false);
 

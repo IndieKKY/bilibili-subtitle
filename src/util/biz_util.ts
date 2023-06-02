@@ -1,5 +1,5 @@
 import devData from '../data/data.json'
-import {APP_DOM_ID} from '../const'
+import {APP_DOM_ID, SUMMARIZE_TYPES} from '../const'
 import {isDarkMode} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {findIndex} from 'lodash-es'
@@ -108,7 +108,7 @@ export const getSummaryStr = (summary: Summary) => {
     const content: { summary: string } = summary.content ?? {
       summary: ''
     }
-    s += content.summary
+    s += content.summary + '\n'
   }
   return s
 }
@@ -148,22 +148,22 @@ export const getSummarize = (title: string | undefined, segments: Segment[] | un
     return [false, '']
   }
 
-  let content = `${title ?? ''}\n\n`
+  let content = `${SUMMARIZE_TYPES[type]?.downloadName ?? ''}\n\n`
   let success = false
   for (const segment of segments) {
-    if (segment.items.length > 0) {
-      content += `${getTimeDisplay(segment.items[0].from)}\n`
-    }
     const summary = segment.summaries[type]
     if (summary && !isSummaryEmpty(summary)) {
       success = true
       content += getSummaryStr(summary)
     } else {
-      content += '无总结\n'
+      if (segment.items.length > 0) {
+        content += `${getTimeDisplay(segment.items[0].from)} `
+      }
+      content += '未总结\n'
     }
-
-    content += '\n'
   }
+
+  content += '\n--- 哔哩哔哩字幕列表'
 
   if (!success) {
     toast.error('未找到总结')

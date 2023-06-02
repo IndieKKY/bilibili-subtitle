@@ -10,13 +10,14 @@ import {
   setSegmentFold
 } from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {AiOutlineAim, FaRegArrowAltCircleDown, IoWarning, MdExpand, RiTranslate} from 'react-icons/all'
+import {AiOutlineAim, FaRegArrowAltCircleDown, IoWarning, MdExpand, RiFileCopy2Line, RiTranslate} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import SegmentCard from './SegmentCard'
-import {HEADER_HEIGHT, PAGE_SETTINGS, SUMMARIZE_ALL_THRESHOLD, TITLE_HEIGHT} from '../const'
+import {HEADER_HEIGHT, PAGE_SETTINGS, SUMMARIZE_ALL_THRESHOLD, SUMMARIZE_TYPES, TITLE_HEIGHT} from '../const'
 import {FaClipboardList} from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
+import {getSummarize} from '../util/biz_util'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -38,6 +39,7 @@ const Body = () => {
   const needScroll = useAppSelector(state => state.env.needScroll)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
+  const title = useAppSelector(state => state.env.title)
 
   const normalCallback = useCallback(() => {
     dispatch(setCompact(false))
@@ -106,6 +108,15 @@ const Body = () => {
     }
   }, [autoScroll, dispatch])
 
+  const onCopy = useCallback(() => {
+    const [success, content] = getSummarize(title, segments, curSummaryType)
+    if (success) {
+      navigator.clipboard.writeText(content).then(() => {
+        toast.success('复制成功')
+      }).catch(console.error)
+    }
+  }, [curSummaryType, segments, title])
+
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
@@ -160,6 +171,11 @@ const Body = () => {
          }}
     >
       {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment} segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
+      <div className='flex flex-col items-center text-center pt-1 pb-2'>
+        <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div>
+        <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳</div>
+        {(segments?.length??0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/></button>}
+      </div>
     </div>
   </div>
 }

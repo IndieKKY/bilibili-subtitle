@@ -23,10 +23,25 @@ export const PROMPT_TYPES = [{
   type: PROMPT_TYPE_SUMMARIZE_BRIEF,
 }]
 
-export const SUMMARIZE_TYPE_TO_PROMPT_TYPE = {
-  overview: PROMPT_TYPE_SUMMARIZE_OVERVIEW,
-  keypoint: PROMPT_TYPE_SUMMARIZE_KEYPOINT,
-  brief: PROMPT_TYPE_SUMMARIZE_BRIEF,
+export const SUMMARIZE_TYPES = {
+  brief: {
+    name: '总结',
+    desc: '一句话总结',
+    downloadName: '💡视频总结💡',
+    promptType: PROMPT_TYPE_SUMMARIZE_BRIEF,
+  },
+  overview: {
+    name: '概览',
+    desc: '可定位到视频位置',
+    downloadName: '💡视频概览💡',
+    promptType: PROMPT_TYPE_SUMMARIZE_OVERVIEW,
+  },
+  keypoint: {
+    name: '要点',
+    desc: '完整的要点提取',
+    downloadName: '💡视频要点💡',
+    promptType: PROMPT_TYPE_SUMMARIZE_KEYPOINT,
+  },
 }
 
 export const PROMPT_DEFAULTS = {

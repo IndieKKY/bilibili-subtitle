@@ -17,7 +17,7 @@ import {
   PROMPT_TYPE_TRANSLATE,
   SUMMARIZE_LANGUAGE_DEFAULT,
   SUMMARIZE_THRESHOLD,
-  SUMMARIZE_TYPE_TO_PROMPT_TYPE,
+  SUMMARIZE_TYPES,
   TRANSLATE_COOLDOWN,
   TRANSLATE_FETCH_DEFAULT,
 } from '../const'
@@ -125,7 +125,7 @@ const useTranslate = () => {
         subtitles += formatTime(item.from) + ' ' + item.content + '\n'
       }
       // @ts-expect-error
-      const promptType: keyof typeof PROMPT_DEFAULTS = SUMMARIZE_TYPE_TO_PROMPT_TYPE[type]
+      const promptType: keyof typeof PROMPT_DEFAULTS = SUMMARIZE_TYPES[type].promptType
       let prompt: string = envData.prompts?.[promptType]??PROMPT_DEFAULTS[promptType]
       // replace params
       prompt = prompt.replaceAll('{{language}}', summarizeLanguage.name)

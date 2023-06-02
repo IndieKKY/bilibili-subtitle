@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {setFloatKeyPointsSegIdx, setPage, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
 import {FaClipboardList} from 'react-icons/fa'
-import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD} from '../const'
+import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../const'
 import useTranslate from '../hooks/useTranslate'
 import {BsDashSquare, BsPlusSquare, CgFileDocument, GrOverview, RiFileCopy2Line} from 'react-icons/all'
 import toast from 'react-hot-toast'
@@ -112,6 +112,7 @@ const Summarize = (props: {
       {segment.text.length >= SUMMARIZE_THRESHOLD && ((summary == null) || summary.status !== 'done' || summary.error) && <button disabled={summary?.status === 'pending'}
                 className={classNames('btn btn-link btn-xs', summary?.status === 'pending' && 'loading')}
                 onClick={onGenerate}>{(summary == null) || summary.status === 'init' ? '点击生成' : (summary.status === 'pending' ? '生成中' : '重新生成')}</button>}
+      {((summary == null) || summary.status === 'init') && <div className='desc-lighter text-xs'>{SUMMARIZE_TYPES[curSummaryType].desc}</div>}
       {summary?.error && <div className='text-xs text-error'>{summary?.error}</div>}
     </div>
     {!float && <div className='mx-2 my-1 h-[1px] bg-base-300'></div>}

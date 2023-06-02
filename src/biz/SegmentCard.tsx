@@ -191,7 +191,7 @@ const SegmentCard = (props: {
   return <div
     className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1 shadow', showCurrent && 'shadow-primary')}>
     <div className='relative flex justify-center min-h-[20px]'>
-      {segments != null && segments.length > 1 &&
+      {segments != null && segments.length > 0 &&
         <div className='absolute left-0 top-0 bottom-0 text-xs select-none flex-center desc'>
           {segment.fold
             ? <BsPlusSquare className='cursor-pointer' onClick={onFold}/> :
@@ -224,7 +224,7 @@ const SegmentCard = (props: {
                                                                                needScroll={needScroll && curIdx === segment.startIdx + idx}
                                                                                last={idx === segment.items.length - 1}
         />)}
-        {segments != null && segments.length > 1 && <div className='flex justify-center'><a className='link text-xs'
+        {segments != null && segments.length > 0 && <div className='flex justify-center'><a className='link text-xs'
                                                                                             onClick={onFold}>点击折叠{segment.items.length}行</a>
         </div>}
       </div>

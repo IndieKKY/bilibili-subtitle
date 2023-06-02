@@ -133,7 +133,7 @@ const Body = () => {
   return <div className='relative'>
     <div className='absolute top-1 left-6 flex-center gap-1'>
       <AiOutlineAim className='cursor-pointer' onClick={posCallback} title='滚动到视频位置'/>
-      {segments != null && segments.length > 1 &&
+      {segments != null && segments.length > 0 &&
         <MdExpand className={classNames('cursor-pointer', foldAll ? 'text-accent' : '')} onClick={onFoldAll}
                   title='展开/折叠全部'/>}
     </div>

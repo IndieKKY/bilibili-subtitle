@@ -163,7 +163,7 @@ export const getSummarize = (title: string | undefined, segments: Segment[] | un
     }
   }
 
-  content += '\n--- 哔哩哔哩字幕列表'
+  content += '\n--- 哔哩哔哩字幕列表扩展'
 
   if (!success) {
     toast.error('未找到总结')

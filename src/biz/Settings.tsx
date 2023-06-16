@@ -5,6 +5,8 @@ import {
   HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
   LANGUAGES,
+  MODEL_DEFAULT,
+  MODELS,
   PAGE_MAIN,
   PROMPT_DEFAULTS,
   PROMPT_TYPES,
@@ -63,12 +65,13 @@ const Settings = () => {
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
   const [serverUrlValue, setServerUrlValue] = useState(envData.serverUrl)
   const [languageValue, { onChange: onChangeLanguageValue }] = useEventTarget({initialValue: envData.language??LANGUAGE_DEFAULT})
+  const [modelValue, { onChange: onChangeModelValue }] = useEventTarget({initialValue: envData.model??MODEL_DEFAULT})
   const [summarizeLanguageValue, { onChange: onChangeSummarizeLanguageValue }] = useEventTarget({initialValue: envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT})
   const [hideOnDisableAutoTranslateValue, setHideOnDisableAutoTranslateValue] = useState(envData.hideOnDisableAutoTranslate)
   const [themeValue, setThemeValue] = useState(envData.theme)
   const [fontSizeValue, setFontSizeValue] = useState(envData.fontSize)
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
-  const [wordsValue, setWordsValue] = useState(envData.words??WORDS_DEFAULT)
+  const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words??WORDS_DEFAULT)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
   const [moreFold, {toggle: toggleMoreFold}] = useBoolean(true)
   const [promptsFold, {toggle: togglePromptsFold}] = useBoolean(true)
@@ -99,6 +102,7 @@ const Settings = () => {
       autoExpand: autoExpandValue,
       apiKey: apiKeyValue,
       serverUrl: serverUrlValue,
+      model: modelValue,
       translateEnable: translateEnableValue,
       language: languageValue,
       hideOnDisableAutoTranslate: hideOnDisableAutoTranslateValue,
@@ -114,7 +118,7 @@ const Settings = () => {
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [promptsValue, fontSizeValue, apiKeyValue, autoExpandValue, dispatch, fetchAmountValue, hideOnDisableAutoTranslateValue, languageValue, serverUrlValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, themeValue, transDisplayValue, translateEnableValue, wordsValue])
+  }, [modelValue, promptsValue, fontSizeValue, apiKeyValue, autoExpandValue, dispatch, fetchAmountValue, hideOnDisableAutoTranslateValue, languageValue, serverUrlValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, themeValue, transDisplayValue, translateEnableValue, wordsValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -207,6 +211,11 @@ const Settings = () => {
             <li>支持其他第三方代理，有问题可加群交流</li>
           </ul>
         </div>}
+        <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格'>
+          <select id='modelSel' className="select select-sm select-bordered" value={modelValue} onChange={onChangeModelValue}>
+            {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
+          </select>
+        </FormItem>
         <div className='flex justify-center'>
           <a className='link text-xs' onClick={togglePromptsFold}>{promptsFold?'点击查看提示词':'点击折叠提示词'}</a>
         </div>
@@ -284,12 +293,13 @@ const Settings = () => {
             {LANGUAGES.map(language => <option key={language.code} value={language.code}>{language.name}</option>)}
           </select>
         </FormItem>
-        <FormItem title='分段字数'>
+        <FormItem htmlFor='words' title='分段字数' tip='注意，不同模型有不同字数限制'>
           <div className='flex-1 flex flex-col'>
-            <input type="range" min={WORDS_MIN} max={WORDS_MAX} step={WORDS_STEP} value={wordsValue} className="range range-primary" onChange={onWordsChange} />
-            <div className="w-full flex justify-between text-xs px-2">
-              {wordsList.map(words => <span key={words}>{words}</span>)}
-            </div>
+            <input id='words' type='number' className='input input-sm input-bordered w-full' placeholder='默认2000' value={wordsValue} onChange={e => setWordsValue(e.target.value?parseInt(e.target.value):undefined)}/>
+            {/* <input type="range" min={WORDS_MIN} max={WORDS_MAX} step={WORDS_STEP} value={wordsValue} className="range range-primary" onChange={onWordsChange} /> */}
+            {/* <div className="w-full flex justify-between text-xs px-2"> */}
+            {/*  {wordsList.map(words => <span key={words}>{words}</span>)} */}
+            {/* </div> */}
           </div>
         </FormItem>
       </Section>

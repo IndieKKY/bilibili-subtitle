@@ -153,6 +153,15 @@ export const SUMMARIZE_ALL_THRESHOLD = 5
 export const SERVER_URL_OPENAI = 'https://api.openai.com'
 export const SERVER_URL_THIRD = 'https://op.kongkongye.com'
 
+export const MODELS = [{
+  code: 'gpt-3.5-turbo',
+  name: 'gpt-3.5-turbo',
+}, {
+  code: 'gpt-3.5-turbo-16k',
+  name: 'gpt-3.5-turbo-16k',
+}]
+export const MODEL_DEFAULT = MODELS[0].code
+
 export const LANGUAGES = [{
   code: 'en',
   name: 'English',

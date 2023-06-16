@@ -3,6 +3,7 @@ interface EnvData {
   flagDot?: boolean
   apiKey?: string
   serverUrl?: string
+  model?: string
   translateEnable?: boolean
   language?: string
   hideOnDisableAutoTranslate?: boolean

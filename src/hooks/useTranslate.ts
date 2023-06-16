@@ -13,6 +13,7 @@ import {
 import {
   LANGUAGE_DEFAULT,
   LANGUAGES_MAP,
+  MODEL_DEFAULT,
   PROMPT_DEFAULTS,
   PROMPT_TYPE_TRANSLATE,
   SUMMARIZE_LANGUAGE_DEFAULT,
@@ -84,7 +85,7 @@ const useTranslate = () => {
           type: 'chatComplete',
           serverUrl: envData.serverUrl,
           data: {
-            model: 'gpt-3.5-turbo',
+            model: envData.model??MODEL_DEFAULT,
             messages: [
               {
                 role: 'user',
@@ -137,7 +138,7 @@ const useTranslate = () => {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
         data: {
-          model: 'gpt-3.5-turbo',
+          model: envData.model??MODEL_DEFAULT,
           messages: [
             {
               role: 'user',

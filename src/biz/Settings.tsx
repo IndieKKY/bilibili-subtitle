@@ -17,9 +17,6 @@ import {
   TRANSLATE_FETCH_MIN,
   TRANSLATE_FETCH_STEP,
   WORDS_DEFAULT,
-  WORDS_MAX,
-  WORDS_MIN,
-  WORDS_STEP
 } from '../const'
 import {IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
@@ -78,13 +75,13 @@ const Settings = () => {
   const fold = useAppSelector(state => state.env.fold)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const [promptsValue, setPromptsValue] = useState<{[key: string]: string}>(envData.prompts??{})
-  const wordsList = useMemo(() => {
-    const list = []
-    for (let i = WORDS_MIN; i <= WORDS_MAX; i += WORDS_STEP) {
-      list.push(i)
-    }
-    return list
-  }, [])
+  // const wordsList = useMemo(() => {
+  //   const list = []
+  //   for (let i = WORDS_MIN; i <= WORDS_MAX; i += WORDS_STEP) {
+  //     list.push(i)
+  //   }
+  //   return list
+  // }, [])
   const transFetchAmountList = useMemo(() => {
     const list = []
     for (let i = TRANSLATE_FETCH_MIN; i <= TRANSLATE_FETCH_MAX; i += TRANSLATE_FETCH_STEP) {

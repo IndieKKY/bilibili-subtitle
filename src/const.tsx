@@ -143,8 +143,8 @@ export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
 
 export const WORDS_DEFAULT = import.meta.env.VITE_ENV === 'web-dev'?500:2000
-export const WORDS_MIN = 1000
-export const WORDS_MAX = 3000
+export const WORDS_MIN = 500
+export const WORDS_MAX = 16000
 export const WORDS_STEP = 500
 export const SUMMARIZE_THRESHOLD = 100
 export const SUMMARIZE_LANGUAGE_DEFAULT = 'cn'

@@ -72,18 +72,22 @@ const refreshVideoInfo = async () => {
       let cid
       let subtitles
       if (aidOrBvid.toLowerCase().startsWith('av')) {//avxxx
-        title = ''
         aid = aidOrBvid.slice(2)
-        cid = 1
         pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, {credentials: 'include'}).then(res => res.json()).then(res => res.data)
-        subtitles = await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {credentials: 'include'}).then(res => res.json()).then(res => res.data.subtitle.subtitles)
+        cid = pages[0].cid
+        title = pages[0].part
+        await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {credentials: 'include'}).then(res => res.json()).then(res => {
+          subtitles = res.data.subtitle.subtitles
+        })
       } else {//bvxxx
-        pages = await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${aidOrBvid}`, {credentials: 'include'}).then(res => res.json()).then(res => {
+        await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${aidOrBvid}`, {credentials: 'include'}).then(res => res.json()).then(async res => {
           title = res.data.title
           aid = res.data.aid
           cid = res.data.cid
-          subtitles = res.data.subtitle.list
-          return res.data.pages
+          pages = res.data.pages
+        })
+        await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {credentials: 'include'}).then(res => res.json()).then(res => {
+          subtitles = res.data.subtitle.subtitles
         })
       }
 

@@ -25,6 +25,7 @@ echo "Version updated to: $new_version"
 # build
 pnpm run build_chrome
 # zip dist
+rm -f dist.zip
 cd dist
 zip -r ../dist.zip ./*
 cd ../

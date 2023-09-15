@@ -203,18 +203,22 @@ export const parseTranscript = (filename: string, text: string | ArrayBuffer): T
   if (filename.toLowerCase().endsWith('.srt')) {
     const lines = text.split('\n\n')
     for (const line of lines) {
-      const lines = line.split('\n')
-      if (lines.length >= 3) {
-        const time = lines[1].split(' --> ')
-        const from = parseTime(time[0])
-        const to = parseTime(time[1])
-        const content = lines.slice(2).join('\n')
-        items.push({
-          from,
-          to,
-          content,
-          idx: items.length,
-        })
+      try {
+        const linesInner = line.trim().split('\n')
+        if (linesInner.length >= 3) {
+          const time = linesInner[1].split(' --> ')
+          const from = parseTime(time[0])
+          const to = parseTime(time[1])
+          const content = linesInner.slice(2).join('\n')
+          items.push({
+            from,
+            to,
+            content,
+            idx: items.length,
+          })
+        }
+      } catch (e) {
+        console.error('parse error', line)
       }
     }
   }

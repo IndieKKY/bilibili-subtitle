@@ -18,6 +18,7 @@ import {HEADER_HEIGHT, PAGE_SETTINGS, SUMMARIZE_ALL_THRESHOLD, SUMMARIZE_TYPES, 
 import {FaClipboardList} from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
 import {getSummarize} from '../util/biz_util'
+import {openUrl} from '@kky002/kky-util'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -180,8 +181,14 @@ const Body = () => {
         <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-subtitle.png' alt='youtube subtitle' className='w-8 h-8'/>Youtube Subtitle</div>
         <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>Youtube</span>版的字幕列表</div>
         <div className='flex gap-2'>
-          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf' className='link text-sm text-accent'>Chrome商店</a>
-          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc' className='link text-sm text-accent'>Edge商店</a>
+          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf' onClick={(e) => {
+            e.preventDefault()
+            openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+          }} className='link text-sm text-accent'>Chrome商店</a>
+          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc' onClick={e => {
+            e.preventDefault()
+            openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
+          }} className='link text-sm text-accent'>Edge商店</a>
         </div>
       </div>
     </div>

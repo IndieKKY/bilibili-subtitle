@@ -176,6 +176,14 @@ const Body = () => {
         <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳</div>
         {(segments?.length??0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/></button>}
       </div>
+      <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
+        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-subtitle.png' alt='youtube subtitle' className='w-8 h-8'/>Youtube Subtitle</div>
+        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>Youtube</span>版的字幕列表</div>
+        <div className='flex gap-2'>
+          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf' className='link text-sm text-accent'>Chrome商店</a>
+          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc' className='link text-sm text-accent'>Edge商店</a>
+        </div>
+      </div>
     </div>
   </div>
 }

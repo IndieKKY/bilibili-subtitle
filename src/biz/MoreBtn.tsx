@@ -261,6 +261,16 @@ const MoreBtn = (props: Props) => {
         </li>
         <li className='hover:bg-accent'>
           <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+          }}>
+            <img alt='youtube subtitle' src='/youtube-subtitle.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
+            Youtube Subtitle
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
             dispatch(setPage(PAGE_SETTINGS))
             setMoreVisible(false)
             e.preventDefault()

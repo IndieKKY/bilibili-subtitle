@@ -19,7 +19,8 @@
 
 ## 下载扩展
 
-[chrome商店](https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp)
+- [chrome商店](https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp)
+- [edge商店](https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan)
 
 ## 使用说明
 

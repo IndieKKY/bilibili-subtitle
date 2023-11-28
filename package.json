@@ -7,9 +7,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build_chrome": "tsc && vite build -m production_chrome && pnpm run fixChrome",
-    "fix": "eslint --fix --quiet .",
-    "fixChrome": "node fixChrome.cjs"
+    "build": "tsc && vite build -m production_chrome",
+    "build_chrome": "pnpm run build && node fixChrome.cjs",
+    "build_firefox": "pnpm run build && node fixFirefox.cjs",
+    "fix": "eslint --fix --quiet ."
   },
   "author": "IndieKKY",
   "license": "MIT",

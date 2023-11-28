@@ -159,6 +159,9 @@ export const MODELS = [{
 }, {
   code: 'gpt-3.5-turbo-16k',
   name: 'gpt-3.5-turbo-16k',
+}, {
+  code: 'gpt-3.5-turbo-1106',
+  name: 'gpt-3.5-turbo-1106',
 }]
 export const MODEL_DEFAULT = MODELS[0].code
 

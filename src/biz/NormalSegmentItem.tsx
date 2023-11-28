@@ -5,11 +5,7 @@ import {getDisplay, getTransText} from '../util/biz_util'
 import classNames from 'classnames'
 
 const NormalSegmentItem = (props: {
-  item: {
-    from: number
-    to: number
-    content: string
-  }
+  item: TranscriptItem
   idx: number
   isIn: boolean
   moveCallback: (event: any) => void

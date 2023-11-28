@@ -58,6 +58,8 @@ const Settings = () => {
   // const {value: autoScrollValue, onChange: setAutoScrollValue} = useEventChecked(envData.autoScroll)
   const {value: translateEnableValue, onChange: setTranslateEnableValue} = useEventChecked(envData.translateEnable)
   const {value: summarizeEnableValue, onChange: setSummarizeEnableValue} = useEventChecked(envData.summarizeEnable)
+  const {value: searchEnabledValue, onChange: setSearchEnabledValue} = useEventChecked(envData.searchEnabled)
+  const {value: cnSearchEnabledValue, onChange: setCnSearchEnabledValue} = useEventChecked(envData.cnSearchEnabled)
   const {value: summarizeFloatValue, onChange: setSummarizeFloatValue} = useEventChecked(envData.summarizeFloat)
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
   const [serverUrlValue, setServerUrlValue] = useState(envData.serverUrl)
@@ -112,10 +114,12 @@ const Settings = () => {
       fetchAmount: fetchAmountValue,
       fontSize: fontSizeValue,
       prompts: promptsValue,
+      searchEnabled: searchEnabledValue,
+      cnSearchEnabled: cnSearchEnabledValue,
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [modelValue, promptsValue, fontSizeValue, apiKeyValue, autoExpandValue, dispatch, fetchAmountValue, hideOnDisableAutoTranslateValue, languageValue, serverUrlValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, themeValue, transDisplayValue, translateEnableValue, wordsValue])
+  }, [dispatch, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -298,6 +302,18 @@ const Settings = () => {
             {/*  {wordsList.map(words => <span key={words}>{words}</span>)} */}
             {/* </div> */}
           </div>
+        </FormItem>
+      </Section>
+      <Section title={<div className='flex items-center'>
+        搜索配置
+      </div>}>
+        <FormItem title='启用搜索' htmlFor='searchEnabled' tip='是否启用字幕搜索功能'>
+          <input id='searchEnabled' type='checkbox' className='toggle toggle-primary' checked={searchEnabledValue}
+                 onChange={setSearchEnabledValue}/>
+        </FormItem>
+        <FormItem title='拼音搜索' htmlFor='cnSearchEnabled' tip='是否启用中文拼音搜索'>
+          <input id='cnSearchEnabled' type='checkbox' className='toggle toggle-primary' checked={cnSearchEnabledValue}
+                 onChange={setCnSearchEnabledValue}/>
         </FormItem>
       </Section>
       <div className='flex justify-center gap-5'>

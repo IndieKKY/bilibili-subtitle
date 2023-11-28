@@ -35,9 +35,12 @@ interface EnvState {
   title?: string
 
   taskIds?: string[]
-  transResults: {[key: number]: TransResult}
+  transResults: { [key: number]: TransResult }
   lastTransTime?: number
   lastSummarizeTime?: number
+
+  searchText: string
+  searchResult: Set<number>
 }
 
 const initialState: EnvState = {
@@ -45,19 +48,24 @@ const initialState: EnvState = {
     serverUrl: SERVER_URL_OPENAI,
     translateEnable: true,
     summarizeEnable: true,
+    autoExpand: true,
     theme: 'light',
+    searchEnabled: true,
   },
   tempData: {
     curSummaryType: 'overview',
   },
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
-  currentTime: import.meta.env.VITE_ENV === 'web-dev'? 30: undefined,
+  currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
   envReady: false,
   tempReady: false,
   fold: true,
-  data: import.meta.env.VITE_ENV === 'web-dev'? getDevData(): undefined,
+  data: import.meta.env.VITE_ENV === 'web-dev' ? getDevData() : undefined,
   transResults: {},
+
+  searchText: '',
+  searchResult: new Set(),
 }
 
 export const slice = createSlice({
@@ -81,6 +89,12 @@ export const slice = createSlice({
     },
     setTempReady: (state) => {
       state.tempReady = true
+    },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload
+    },
+    setSearchResult: (state, action: PayloadAction<Set<number>>) => {
+      state.searchResult = action.payload
     },
     setFloatKeyPointsSegIdx: (state, action: PayloadAction<number | undefined>) => {
       state.floatKeyPointsSegIdx = action.payload
@@ -107,12 +121,12 @@ export const slice = createSlice({
       state.lastSummarizeTime = action.payload
     },
     addTaskId: (state, action: PayloadAction<string>) => {
-      state.taskIds = [...(state.taskIds??[]), action.payload]
+      state.taskIds = [...(state.taskIds ?? []), action.payload]
     },
     delTaskId: (state, action: PayloadAction<string>) => {
       state.taskIds = state.taskIds?.filter(id => id !== action.payload)
     },
-    addTransResults: (state, action: PayloadAction<{[key: number]: TransResult}>) => {
+    addTransResults: (state, action: PayloadAction<{ [key: number]: TransResult }>) => {
       // 不要覆盖TransResult里code为200的
       for (const payloadKey in action.payload) {
         const payloadItem = action.payload[payloadKey]
@@ -252,6 +266,46 @@ export const slice = createSlice({
   },
 })
 
-export const { setTempReady, setTempData, setUploadedTranscript, setTotalHeight, setCheckAutoScroll, setCurOffsetTop, setFloatKeyPointsSegIdx, setFoldAll, setCompact, setSegmentFold, setSummaryContent, setSummaryStatus, setSummaryError, setTitle, setSegments, setLastSummarizeTime, setPage, setLastTransTime, clearTransResults, addTransResults, addTaskId, delTaskId, setTaskIds, setDownloadType, setAutoTranslate, setAutoScroll, setNoVideo, setNeedScroll, setCurIdx, setEnvData, setEnvReady, setCurrentTime, setInfos, setCurInfo, setCurFetched, setData, setFold } = slice.actions
+export const {
+  setTempReady,
+  setTempData,
+  setUploadedTranscript,
+  setTotalHeight,
+  setCheckAutoScroll,
+  setCurOffsetTop,
+  setFloatKeyPointsSegIdx,
+  setFoldAll,
+  setCompact,
+  setSegmentFold,
+  setSummaryContent,
+  setSummaryStatus,
+  setSummaryError,
+  setTitle,
+  setSegments,
+  setLastSummarizeTime,
+  setPage,
+  setLastTransTime,
+  clearTransResults,
+  addTransResults,
+  addTaskId,
+  delTaskId,
+  setTaskIds,
+  setDownloadType,
+  setAutoTranslate,
+  setAutoScroll,
+  setNoVideo,
+  setNeedScroll,
+  setCurIdx,
+  setEnvData,
+  setEnvReady,
+  setCurrentTime,
+  setInfos,
+  setCurInfo,
+  setCurFetched,
+  setData,
+  setFold,
+  setSearchText,
+  setSearchResult,
+} = slice.actions
 
 export default slice.reducer

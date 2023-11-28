@@ -7,14 +7,30 @@ import {
   setFoldAll,
   setNeedScroll,
   setPage,
+  setSearchText,
   setSegmentFold
 } from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {AiOutlineAim, FaRegArrowAltCircleDown, IoWarning, MdExpand, RiFileCopy2Line, RiTranslate} from 'react-icons/all'
+import {
+  AiOutlineAim,
+  AiOutlineCloseCircle,
+  FaRegArrowAltCircleDown,
+  IoWarning,
+  MdExpand,
+  RiFileCopy2Line,
+  RiTranslate
+} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import SegmentCard from './SegmentCard'
-import {HEADER_HEIGHT, PAGE_SETTINGS, SUMMARIZE_ALL_THRESHOLD, SUMMARIZE_TYPES, TITLE_HEIGHT} from '../const'
+import {
+  HEADER_HEIGHT,
+  PAGE_SETTINGS,
+  SEARCH_BAR_HEIGHT,
+  SUMMARIZE_ALL_THRESHOLD,
+  SUMMARIZE_TYPES,
+  TITLE_HEIGHT
+} from '../const'
 import {FaClipboardList} from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
 import {getSummarize} from '../util/biz_util'
@@ -41,6 +57,7 @@ const Body = () => {
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const title = useAppSelector(state => state.env.title)
+  const searchText = useAppSelector(state => state.env.searchText)
 
   const normalCallback = useCallback(() => {
     dispatch(setCompact(false))
@@ -118,6 +135,15 @@ const Body = () => {
     }
   }, [curSummaryType, segments, title])
 
+  const onSearchTextChange = useCallback((e: any) => {
+    const searchText = e.target.value
+    dispatch(setSearchText(searchText))
+  }, [dispatch])
+
+  const onClearSearchText = useCallback(() => {
+    dispatch(setSearchText(''))
+  }, [dispatch])
+
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
@@ -132,6 +158,7 @@ const Body = () => {
   }, [autoScroll, checkAutoScroll, curOffsetTop, dispatch, floatKeyPointsSegIdx, needScroll, totalHeight])
 
   return <div className='relative'>
+    {/* title */}
     <div className='absolute top-1 left-6 flex-center gap-1'>
       <AiOutlineAim className='cursor-pointer' onClick={posCallback} title='滚动到视频位置'/>
       {segments != null && segments.length > 0 &&
@@ -159,19 +186,31 @@ const Body = () => {
         <IoWarning className='text-warning'/>
       </div>}
     </div>
+
+    {/* search */}
+    {envData.searchEnabled && <div className='px-2 py-1 flex flex-col relative'>
+      <input type='text' className='input input-xs bg-base-200' placeholder='搜索字幕内容' value={searchText} onChange={onSearchTextChange}/>
+      {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle/></button>}
+    </div>}
+
+    {/* auto scroll btn */}
     {!autoScroll && <div
       className='absolute z-[999] top-[96px] right-6 tooltip tooltip-left cursor-pointer rounded-full bg-primary/25 hover:bg-primary/75 text-primary-content p-1.5 text-xl'
       data-tip='开启自动滚动'
       onClick={onEnableAutoScroll}>
       <FaRegArrowAltCircleDown className={autoScroll ? 'text-accent' : ''}/>
     </div>}
+
+    {/* body */}
     <div ref={bodyRef} onWheel={onWheel}
          className={classNames('flex flex-col gap-1.5 overflow-y-auto select-text scroll-smooth', floatKeyPointsSegIdx != null && 'pb-[100px]')}
          style={{
-           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT}px`
+           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (envData.searchEnabled?SEARCH_BAR_HEIGHT:0)}px`
          }}
     >
       {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment} segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
+
+      {/* tip */}
       <div className='flex flex-col items-center text-center pt-1 pb-2'>
         <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div>
         <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳</div>

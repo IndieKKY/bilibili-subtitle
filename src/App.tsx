@@ -15,6 +15,7 @@ import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
 import {setTheme} from './util/biz_util'
+import useSearchService from './hooks/useSearchService'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -72,6 +73,7 @@ function App() {
   // services
   useSubtitleService()
   useTranslateService()
+  useSearchService()
 
   return <div className={classNames('select-none', import.meta.env.VITE_ENV === 'web-dev'?'w-[350px]':'w-full')} style={{
     height: fold?undefined:`${totalHeight}px`,

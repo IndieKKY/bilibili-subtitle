@@ -141,6 +141,7 @@ export const TOTAL_HEIGHT_DEF = 520
 export const TOTAL_HEIGHT_MAX = 800
 export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
+export const SEARCH_BAR_HEIGHT = 32
 
 export const WORDS_DEFAULT = import.meta.env.VITE_ENV === 'web-dev'?500:2000
 export const WORDS_MIN = 500

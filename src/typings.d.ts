@@ -16,6 +16,10 @@ interface EnvData {
   theme?: 'system' | 'light' | 'dark'
   fontSize?: 'normal' | 'large'
 
+  // search
+  searchEnabled?: boolean
+  cnSearchEnabled?: boolean
+
   prompts?: {
     [key: string]: string
   }

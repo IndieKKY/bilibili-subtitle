@@ -4,11 +4,7 @@ import {getDisplay, getTransText} from '../util/biz_util'
 import classNames from 'classnames'
 
 const CompactSegmentItem = (props: {
-  item: {
-    from: number
-    to: number
-    content: string
-  }
+  item: TranscriptItem
   idx: number
   isIn: boolean
   last: boolean
@@ -26,7 +22,7 @@ const CompactSegmentItem = (props: {
     <span className={'pl-1 pr-0.5 py-0.5 cursor-pointer rounded-sm hover:bg-base-200'} onClick={moveCallback}>
       <text className={classNames('font-medium', isIn ? 'text-primary underline' : '')}>{display.main}</text>
       {display.sub && <text className='desc'>({display.sub})</text>}</span>
-    <span>{!last && ', '}</span>
+    <span>{!last && ' '}</span>
   </div>
 }
 

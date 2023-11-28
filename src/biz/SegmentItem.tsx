@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import useSubtitle from '../hooks/useSubtitle'
 import {setCheckAutoScroll, setCurOffsetTop, setNeedScroll} from '../redux/envReducer'
@@ -7,21 +7,27 @@ import CompactSegmentItem from './CompactSegmentItem'
 
 const SegmentItem = (props: {
   bodyRef: any
-  item: {
-    from: number
-    to: number
-    content: string
-  }
+  item: TranscriptItem
   idx: number
   isIn: boolean
   needScroll?: boolean
   last: boolean
 }) => {
-  const dispatch = useAppDispatch()
   const {bodyRef, item, idx, isIn, needScroll, last} = props
+  const dispatch = useAppDispatch()
   const ref = useRef<any>()
   const {move} = useSubtitle()
+
   const compact = useAppSelector(state => state.env.compact)
+  const searchText = useAppSelector(state => state.env.searchText)
+  const searchResult = useAppSelector(state => state.env.searchResult)
+  const display = useMemo(() => {
+    if (searchText) {
+      return searchResult.has(item.idx) ? 'inline' : 'none'
+    } else {
+      return 'inline'
+    }
+  }, [item.idx, searchResult, searchText])
 
   const moveCallback = useCallback((event: any) => {
     if (event.altKey) { // 复制
@@ -47,7 +53,9 @@ const SegmentItem = (props: {
     }
   }, [dispatch, isIn])
 
-  return <span ref={ref}>
+  return <span ref={ref} style={{
+    display
+  }}>
     {compact
       ? <CompactSegmentItem
         item={item}

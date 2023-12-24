@@ -217,8 +217,8 @@ const Body = () => {
         {(segments?.length??0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/></button>}
       </div>
       <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-subtitle.png' alt='youtube subtitle' className='w-8 h-8'/>Youtube Subtitle</div>
-        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>Youtube</span>版的字幕列表</div>
+        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png' alt='youtube caption pro' className='w-8 h-8'/>YouTube Caption Pro</div>
+        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表</div>
         <div className='flex gap-2'>
           <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf' onClick={(e) => {
             e.preventDefault()

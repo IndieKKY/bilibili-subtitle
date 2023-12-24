@@ -265,8 +265,8 @@ const MoreBtn = (props: Props) => {
             e.stopPropagation()
             openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
           }}>
-            <img alt='youtube subtitle' src='/youtube-subtitle.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
-            Youtube Subtitle
+            <img alt='youtube subtitle' src='/youtube-caption.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
+            Youtube Caption Pro
           </a>
         </li>
         <li className='hover:bg-accent'>

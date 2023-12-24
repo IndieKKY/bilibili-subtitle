@@ -18,11 +18,13 @@ module.exports = {
       light: {
         ...require("daisyui/src/colors/themes")["[data-theme=light]"],
         "--rounded-btn": "0.15rem",
+        "primary": "rgb(0, 174, 236)",
       },
     }, {
       dark: {
         ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
         "--rounded-btn": "0.15rem",
+        "primary": "rgb(0, 174, 236)",
       }
     }],
     base: true,

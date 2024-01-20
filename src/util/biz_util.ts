@@ -253,15 +253,15 @@ export const extractJsonObject = (content: string) => {
   const start = content.indexOf('```')
   const end = content.lastIndexOf('```')
   if (start >= 0 && end >= 0) {
-    // 异常情况
-    if (start === end) {
+    if (start === end) { // 异常情况
       if (content.startsWith('```')) {
         content = content.slice(3)
       } else {
         content = content.slice(0, -3)
       }
+    } else {
+      content = content.slice(start + 3, end)
     }
-    content = content.slice(start + 3, end)
   }
   // get content between { and }
   const start2 = content.indexOf('{')
@@ -277,15 +277,15 @@ export const extractJsonArray = (content: string) => {
   const start = content.indexOf('```')
   const end = content.lastIndexOf('```')
   if (start >= 0 && end >= 0) {
-    // 异常情况
-    if (start === end) {
+    if (start === end) { // 异常情况
       if (content.startsWith('```')) {
         content = content.slice(3)
       } else {
         content = content.slice(0, -3)
       }
+    } else {
+      content = content.slice(start + 3, end)
     }
-    content = content.slice(start + 3, end)
   }
   // get content between [ and ]
   const start3 = content.indexOf('[')

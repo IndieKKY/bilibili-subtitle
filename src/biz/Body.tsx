@@ -3,12 +3,12 @@ import {
   setAutoScroll,
   setAutoTranslate,
   setCheckAutoScroll,
-  setCompact,
   setFoldAll,
   setNeedScroll,
   setPage,
   setSearchText,
-  setSegmentFold
+  setSegmentFold,
+  setTempData
 } from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
@@ -44,7 +44,7 @@ const Body = () => {
   const segments = useAppSelector(state => state.env.segments)
   const foldAll = useAppSelector(state => state.env.foldAll)
   const envData = useAppSelector(state => state.env.envData)
-  const compact = useAppSelector(state => state.env.compact)
+  const compact = useAppSelector(state => state.env.tempData.compact)
   const apiKey = useAppSelector(state => state.env.envData.apiKey)
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
@@ -60,11 +60,15 @@ const Body = () => {
   const searchText = useAppSelector(state => state.env.searchText)
 
   const normalCallback = useCallback(() => {
-    dispatch(setCompact(false))
+    dispatch(setTempData({
+      compact: false
+    }))
   }, [dispatch])
 
   const compactCallback = useCallback(() => {
-    dispatch(setCompact(true))
+    dispatch(setTempData({
+      compact: true
+    }))
   }, [dispatch])
 
   const posCallback = useCallback(() => {

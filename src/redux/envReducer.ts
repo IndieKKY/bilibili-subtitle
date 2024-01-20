@@ -17,7 +17,6 @@ interface EnvState {
   autoScroll?: boolean
   checkAutoScroll?: boolean
   curOffsetTop?: number
-  compact?: boolean // 是否紧凑视图
   floatKeyPointsSegIdx?: number // segment的startIdx
 
   noVideo?: boolean
@@ -81,7 +80,7 @@ export const slice = createSlice({
     setEnvReady: (state) => {
       state.envReady = true
     },
-    setTempData: (state, action: PayloadAction<TempData>) => {
+    setTempData: (state, action: PayloadAction<Partial<TempData>>) => {
       state.tempData = {
         ...state.tempData,
         ...action.payload,
@@ -101,9 +100,6 @@ export const slice = createSlice({
     },
     setFoldAll: (state, action: PayloadAction<boolean>) => {
       state.foldAll = action.payload
-    },
-    setCompact: (state, action: PayloadAction<boolean>) => {
-      state.compact = action.payload
     },
     setPage: (state, action: PayloadAction<string | undefined>) => {
       state.page = action.payload
@@ -275,7 +271,6 @@ export const {
   setCurOffsetTop,
   setFloatKeyPointsSegIdx,
   setFoldAll,
-  setCompact,
   setSegmentFold,
   setSummaryContent,
   setSummaryStatus,

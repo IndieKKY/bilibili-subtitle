@@ -18,7 +18,7 @@ const SegmentItem = (props: {
   const ref = useRef<any>()
   const {move} = useSubtitle()
 
-  const compact = useAppSelector(state => state.env.compact)
+  const compact = useAppSelector(state => state.env.tempData.compact)
   const searchText = useAppSelector(state => state.env.searchText)
   const searchResult = useAppSelector(state => state.env.searchResult)
   const display = useMemo(() => {

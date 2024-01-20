@@ -27,6 +27,7 @@ interface EnvData {
 
 interface TempData {
   curSummaryType: SummaryType
+  compact?: boolean // 是否紧凑视图
 }
 
 interface TaskDef {

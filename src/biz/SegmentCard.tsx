@@ -138,7 +138,7 @@ const SegmentCard = (props: {
   const summarizeFloat = useAppSelector(state => state.env.envData.summarizeFloat)
   const fold = useAppSelector(state => state.env.fold)
   const page = useAppSelector(state => state.env.page)
-  const compact = useAppSelector(state => state.env.compact)
+  const compact = useAppSelector(state => state.env.tempData.compact)
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const showCurrent = useMemo(() => curIdx != null && segment.startIdx <= curIdx && curIdx <= segment.endIdx, [curIdx, segment.endIdx, segment.startIdx])
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)

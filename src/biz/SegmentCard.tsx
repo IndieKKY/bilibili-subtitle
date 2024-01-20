@@ -66,19 +66,20 @@ const Summarize = (props: {
   const {segment, segmentIdx, summary, float} = props
 
   const dispatch = useAppDispatch()
-  const apiKey = useAppSelector(state => state.env.envData.apiKey)
+  const envData = useAppSelector(state => state.env.envData)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const {addSummarizeTask} = useTranslate()
 
   const onGenerate = useCallback(() => {
+    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
     if (apiKey) {
       addSummarizeTask(curSummaryType, segment).catch(console.error)
     } else {
       dispatch(setPage(PAGE_SETTINGS))
       toast.error('需要先设置ApiKey!')
     }
-  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segment])
+  }, [addSummarizeTask, curSummaryType, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segment])
 
   const onCopy = useCallback(() => {
     if (summary != null) {

@@ -38,7 +38,7 @@ interface TempData {
 }
 
 interface TaskDef {
-  type: 'chatComplete'
+  type: 'chatComplete' | 'geminiChatComplete'
   serverUrl?: string
   data: any
   extra?: any

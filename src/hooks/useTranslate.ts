@@ -82,23 +82,39 @@ const useTranslate = () => {
         prompt = prompt.replaceAll('{{subtitles}}', lineStr)
 
         const taskDef: TaskDef = {
-          type: 'chatComplete',
+          type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
           serverUrl: envData.serverUrl,
-          data: {
-            model: envData.model??MODEL_DEFAULT,
-            messages: [
-              {
-                role: 'user',
-                content: prompt,
+          data: envData.aiType === 'gemini'
+            ?{
+                contents: [
+                  {
+                    parts: [
+                      {
+                        text: prompt
+                      }
+                    ]
+                  }
+                ],
+                generationConfig: {
+                  maxOutputTokens: 2048
+                }
               }
-            ],
-            temperature: 0,
-            n: 1,
-            stream: false,
-          },
+            :{
+                model: envData.model??MODEL_DEFAULT,
+                messages: [
+                  {
+                    role: 'user',
+                    content: prompt,
+                  }
+                ],
+                temperature: 0,
+                n: 1,
+                stream: false,
+              },
           extra: {
             type: 'translate',
             apiKey: envData.apiKey,
+            geminiApiKey: envData.geminiApiKey,
             startIdx,
             size: lines.length,
           }
@@ -117,10 +133,10 @@ const useTranslate = () => {
         dispatch(addTaskId(task.id))
       }
     }
-  }, [data?.body, dispatch, envData.apiKey, envData.fetchAmount, envData.serverUrl, envData.prompts, title, language.name])
+  }, [data?.body, envData.fetchAmount, envData.prompts, envData.aiType, envData.serverUrl, envData.model, envData.apiKey, envData.geminiApiKey, language.name, title, dispatch])
 
   const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
-    if (segment.text.length >= SUMMARIZE_THRESHOLD && envData.apiKey) {
+    if (segment.text.length >= SUMMARIZE_THRESHOLD) {
       let subtitles = ''
       for (const item of segment.items) {
         subtitles += formatTime(item.from) + ' ' + item.content + '\n'
@@ -135,25 +151,41 @@ const useTranslate = () => {
       prompt = prompt.replaceAll('{{segment}}', segment.text)
 
       const taskDef: TaskDef = {
-        type: 'chatComplete',
+        type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
         serverUrl: envData.serverUrl,
-        data: {
-          model: envData.model??MODEL_DEFAULT,
-          messages: [
-            {
-              role: 'user',
-              content: prompt,
+        data: envData.aiType === 'gemini'
+          ?{
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt
+                    }
+                  ]
+                }
+              ],
+              generationConfig: {
+                maxOutputTokens: 2048
+              }
             }
-          ],
-          temperature: 0,
-          n: 1,
-          stream: false,
-        },
+          :{
+              model: envData.model??MODEL_DEFAULT,
+              messages: [
+                {
+                  role: 'user',
+                  content: prompt,
+                }
+              ],
+              temperature: 0,
+              n: 1,
+              stream: false,
+            },
         extra: {
           type: 'summarize',
           summaryType: type,
           startIdx: segment.startIdx,
           apiKey: envData.apiKey,
+          geminiApiKey: envData.geminiApiKey,
         }
       }
       console.debug('addSummarizeTask', taskDef)
@@ -162,7 +194,7 @@ const useTranslate = () => {
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData.apiKey, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
+  }, [dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, envData.model, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
 
   const handleTranslate = useMemoizedFn((task: Task, content: string) => {
     let map: {[key: string]: string} = {}
@@ -221,7 +253,7 @@ const useTranslate = () => {
       console.debug('getTask', taskResp.task)
       const task: Task = taskResp.task
       const taskType: string | undefined = task.def.extra?.type
-      const content = task.resp?.choices?.[0]?.message?.content?.trim()
+      const content = envData.aiType === 'gemini'?task.resp?.candidates[0]?.content?.parts[0]?.text?.trim():task.resp?.choices?.[0]?.message?.content?.trim()
       if (task.status === 'done') {
         // 异常提示
         if (task.error) {
@@ -239,7 +271,7 @@ const useTranslate = () => {
     } else {
       dispatch(delTaskId(taskId))
     }
-  }, [dispatch, handleSummarize, handleTranslate])
+  }, [dispatch, envData.aiType, handleSummarize, handleTranslate])
 
   return {getFetch, getTask, addTask, addSummarizeTask}
 }

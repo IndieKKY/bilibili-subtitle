@@ -18,3 +18,16 @@ export const handleChatCompleteTask = async (task: Task) => {
     throw new Error(`${task.resp.error.code as string??''} ${task.resp.error.message as string ??''}`)
   }
 }
+
+export const handleGeminiChatCompleteTask = async (task: Task) => {
+  const data = task.def.data
+  const resp = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': task.def.extra.geminiApiKey,
+    },
+    body: JSON.stringify(data),
+  })
+  task.resp = await resp.json()
+}

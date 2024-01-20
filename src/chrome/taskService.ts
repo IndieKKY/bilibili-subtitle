@@ -1,5 +1,5 @@
 import {TASK_EXPIRE_TIME} from '../const'
-import {handleChatCompleteTask} from './openaiService'
+import {handleChatCompleteTask, handleGeminiChatCompleteTask} from './openaiService'
 
 export const tasksMap = new Map<string, Task>()
 
@@ -10,6 +10,9 @@ export const handleTask = async (task: Task) => {
     switch (task.def.type) {
       case 'chatComplete':
         await handleChatCompleteTask(task)
+        break
+      case 'geminiChatComplete':
+        await handleGeminiChatCompleteTask(task)
         break
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

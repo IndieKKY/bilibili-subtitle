@@ -45,7 +45,6 @@ const Body = () => {
   const foldAll = useAppSelector(state => state.env.foldAll)
   const envData = useAppSelector(state => state.env.envData)
   const compact = useAppSelector(state => state.env.tempData.compact)
-  const apiKey = useAppSelector(state => state.env.envData.apiKey)
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
@@ -76,6 +75,7 @@ const Body = () => {
   }, [dispatch])
 
   const onSummarizeAll = useCallback(() => {
+    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
     if (!apiKey) {
       dispatch(setPage(PAGE_SETTINGS))
       toast.error('需要先设置ApiKey!')
@@ -98,7 +98,7 @@ const Body = () => {
       }
       toast.success(`已添加${segments_.length}个总结任务!`)
     }
-  }, [addSummarizeTask, apiKey, curSummaryType, dispatch, segments])
+  }, [addSummarizeTask, curSummaryType, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])
 
   const onFoldAll = useCallback(() => {
     dispatch(setFoldAll(!foldAll))
@@ -111,13 +111,14 @@ const Body = () => {
   }, [dispatch, foldAll, segments])
 
   const toggleAutoTranslateCallback = useCallback(() => {
-    if (envData.apiKey) {
+    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    if (apiKey) {
       dispatch(setAutoTranslate(!autoTranslate))
     } else {
       dispatch(setPage(PAGE_SETTINGS))
       toast.error('需要先设置ApiKey!')
     }
-  }, [autoTranslate, dispatch, envData.apiKey])
+  }, [autoTranslate, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey])
 
   const onEnableAutoScroll = useCallback(() => {
     dispatch(setAutoScroll(true))

@@ -262,18 +262,21 @@ const Settings = () => {
 
       {aiTypeValue === 'gemini' && <Section title='gemini配置'>
         <FormItem title='ApiKey' htmlFor='geminiApiKey'>
-          <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx' value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
+          <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx'
+                 value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
         </FormItem>
         <div className='flex justify-center'>
-          <a className='link text-xs' onClick={toggleMoreFold}>{moreFold?'点击查看说明':'点击折叠说明'}</a>
+          <a className='link text-xs' onClick={toggleMoreFold}>{moreFold ? '点击查看说明' : '点击折叠说明'}</a>
         </div>
         {!moreFold && <div>
           <ul className='pl-3 list-decimal desc text-xs'>
-            <li>官方网址：<a className='link' href='https://makersuite.google.com/app/apikey' target='_blank' rel="noreferrer">Google AI Studio</a></li>
+            <li>官方网址：<a className='link' href='https://makersuite.google.com/app/apikey' target='_blank'
+                            rel="noreferrer">Google AI Studio</a> (目前免费)</li>
           </ul>
         </div>}
         <div className='flex justify-center'>
-          <a className='link text-xs' onClick={togglePromptsFold}>{promptsFold?'点击查看提示词':'点击折叠提示词'}</a>
+          <a className='link text-xs'
+             onClick={togglePromptsFold}>{promptsFold ? '点击查看提示词' : '点击折叠提示词'}</a>
         </div>
         {!promptsFold && <div>
           {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
@@ -282,16 +285,18 @@ const Settings = () => {
               setPromptsValue({
                 ...promptsValue,
                 // @ts-expect-error
-                [item.type]: PROMPT_DEFAULTS[item.type]??''
+                [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
               })
-            }}>点击填充默认</div>
+            }}>点击填充默认
+            </div>
           </div>} htmlFor={`prompt-${item.type}`}>
-            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full' placeholder='留空使用默认提示词' value={promptsValue[item.type]??''} onChange={(e) => {
-              setPromptsValue({
-                ...promptsValue,
-                [item.type]: e.target.value
-              })
-            }}/>
+            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
+                      placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
+                        setPromptsValue({
+                          ...promptsValue,
+                          [item.type]: e.target.value
+                        })
+                      }}/>
           </FormItem>)}
         </div>}
       </Section>}

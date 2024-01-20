@@ -93,6 +93,12 @@ const Settings = () => {
     }
     return list
   }, [])
+  const apiKeySetted = useMemo(() => {
+    if (aiTypeValue === 'gemini') {
+      return !!geminiApiKeyValue
+    }
+    return !!apiKeyValue
+  }, [aiTypeValue, apiKeyValue, geminiApiKeyValue])
 
   const onChangeHideOnDisableAutoTranslate = useCallback((e: any) => {
     setHideOnDisableAutoTranslateValue(e.target.checked)
@@ -303,7 +309,7 @@ const Settings = () => {
 
       <Section title={<div className='flex items-center'>
         翻译配置
-        {!apiKeyValue && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
+        {!apiKeySetted && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
           <IoWarning className='text-sm text-warning'/>
         </div>}
       </div>}>
@@ -338,7 +344,7 @@ const Settings = () => {
       </Section>
       <Section title={<div className='flex items-center'>
         总结配置
-        {!apiKeyValue && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
+        {!apiKeySetted && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
           <IoWarning className='text-sm text-warning'/>
         </div>}
       </div>}>

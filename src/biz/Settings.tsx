@@ -63,12 +63,14 @@ const Settings = () => {
   const {value: summarizeFloatValue, onChange: setSummarizeFloatValue} = useEventChecked(envData.summarizeFloat)
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
   const [serverUrlValue, setServerUrlValue] = useState(envData.serverUrl)
+  const [geminiApiKeyValue, { onChange: onChangeGeminiApiKeyValue }] = useEventTarget({initialValue: envData.geminiApiKey??''})
   const [languageValue, { onChange: onChangeLanguageValue }] = useEventTarget({initialValue: envData.language??LANGUAGE_DEFAULT})
   const [modelValue, { onChange: onChangeModelValue }] = useEventTarget({initialValue: envData.model??MODEL_DEFAULT})
   const [summarizeLanguageValue, { onChange: onChangeSummarizeLanguageValue }] = useEventTarget({initialValue: envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT})
   const [hideOnDisableAutoTranslateValue, setHideOnDisableAutoTranslateValue] = useState(envData.hideOnDisableAutoTranslate)
   const [themeValue, setThemeValue] = useState(envData.theme)
   const [fontSizeValue, setFontSizeValue] = useState(envData.fontSize)
+  const [aiTypeValue, setAiTypeValue] = useState(envData.aiType)
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
   const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words??WORDS_DEFAULT)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
@@ -99,9 +101,11 @@ const Settings = () => {
   const onSave = useCallback(() => {
     dispatch(setEnvData({
       autoExpand: autoExpandValue,
+      aiType: aiTypeValue,
       apiKey: apiKeyValue,
       serverUrl: serverUrlValue,
       model: modelValue,
+      geminiApiKey: geminiApiKeyValue,
       translateEnable: translateEnableValue,
       language: languageValue,
       hideOnDisableAutoTranslate: hideOnDisableAutoTranslateValue,
@@ -119,7 +123,7 @@ const Settings = () => {
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [dispatch, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue])
+  }, [dispatch, aiTypeValue, geminiApiKeyValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -165,6 +169,14 @@ const Settings = () => {
     setFontSizeValue('large')
   }, [])
 
+  const onSelOpenai = useCallback(() => {
+    setAiTypeValue('openai')
+  }, [])
+
+  const onSelGemini = useCallback(() => {
+    setAiTypeValue('gemini')
+  }, [])
+
   return <div className='text-sm overflow-y-auto' style={{
     height: fold?undefined:`${totalHeight-HEADER_HEIGHT}px`,
   }}>
@@ -187,8 +199,15 @@ const Settings = () => {
             <button onClick={onSelFontSize2} className={classNames('btn btn-xs no-animation', fontSizeValue === 'large'?'btn-active':'')}>加大</button>
           </div>
         </FormItem>
+        <FormItem title='AI类型' tip='不同AI质量可能有差异'>
+          <div className="btn-group">
+            <button onClick={onSelOpenai} className={classNames('btn btn-xs no-animation', (!aiTypeValue || aiTypeValue === 'openai')?'btn-active':'')}>OpenAI</button>
+            <button onClick={onSelGemini} className={classNames('btn btn-xs no-animation', aiTypeValue === 'gemini'?'btn-active':'')}>Gemini</button>
+          </div>
+        </FormItem>
       </Section>
-      <Section title='openai配置'>
+
+      {(!aiTypeValue || aiTypeValue === 'openai') && <Section title='openai配置'>
         <FormItem title='ApiKey' htmlFor='apiKey'>
           <input id='apiKey' type='text' className='input input-sm input-bordered w-full' placeholder='sk-xxx' value={apiKeyValue} onChange={onChangeApiKeyValue}/>
         </FormItem>
@@ -239,7 +258,44 @@ const Settings = () => {
             }}/>
           </FormItem>)}
         </div>}
-      </Section>
+      </Section>}
+
+      {aiTypeValue === 'gemini' && <Section title='gemini配置'>
+        <FormItem title='ApiKey' htmlFor='geminiApiKey'>
+          <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx' value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
+        </FormItem>
+        <div className='flex justify-center'>
+          <a className='link text-xs' onClick={toggleMoreFold}>{moreFold?'点击查看说明':'点击折叠说明'}</a>
+        </div>
+        {!moreFold && <div>
+          <ul className='pl-3 list-decimal desc text-xs'>
+            <li>官方网址：<a className='link' href='https://makersuite.google.com/app/apikey' target='_blank' rel="noreferrer">Google AI Studio</a></li>
+          </ul>
+        </div>}
+        <div className='flex justify-center'>
+          <a className='link text-xs' onClick={togglePromptsFold}>{promptsFold?'点击查看提示词':'点击折叠提示词'}</a>
+        </div>
+        {!promptsFold && <div>
+          {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
+            <div>{item.name}</div>
+            <div className='link text-xs' onClick={() => {
+              setPromptsValue({
+                ...promptsValue,
+                // @ts-expect-error
+                [item.type]: PROMPT_DEFAULTS[item.type]??''
+              })
+            }}>点击填充默认</div>
+          </div>} htmlFor={`prompt-${item.type}`}>
+            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full' placeholder='留空使用默认提示词' value={promptsValue[item.type]??''} onChange={(e) => {
+              setPromptsValue({
+                ...promptsValue,
+                [item.type]: e.target.value
+              })
+            }}/>
+          </FormItem>)}
+        </div>}
+      </Section>}
+
       <Section title={<div className='flex items-center'>
         翻译配置
         {!apiKeyValue && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>

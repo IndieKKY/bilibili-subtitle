@@ -1,9 +1,15 @@
 interface EnvData {
   autoExpand?: boolean
   flagDot?: boolean
+
+  aiType?: 'openai' | 'gemini'
+  // openai
   apiKey?: string
   serverUrl?: string
   model?: string
+  // gemini
+  geminiApiKey?: string
+
   translateEnable?: boolean
   language?: string
   hideOnDisableAutoTranslate?: boolean

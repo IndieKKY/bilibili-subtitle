@@ -22,7 +22,7 @@ const CompactSegmentItem = (props: {
     <span className={'pl-1 pr-0.5 py-0.5 cursor-pointer rounded-sm hover:bg-base-200'} onClick={moveCallback}>
       <text className={classNames('font-medium', isIn ? 'text-primary underline' : '')}>{display.main}</text>
       {display.sub && <text className='desc'>({display.sub})</text>}</span>
-    <span>{!last && ' '}</span>
+    <span className='text-base-content/75'>{!last && ','}</span>
   </div>
 }
 

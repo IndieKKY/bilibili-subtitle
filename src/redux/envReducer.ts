@@ -24,7 +24,6 @@ interface EnvState {
   curIdx?: number // 从0开始
   needScroll?: boolean
   currentTime?: number
-  downloadType?: string
   infos?: any[]
   curInfo?: any
   curFetched?: boolean
@@ -226,9 +225,6 @@ export const slice = createSlice({
     setNoVideo: (state, action: PayloadAction<boolean>) => {
       state.noVideo = action.payload
     },
-    setDownloadType: (state, action: PayloadAction<string>) => {
-      state.downloadType = action.payload
-    },
     setNeedScroll: (state, action: PayloadAction<boolean>) => {
       state.needScroll = action.payload
     },
@@ -285,7 +281,6 @@ export const {
   addTaskId,
   delTaskId,
   setTaskIds,
-  setDownloadType,
   setAutoTranslate,
   setAutoScroll,
   setNoVideo,

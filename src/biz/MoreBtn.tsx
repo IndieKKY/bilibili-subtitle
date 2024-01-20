@@ -11,7 +11,7 @@ import {
 import Popover from '../components/Popover'
 import {Placement} from '@popperjs/core/lib/enums'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setDownloadType, setEnvData, setPage} from '../redux/envReducer'
+import {setEnvData, setPage, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
 import {EVENT_EXPAND, PAGE_SETTINGS} from '../const'
 import {formatSrtTime, formatTime, formatVttTime} from '../util/util'
@@ -62,7 +62,7 @@ const MoreBtn = (props: Props) => {
   const data = useAppSelector(state => state.env.data)
   const envReady = useAppSelector(state => state.env.envReady)
   const envData = useAppSelector(state => state.env.envData)
-  const downloadType = useAppSelector(state => state.env.downloadType)
+  const downloadType = useAppSelector(state => state.env.tempData.downloadType)
   const [moreVisible, setMoreVisible] = useState(false)
   const eventBus = useContext(EventBusContext)
   const segments = useAppSelector(state => state.env.segments)
@@ -162,7 +162,9 @@ const MoreBtn = (props: Props) => {
   }, [])
 
   const selectCallback = useCallback((e: any) => {
-    dispatch(setDownloadType(e.target.value))
+    dispatch(setTempData({
+      downloadType: e.target.value,
+    }))
   }, [dispatch])
 
   const preventCallback = useCallback((e: any) => {

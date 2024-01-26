@@ -14,7 +14,7 @@ import {
   setTotalHeight,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_DEFAULT, WORDS_MAX, WORDS_MIN} from '../const'
+import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_DEFAULT, WORDS_MIN} from '../const'
 import {useInterval} from 'ahooks'
 import {getWholeText} from '../util/biz_util'
 
@@ -157,7 +157,7 @@ const useSubtitleService = () => {
     if (items != null) {
       if (envData.summarizeEnable) { // 分段
         let size = envData.words??WORDS_DEFAULT
-        size = Math.min(Math.max(size, WORDS_MIN), WORDS_MAX)
+        size = Math.max(size, WORDS_MIN)
 
         segments = []
         let transcriptItems: TranscriptItem[] = []

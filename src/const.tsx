@@ -158,8 +158,8 @@ export const MODELS = [{
   code: 'gpt-3.5-turbo',
   name: 'gpt-3.5-turbo',
 }, {
-  code: 'gpt-3.5-turbo-16k',
-  name: 'gpt-3.5-turbo-16k',
+  code: 'gpt-3.5-turbo-0125',
+  name: 'gpt-3.5-turbo-0125',
 }, {
   code: 'gpt-3.5-turbo-1106',
   name: 'gpt-3.5-turbo-1106',

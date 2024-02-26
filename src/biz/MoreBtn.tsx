@@ -265,10 +265,21 @@ const MoreBtn = (props: Props) => {
           <a className='flex items-center' onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
+            openUrl('https://bibigpt.co/r/bilibili')
+          }}>
+            <img alt='BibiGPT' src='/bibigpt.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
+            BibiGPT
+          </a>
+        </li>
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
             openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
           }}>
-            <img alt='youtube subtitle' src='/youtube-caption.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
-            Youtube Caption Pro
+            <img alt='youtube subtitle' src='/youtube-caption.png'
+                 className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
+            Youtube Caption
           </a>
         </li>
         <li className='hover:bg-accent'>
@@ -284,7 +295,7 @@ const MoreBtn = (props: Props) => {
         </li>
       </ul>
     </Popover>}
-</>
+  </>
 }
 
 export default MoreBtn

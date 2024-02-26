@@ -210,29 +210,54 @@ const Body = () => {
     <div ref={bodyRef} onWheel={onWheel}
          className={classNames('flex flex-col gap-1.5 overflow-y-auto select-text scroll-smooth', floatKeyPointsSegIdx != null && 'pb-[100px]')}
          style={{
-           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (envData.searchEnabled?SEARCH_BAR_HEIGHT:0)}px`
+           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (envData.searchEnabled ? SEARCH_BAR_HEIGHT : 0)}px`
          }}
     >
-      {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment} segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
+      {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment}
+                                                           segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
 
       {/* tip */}
       <div className='flex flex-col items-center text-center pt-1 pb-2'>
         <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div>
-        <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳</div>
-        {(segments?.length??0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/></button>}
+        <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span
+          className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳
+        </div>
+        {(segments?.length ?? 0) > 0 && <button className='mt-1.5 btn btn-xs btn-info'
+                                                onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/>
+        </button>}
       </div>
       <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png' alt='youtube caption pro' className='w-8 h-8'/>YouTube Caption Pro</div>
-        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表</div>
+        <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
+                                                                                alt='BibiGPT'
+                                                                                className='w-8 h-8'/>BibiGPT
+        </div>
+        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频）</div>
         <div className='flex gap-2'>
-          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf' onClick={(e) => {
-            e.preventDefault()
-            openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-          }} className='link text-sm text-accent'>Chrome商店</a>
-          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc' onClick={e => {
-            e.preventDefault()
-            openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
-          }} className='link text-sm text-accent'>Edge商店</a>
+          <a title='BibiGPT' href='https://bibigpt.co/r/bilibili'
+             onClick={(e) => {
+               e.preventDefault()
+               openUrl('https://bibigpt.co/r/bilibili')
+             }} className='link text-sm text-accent'>✨ BibiGPT ✨</a>
+        </div>
+      </div>
+      <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
+        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
+                                                                                alt='youtube caption'
+                                                                                className='w-8 h-8'/>YouTube Caption Pro
+        </div>
+        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
+        </div>
+        <div className='flex gap-2'>
+          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
+             onClick={(e) => {
+               e.preventDefault()
+               openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+             }} className='link text-sm text-accent'>Chrome商店</a>
+          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
+             onClick={e => {
+               e.preventDefault()
+               openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
+             }} className='link text-sm text-accent'>Edge商店</a>
         </div>
       </div>
     </div>

@@ -243,7 +243,7 @@ const Body = () => {
       <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
         <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
                                                                                 alt='youtube caption'
-                                                                                className='w-8 h-8'/>YouTube Caption Pro
+                                                                                className='w-8 h-8'/>YouTube Caption
         </div>
         <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
         </div>

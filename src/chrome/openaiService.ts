@@ -1,4 +1,12 @@
-import {getServerUrl} from '../util/biz_util'
+const getServerUrl = (serverUrl?: string) => {
+  if (!serverUrl) {
+    return 'https://api.openai.com'
+  }
+  if (serverUrl.endsWith('/')) {
+    serverUrl = serverUrl.slice(0, -1)
+  }
+  return serverUrl
+}
 
 export const handleChatCompleteTask = async (task: Task) => {
   const data = task.def.data

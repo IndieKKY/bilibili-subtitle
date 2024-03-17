@@ -398,7 +398,6 @@ const Settings = () => {
           <input id='askEnabled' type='checkbox' className='toggle toggle-primary' checked={askEnabledValue}
                  onChange={setAskEnabledValue}/>
         </FormItem>
-        <div className='desc text-xs'>在搜索框输入提问内容，然后按<span className='font-semibold font-mono'>Enter</span>即可提问。</div>
       </Section>
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>

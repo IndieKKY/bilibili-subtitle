@@ -21,6 +21,9 @@ const useSearchService = () => {
 
   // reset search
   useEffect(() => {
+    if (!envData.searchEnabled) {
+      return
+    }
     const startTime = Date.now()
     const docs: Document[] = []
     for (const item of data?.body??[]) {
@@ -35,13 +38,13 @@ const useSearchService = () => {
     // 日志
     const endTime = Date.now()
     console.debug(`[Search]reset ${docs.length} docs, cost ${endTime-startTime}ms`)
-  }, [data?.body, dispatch, reset])
+  }, [data?.body, dispatch, envData.searchEnabled, reset])
 
   // search text
   useEffect(() => {
     const searchResult: Set<number> = new Set()
 
-    if (searchText) {
+    if (envData.searchEnabled && searchText) {
       // @ts-expect-error
       const documents: Document[] | undefined = search(searchText)
       if (documents != null) {
@@ -52,7 +55,7 @@ const useSearchService = () => {
     }
 
     dispatch(setSearchResult(searchResult))
-  }, [dispatch, search, searchText])
+  }, [dispatch, envData.searchEnabled, search, searchText])
 }
 
 export default useSearchService

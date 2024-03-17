@@ -1,5 +1,7 @@
-import React, {useCallback, useEffect, useRef} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef} from 'react'
 import {
+  setAskFold,
+  setAskQuestion,
   setAutoScroll,
   setAutoTranslate,
   setCheckAutoScroll,
@@ -14,6 +16,9 @@ import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   AiOutlineAim,
   AiOutlineCloseCircle,
+  BsDashSquare,
+  BsPlusSquare,
+  FaQuestion,
   FaRegArrowAltCircleDown,
   IoWarning,
   MdExpand,
@@ -24,6 +29,7 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import SegmentCard from './SegmentCard'
 import {
+  ASK_ENABLED_DEFAULT,
   HEADER_HEIGHT,
   PAGE_SETTINGS,
   SEARCH_BAR_HEIGHT,
@@ -35,6 +41,7 @@ import {FaClipboardList} from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
 import {getSummarize} from '../util/biz_util'
 import {openUrl} from '@kky002/kky-util'
+import Markdown from '../components/Markdown'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -48,7 +55,12 @@ const Body = () => {
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
-  const {addSummarizeTask} = useTranslate()
+  const {addSummarizeTask, addAskTask} = useTranslate()
+  const askFold = useAppSelector(state => state.env.askFold)
+  const askQuestion = useAppSelector(state => state.env.askQuestion)
+  const askContent = useAppSelector(state => state.env.askContent)
+  const askStatus = useAppSelector(state => state.env.askStatus)
+  const askError = useAppSelector(state => state.env.askError)
   const bodyRef = useRef<any>()
   const curOffsetTop = useAppSelector(state => state.env.curOffsetTop)
   const checkAutoScroll = useAppSelector(state => state.env.checkAutoScroll)
@@ -56,7 +68,23 @@ const Body = () => {
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
   const title = useAppSelector(state => state.env.title)
+  const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
+  const searchPlaceholder = useMemo(() => {
+    let placeholder = ''
+    if (envData.searchEnabled) {
+      if (envData.askEnabled??ASK_ENABLED_DEFAULT) {
+        placeholder = '搜索或提问字幕内容'
+      } else {
+        placeholder = '搜索字幕内容'
+      }
+    } else {
+      if (envData.askEnabled??ASK_ENABLED_DEFAULT) {
+        placeholder = '提问字幕内容'
+      }
+    }
+    return placeholder
+  }, [envData.askEnabled, envData.searchEnabled])
 
   const normalCallback = useCallback(() => {
     dispatch(setTempData({
@@ -102,6 +130,7 @@ const Body = () => {
 
   const onFoldAll = useCallback(() => {
     dispatch(setFoldAll(!foldAll))
+    dispatch(setAskFold(!foldAll))
     for (const segment of segments ?? []) {
       dispatch(setSegmentFold({
         segmentStartIdx: segment.startIdx,
@@ -149,6 +178,29 @@ const Body = () => {
     dispatch(setSearchText(''))
   }, [dispatch])
 
+  const onAsk = useCallback(() => {
+    if ((envData.askEnabled??ASK_ENABLED_DEFAULT) && searchText) {
+      const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+      if (apiKey) {
+        if (segments != null && segments.length > 0) {
+          dispatch(setAskQuestion(searchText))
+          addAskTask(segments[0], searchText).catch(console.error)
+        }
+      } else {
+        dispatch(setPage(PAGE_SETTINGS))
+        toast.error('需要先设置ApiKey!')
+      }
+    }
+  }, [addAskTask, dispatch, envData.aiType, envData.apiKey, envData.askEnabled, envData.geminiApiKey, searchText, segments])
+
+  const onSetAsk = useCallback(() => {
+    dispatch(setSearchText(askQuestion??''))
+  }, [askQuestion, dispatch])
+
+  const onAskFold = useCallback(() => {
+    dispatch(setAskFold(!askFold))
+  }, [askFold, dispatch])
+
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
@@ -193,8 +245,8 @@ const Body = () => {
     </div>
 
     {/* search */}
-    {envData.searchEnabled && <div className='px-2 py-1 flex flex-col relative'>
-      <input type='text' className='input input-xs bg-base-200' placeholder='搜索字幕内容' value={searchText} onChange={onSearchTextChange}/>
+    {(envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT)) && <div className='px-2 py-1 flex flex-col relative'>
+      <input type='text' className='input input-xs bg-base-200' placeholder={searchPlaceholder} value={searchText} onChange={onSearchTextChange}/>
       {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle/></button>}
     </div>}
 
@@ -213,6 +265,35 @@ const Body = () => {
            height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (envData.searchEnabled ? SEARCH_BAR_HEIGHT : 0)}px`
          }}
     >
+      {/* ask */}
+      {(envData.askEnabled??ASK_ENABLED_DEFAULT) && (searchText || askQuestion) &&
+        <div className='shadow bg-base-200 my-0.5 mx-1.5 p-1.5 rounded flex flex-col justify-center items-center'>
+          <div className='w-full relative flex justify-center min-h-[20px]'>
+            <div className='absolute left-0 top-0 bottom-0 text-xs select-none flex-center desc'>
+              {askFold
+                ? <BsPlusSquare className='cursor-pointer' onClick={onAskFold}/> :
+                <BsDashSquare className='cursor-pointer' onClick={onAskFold}/>}
+            </div>
+            <div className="tabs">
+              <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
+              <a className='tab tab-lifted tab-xs tab-active'><FaQuestion/>提问</a>
+              <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
+            </div>
+          </div>
+          {!askFold && askQuestion &&
+            <div className='link link-hover text-sm font-medium max-w-[90%]' onClick={onSetAsk}>{askQuestion}</div>}
+          {!askFold && askContent &&
+            <div className={classNames('font-medium max-w-[90%] mt-1', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
+              <Markdown content={askContent}/>
+            </div>}
+          {!askFold && <button disabled={askStatus === 'pending'}
+                  className={classNames('btn btn-link btn-xs', askStatus === 'pending' && 'loading')}
+                  onClick={onAsk}>{askStatus === 'init' ? '点击提问' : (askStatus === 'pending' ? '生成中' : '重新生成')}</button>}
+          {!askFold && askStatus === 'init' && <div className='desc-lighter text-xs'>提问举例：这个视频说了什么</div>}
+          {!askFold && askError && <div className='text-xs text-error'>{askError}</div>}
+        </div>}
+
+      {/* segments */}
       {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment}
                                                            segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
 

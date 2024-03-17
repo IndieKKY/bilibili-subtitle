@@ -37,6 +37,13 @@ interface EnvState {
   lastTransTime?: number
   lastSummarizeTime?: number
 
+  // ask
+  askFold?: boolean
+  askQuestion?: string
+  askStatus: SummaryStatus
+  askError?: string
+  askContent?: string
+
   searchText: string
   searchResult: Set<number>
 }
@@ -53,6 +60,7 @@ const initialState: EnvState = {
   tempData: {
     curSummaryType: 'overview',
   },
+  askStatus: 'init',
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
   currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
@@ -195,6 +203,27 @@ export const slice = createSlice({
         }
       }
     },
+    setAskFold: (state, action: PayloadAction<boolean>) => {
+      state.askFold = action.payload
+    },
+    setAskQuestion: (state, action: PayloadAction<string | undefined>) => {
+      state.askQuestion = action.payload
+    },
+    setAskContent: (state, action: PayloadAction<{
+      content?: any
+    }>) => {
+      state.askContent = action.payload.content
+    },
+    setAskStatus: (state, action: PayloadAction<{
+      status: SummaryStatus
+    }>) => {
+      state.askStatus = action.payload.status
+    },
+    setAskError: (state, action: PayloadAction<{
+      error?: string
+    }>) => {
+      state.askError = action.payload.error
+    },
     setSegmentFold: (state, action: PayloadAction<{
       segmentStartIdx: number
       fold: boolean
@@ -259,6 +288,11 @@ export const slice = createSlice({
 })
 
 export const {
+  setAskFold,
+  setAskQuestion,
+  setAskStatus,
+  setAskError,
+  setAskContent,
   setTempReady,
   setTempData,
   setUploadedTranscript,

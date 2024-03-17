@@ -9,6 +9,7 @@ export const PROMPT_TYPE_TRANSLATE = 'translate'
 export const PROMPT_TYPE_SUMMARIZE_OVERVIEW = 'summarize_overview'
 export const PROMPT_TYPE_SUMMARIZE_KEYPOINT = 'summarize_keypoint'
 export const PROMPT_TYPE_SUMMARIZE_BRIEF = 'summarize_brief'
+export const PROMPT_TYPE_ASK = 'ask'
 export const PROMPT_TYPES = [{
   name: '翻译',
   type: PROMPT_TYPE_TRANSLATE,
@@ -21,6 +22,9 @@ export const PROMPT_TYPES = [{
 }, {
   name: '总结',
   type: PROMPT_TYPE_SUMMARIZE_BRIEF,
+}, {
+  name: '提问',
+  type: PROMPT_TYPE_ASK,
 }]
 
 export const SUMMARIZE_TYPES = {
@@ -119,7 +123,20 @@ The video's subtitles:
 
 '''
 {{segment}}
-'''`
+'''`,
+  [PROMPT_TYPE_ASK]: `You are a helpful assistant who answers question related to video subtitles.
+Answer in language '{{language}}'.
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{segment}}
+'''
+
+Question: '''{{question}}'''
+Answer:
+`,
 }
 
 export const EVENT_EXPAND = 'expand'
@@ -157,7 +174,7 @@ export const SERVER_URL_THIRD = 'https://op.kongkongye.com'
 export const MODELS = [{
   code: 'gpt-3.5-turbo',
   name: 'gpt-3.5-turbo',
-  tokens: 16385,
+  tokens: 4096,
 }, {
   code: 'gpt-3.5-turbo-0125',
   name: 'gpt-3.5-turbo-0125',
@@ -167,7 +184,8 @@ export const MODELS = [{
   name: 'gpt-3.5-turbo-1106',
   tokens: 16385,
 }]
-export const MODEL_DEFAULT = MODELS[0].code
+export const GEMINI_TOKENS = 32768
+export const MODEL_DEFAULT = MODELS[1].code
 export const MODEL_MAP: {[key: string]: typeof MODELS[number]} = {}
 for (const model of MODELS) {
   MODEL_MAP[model.code] = model

@@ -4,6 +4,9 @@ import {
   addTaskId,
   addTransResults,
   delTaskId,
+  setAskContent,
+  setAskError,
+  setAskStatus,
   setLastSummarizeTime,
   setLastTransTime,
   setSummaryContent,
@@ -15,6 +18,7 @@ import {
   LANGUAGES_MAP,
   MODEL_DEFAULT,
   PROMPT_DEFAULTS,
+  PROMPT_TYPE_ASK,
   PROMPT_TYPE_TRANSLATE,
   SUMMARIZE_LANGUAGE_DEFAULT,
   SUMMARIZE_THRESHOLD,
@@ -107,7 +111,7 @@ const useTranslate = () => {
                     content: prompt,
                   }
                 ],
-                temperature: 0,
+                temperature: 0.25,
                 n: 1,
                 stream: false,
               },
@@ -176,7 +180,7 @@ const useTranslate = () => {
                   content: prompt,
                 }
               ],
-              temperature: 0,
+              temperature: 0.5,
               n: 1,
               stream: false,
             },
@@ -191,6 +195,59 @@ const useTranslate = () => {
       console.debug('addSummarizeTask', taskDef)
       dispatch(setSummaryStatus({segmentStartIdx: segment.startIdx, type, status: 'pending'}))
       dispatch(setLastSummarizeTime(Date.now()))
+      const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
+      dispatch(addTaskId(task.id))
+    }
+  }, [dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, envData.model, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
+
+  const addAskTask = useCallback(async (segment: Segment, question: string) => {
+    if (segment.text.length >= SUMMARIZE_THRESHOLD) {
+      let prompt: string = envData.prompts?.[PROMPT_TYPE_ASK]??PROMPT_DEFAULTS[PROMPT_TYPE_ASK]
+      // replace params
+      prompt = prompt.replaceAll('{{language}}', summarizeLanguage.name)
+      prompt = prompt.replaceAll('{{title}}', title??'')
+      prompt = prompt.replaceAll('{{segment}}', segment.text)
+      prompt = prompt.replaceAll('{{question}}', question)
+
+      const taskDef: TaskDef = {
+        type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
+        serverUrl: envData.serverUrl,
+        data: envData.aiType === 'gemini'
+          ?{
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt
+                    }
+                  ]
+                }
+              ],
+              generationConfig: {
+                maxOutputTokens: 2048
+              }
+            }
+          :{
+              model: envData.model??MODEL_DEFAULT,
+              messages: [
+                {
+                  role: 'user',
+                  content: prompt,
+                }
+              ],
+              temperature: 0.5,
+              n: 1,
+              stream: false,
+            },
+        extra: {
+          type: 'ask',
+          // startIdx: segment.startIdx,
+          apiKey: envData.apiKey,
+          geminiApiKey: envData.geminiApiKey,
+        }
+      }
+      console.debug('addAskTask', taskDef)
+      dispatch(setAskStatus({status: 'pending'}))
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
@@ -247,6 +304,13 @@ const useTranslate = () => {
     console.debug('setSummary', task.def.extra.startIdx, summaryType, obj, task.error)
   })
 
+  const handleAsk = useMemoizedFn((task: Task, content?: string) => {
+    dispatch(setAskContent({content}))
+    dispatch(setAskStatus({status: 'done'}))
+    dispatch(setAskError({error: task.error}))
+    console.debug('setAsk', content, task.error)
+  })
+
   const getTask = useCallback(async (taskId: string) => {
     const taskResp = await chrome.runtime.sendMessage({type: 'getTask', taskId})
     if (taskResp.code === 'ok') {
@@ -266,14 +330,16 @@ const useTranslate = () => {
           handleTranslate(task, content)
         } else if (taskType === 'summarize') { // 总结
           handleSummarize(task, content)
+        } else if (taskType === 'ask') { // 总结
+          handleAsk(task, content)
         }
       }
     } else {
       dispatch(delTaskId(taskId))
     }
-  }, [dispatch, envData.aiType, handleSummarize, handleTranslate])
+  }, [dispatch, envData.aiType, handleAsk, handleSummarize, handleTranslate])
 
-  return {getFetch, getTask, addTask, addSummarizeTask}
+  return {getFetch, getTask, addTask, addSummarizeTask, addAskTask}
 }
 
 export default useTranslate

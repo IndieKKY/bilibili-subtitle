@@ -2,10 +2,12 @@ import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
 import {setEnvData, setPage} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
+  ASK_ENABLED_DEFAULT,
   HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
   LANGUAGES,
   MODEL_DEFAULT,
+  MODEL_MAP,
   MODELS,
   PAGE_MAIN,
   PROMPT_DEFAULTS,
@@ -59,6 +61,7 @@ const Settings = () => {
   const {value: translateEnableValue, onChange: setTranslateEnableValue} = useEventChecked(envData.translateEnable)
   const {value: summarizeEnableValue, onChange: setSummarizeEnableValue} = useEventChecked(envData.summarizeEnable)
   const {value: searchEnabledValue, onChange: setSearchEnabledValue} = useEventChecked(envData.searchEnabled)
+  const {value: askEnabledValue, onChange: setAskEnabledValue} = useEventChecked(envData.askEnabled??ASK_ENABLED_DEFAULT)
   const {value: cnSearchEnabledValue, onChange: setCnSearchEnabledValue} = useEventChecked(envData.cnSearchEnabled)
   const {value: summarizeFloatValue, onChange: setSummarizeFloatValue} = useEventChecked(envData.summarizeFloat)
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
@@ -126,10 +129,11 @@ const Settings = () => {
       prompts: promptsValue,
       searchEnabled: searchEnabledValue,
       cnSearchEnabled: cnSearchEnabledValue,
+      askEnabled: askEnabledValue,
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [dispatch, aiTypeValue, geminiApiKeyValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue])
+  }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -237,7 +241,7 @@ const Settings = () => {
             <li>支持其他第三方代理，有问题可加群交流</li>
           </ul>
         </div>}
-        <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格'>
+        <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>
           <select id='modelSel' className="select select-sm select-bordered" value={modelValue} onChange={onChangeModelValue}>
             {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
           </select>
@@ -370,6 +374,10 @@ const Settings = () => {
             {/* </div> */}
           </div>
         </FormItem>
+        <div className='desc text-xs'>
+          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知'}</span>
+          （太接近上限总结会报错）
+        </div>
       </Section>
       <Section title={<div className='flex items-center'>
         搜索配置
@@ -382,6 +390,15 @@ const Settings = () => {
           <input id='cnSearchEnabled' type='checkbox' className='toggle toggle-primary' checked={cnSearchEnabledValue}
                  onChange={setCnSearchEnabledValue}/>
         </FormItem>
+      </Section>
+      <Section title={<div className='flex items-center'>
+        提问配置
+      </div>}>
+        <FormItem title='启用提问' htmlFor='askEnabled' tip='是否启用字幕提问功能'>
+          <input id='askEnabled' type='checkbox' className='toggle toggle-primary' checked={askEnabledValue}
+                 onChange={setAskEnabledValue}/>
+        </FormItem>
+        <div className='desc text-xs'>在搜索框输入提问内容，然后按<span className='font-semibold font-mono'>Enter</span>即可提问。</div>
       </Section>
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>

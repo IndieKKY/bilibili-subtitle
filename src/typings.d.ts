@@ -26,6 +26,9 @@ interface EnvData {
   searchEnabled?: boolean
   cnSearchEnabled?: boolean
 
+  // ask
+  askEnabled?: boolean
+
   prompts?: {
     [key: string]: string
   }

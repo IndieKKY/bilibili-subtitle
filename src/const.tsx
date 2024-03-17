@@ -143,28 +143,35 @@ export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
 export const SEARCH_BAR_HEIGHT = 32
 
-export const WORDS_DEFAULT = import.meta.env.VITE_ENV === 'web-dev'?500:2000
+export const WORDS_DEFAULT = import.meta.env.VITE_ENV === 'web-dev'?500:10000
 export const WORDS_MIN = 500
 export const WORDS_MAX = 16000
 export const WORDS_STEP = 500
 export const SUMMARIZE_THRESHOLD = 100
 export const SUMMARIZE_LANGUAGE_DEFAULT = 'cn'
 export const SUMMARIZE_ALL_THRESHOLD = 5
-
+export const ASK_ENABLED_DEFAULT = true
 export const SERVER_URL_OPENAI = 'https://api.openai.com'
 export const SERVER_URL_THIRD = 'https://op.kongkongye.com'
 
 export const MODELS = [{
   code: 'gpt-3.5-turbo',
   name: 'gpt-3.5-turbo',
+  tokens: 16385,
 }, {
   code: 'gpt-3.5-turbo-0125',
   name: 'gpt-3.5-turbo-0125',
+  tokens: 16385,
 }, {
   code: 'gpt-3.5-turbo-1106',
   name: 'gpt-3.5-turbo-1106',
+  tokens: 16385,
 }]
 export const MODEL_DEFAULT = MODELS[0].code
+export const MODEL_MAP: {[key: string]: typeof MODELS[number]} = {}
+for (const model of MODELS) {
+  MODEL_MAP[model.code] = model
+}
 
 export const LANGUAGES = [{
   code: 'en',

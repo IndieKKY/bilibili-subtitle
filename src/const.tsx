@@ -159,6 +159,7 @@ export const TOTAL_HEIGHT_MAX = 800
 export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
 export const SEARCH_BAR_HEIGHT = 32
+export const RECOMMEND_HEIGHT = 36
 
 export const WORDS_RATE = 0.75
 export const WORDS_MIN = 500

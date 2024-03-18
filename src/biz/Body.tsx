@@ -22,7 +22,6 @@ import {
   FaRegArrowAltCircleDown,
   IoWarning,
   MdExpand,
-  RiFileCopy2Line,
   RiTranslate
 } from 'react-icons/all'
 import classNames from 'classnames'
@@ -32,9 +31,9 @@ import {
   ASK_ENABLED_DEFAULT,
   HEADER_HEIGHT,
   PAGE_SETTINGS,
+  RECOMMEND_HEIGHT,
   SEARCH_BAR_HEIGHT,
   SUMMARIZE_ALL_THRESHOLD,
-  SUMMARIZE_TYPES,
   TITLE_HEIGHT
 } from '../const'
 import {FaClipboardList} from 'react-icons/fa'
@@ -42,6 +41,7 @@ import useTranslate from '../hooks/useTranslate'
 import {getSummarize} from '../util/biz_util'
 import {openUrl} from '@kky002/kky-util'
 import Markdown from '../components/Markdown'
+import {random} from 'lodash-es'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -56,6 +56,7 @@ const Body = () => {
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
   const {addSummarizeTask, addAskTask} = useTranslate()
+  const infos = useAppSelector(state => state.env.infos)
   const askFold = useAppSelector(state => state.env.askFold)
   const askQuestion = useAppSelector(state => state.env.askQuestion)
   const askContent = useAppSelector(state => state.env.askContent)
@@ -70,6 +71,10 @@ const Body = () => {
   const title = useAppSelector(state => state.env.title)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
+  const recommendIdx = useMemo(() => random(0, 2), [])
+  const showSearchInput = useMemo(() => {
+    return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
+  }, [envData.askEnabled, envData.searchEnabled, segments])
   const searchPlaceholder = useMemo(() => {
     let placeholder = ''
     if (envData.searchEnabled) {
@@ -245,7 +250,7 @@ const Body = () => {
     </div>
 
     {/* search */}
-    {(envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT)) && <div className='px-2 py-1 flex flex-col relative'>
+    {showSearchInput && <div className='px-2 py-1 flex flex-col relative'>
       <input type='text' className='input input-xs bg-base-200' placeholder={searchPlaceholder} value={searchText} onChange={onSearchTextChange}/>
       {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle/></button>}
     </div>}
@@ -262,11 +267,11 @@ const Body = () => {
     <div ref={bodyRef} onWheel={onWheel}
          className={classNames('flex flex-col gap-1.5 overflow-y-auto select-text scroll-smooth', floatKeyPointsSegIdx != null && 'pb-[100px]')}
          style={{
-           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (envData.searchEnabled ? SEARCH_BAR_HEIGHT : 0)}px`
+           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - RECOMMEND_HEIGHT - (showSearchInput ? SEARCH_BAR_HEIGHT : 0)}px`
          }}
     >
       {/* ask */}
-      {(envData.askEnabled??ASK_ENABLED_DEFAULT) && (searchText || askQuestion) &&
+      {(envData.askEnabled ?? ASK_ENABLED_DEFAULT) && (searchText || askQuestion) &&
         <div className='shadow bg-base-200 my-0.5 mx-1.5 p-1.5 rounded flex flex-col justify-center items-center'>
           <div className='w-full relative flex justify-center min-h-[20px]'>
             <div className='absolute left-0 top-0 bottom-0 text-xs select-none flex-center desc'>
@@ -287,8 +292,8 @@ const Body = () => {
               <Markdown content={askContent}/>
             </div>}
           {!askFold && <button disabled={askStatus === 'pending'}
-                  className={classNames('btn btn-link btn-xs', askStatus === 'pending' && 'loading')}
-                  onClick={onAsk}>{askStatus === 'init' ? '点击提问' : (askStatus === 'pending' ? '生成中' : '重新生成')}</button>}
+                               className={classNames('btn btn-link btn-xs', askStatus === 'pending' && 'loading')}
+                               onClick={onAsk}>{askStatus === 'init' ? '点击提问' : (askStatus === 'pending' ? '生成中' : '重新生成')}</button>}
           {!askFold && askStatus === 'init' && <div className='desc-lighter text-xs'>提问举例：这个视频说了什么</div>}
           {!askFold && askError && <div className='text-xs text-error'>{askError}</div>}
         </div>}
@@ -298,49 +303,101 @@ const Body = () => {
                                                            segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
 
       {/* tip */}
-      <div className='flex flex-col items-center text-center pt-1 pb-2'>
-        <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div>
-        <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span
-          className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳
+      {/* <div className='flex flex-col items-center text-center pt-1 pb-2'> */}
+      {/*  <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div> */}
+      {/*  <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span */}
+      {/*    className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳 */}
+      {/*  </div> */}
+      {/*  {(segments?.length ?? 0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' */}
+      {/*                                          onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/> */}
+      {/*  </button>} */}
+      {/* </div> */}
+      {((infos == null) || infos.length === 0) && <div className='flex flex-col'>
+        <div className='flex flex-col items-center text-center py-2 mx-4'>
+          <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
+                                                                                  alt='BibiGPT logo'
+                                                                                  className='w-8 h-8'/>BibiGPT
+          </div>
+          <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span
+            className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频）
+          </div>
+          <div className='flex gap-2'>
+            <a title='BibiGPT' href='https://bibigpt.co/r/bilibili'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://bibigpt.co/r/bilibili')
+               }} className='link text-sm text-accent'>✨ BibiGPT ✨</a>
+          </div>
         </div>
-        {(segments?.length ?? 0) > 0 && <button className='mt-1.5 btn btn-xs btn-info'
-                                                onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/>
-        </button>}
-      </div>
-      <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-        <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
-                                                                                alt='BibiGPT'
-                                                                                className='w-8 h-8'/>BibiGPT
+        <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
+          <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
+                                                                                  alt='youtube caption logo'
+                                                                                  className='w-8 h-8'/>YouTube Caption
+          </div>
+          <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
+          </div>
+          <div className='flex gap-2'>
+            <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+               }} className='link text-sm text-accent'>Chrome商店</a>
+            <a title='Edge商店'
+               href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
+               onClick={e => {
+                 e.preventDefault()
+                 openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
+               }} className='link text-sm text-accent'>Edge商店</a>
+          </div>
         </div>
-        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频）</div>
-        <div className='flex gap-2'>
-          <a title='BibiGPT' href='https://bibigpt.co/r/bilibili'
-             onClick={(e) => {
-               e.preventDefault()
-               openUrl('https://bibigpt.co/r/bilibili')
-             }} className='link text-sm text-accent'>✨ BibiGPT ✨</a>
+        <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
+          <div className='font-semibold text-accent flex items-center gap-1'><img src='/immersive-summary.png'
+                                                                                  alt='Immersive Summary logo'
+                                                                                  className='w-8 h-8'/>Immersive Summary
+          </div>
+          <div className='text-sm px-2 desc'>沉浸式总结，多种方式总结网页文章。</div>
+          <div className='flex gap-2'>
+            <a title='Chrome商店' href='https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')
+               }} className='link text-sm text-accent'>Chrome商店</a>
+          </div>
         </div>
-      </div>
-      <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-        <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
-                                                                                alt='youtube caption'
-                                                                                className='w-8 h-8'/>YouTube Caption
-        </div>
-        <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
-        </div>
-        <div className='flex gap-2'>
-          <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
-             onClick={(e) => {
-               e.preventDefault()
-               openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-             }} className='link text-sm text-accent'>Chrome商店</a>
-          <a title='Edge商店' href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
-             onClick={e => {
-               e.preventDefault()
-               openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
-             }} className='link text-sm text-accent'>Edge商店</a>
-        </div>
-      </div>
+      </div>}
+    </div>
+
+    {/* recommend */}
+    <div className='' style={{
+      height: `${RECOMMEND_HEIGHT}px`
+    }}>
+      {recommendIdx === 0 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-0.5'>
+        <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
+          e.preventDefault()
+          openUrl('https://bibigpt.co/r/bilibili')
+        }}><img src='/bibigpt.png'
+                alt='BibiGPT logo'
+                className='w-8 h-8'/>✨ BibiGPT ✨</a>
+        <span className='text-sm desc'>支持任意视频的网页版总结。</span>
+      </div>}
+      {recommendIdx === 1 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-1'>
+        <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
+          e.preventDefault()
+          openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+        }}><img src='/youtube-caption.png'
+                alt='youtube caption logo'
+                className='w-8 h-8'/>YouTube Caption</a>
+        <span className='text-sm desc'>YouTube版的字幕列表。</span>
+      </div>}
+      {recommendIdx === 2 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-1'>
+        <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
+          e.preventDefault()
+          openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')
+        }}><img src='/immersive-summary.png'
+                alt='Immersive Summary logo'
+                className='w-8 h-8'/>Immersive Summary</a>
+        <span className='text-sm desc'>沉浸式总结网页文章。</span>
+      </div>}
     </div>
   </div>
 }

@@ -86,6 +86,7 @@ const useSubtitleService = () => {
         if (data.data.totalHeight) {
           dispatch(setTotalHeight(Math.min(Math.max(data.data.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
         }
+        console.debug('setSettings', data.data)
       }
     }
 
@@ -98,12 +99,12 @@ const useSubtitleService = () => {
 
   // 有数据时自动展开
   useEffect(() => {
-    if ((data != null) && data.body.length > 0) {
+    if (infos != null) {
       eventBus.emit({
         type: EVENT_EXPAND
       })
     }
-  }, [data, eventBus])
+  }, [eventBus, infos])
 
   // 当前未展示 & (未折叠 | 自动展开) & 有列表 => 展示第一个
   useEffect(() => {
@@ -207,7 +208,7 @@ const useSubtitleService = () => {
       }
     }
     dispatch(setSegments(segments))
-  }, [data?.body, dispatch, envData.summarizeEnable, envData.words])
+  }, [data?.body, dispatch, envData.aiType, envData.model, envData.summarizeEnable, envData.words])
 
   // 每秒更新当前视频时间
   useInterval(() => {

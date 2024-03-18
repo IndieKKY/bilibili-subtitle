@@ -53,7 +53,7 @@ const initialState: EnvState = {
     serverUrl: SERVER_URL_OPENAI,
     translateEnable: true,
     summarizeEnable: true,
-    autoExpand: true,
+    // autoExpand: true,
     theme: 'light',
     searchEnabled: true,
   },

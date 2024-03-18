@@ -1,5 +1,5 @@
 interface EnvData {
-  autoExpand?: boolean
+  // autoExpand?: boolean
   flagDot?: boolean
 
   aiType?: 'openai' | 'gemini'

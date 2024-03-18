@@ -106,13 +106,13 @@ const useSubtitleService = () => {
     }
   }, [eventBus, infos])
 
-  // 当前未展示 & (未折叠 | 自动展开) & 有列表 => 展示第一个
+  // 当前未展示 & 未折叠 & 有列表 => 展示第一个
   useEffect(() => {
-    if (!curInfo && (!fold || (envReady && envData.autoExpand)) && (infos != null) && infos.length > 0) {
+    if (!curInfo && !fold && (infos != null) && infos.length > 0) {
       dispatch(setCurInfo(infos[0]))
       dispatch(setCurFetched(false))
     }
-  }, [curInfo, dispatch, envData.autoExpand, envReady, fold, infos])
+  }, [curInfo, dispatch, envReady, fold, infos])
   // 获取
   useEffect(() => {
     if (curInfo && !curFetched) {

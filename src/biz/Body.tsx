@@ -368,10 +368,10 @@ const Body = () => {
     </div>
 
     {/* recommend */}
-    <div className='' style={{
+    <div className='p-0.5' style={{
       height: `${RECOMMEND_HEIGHT}px`
     }}>
-      {recommendIdx === 0 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-0.5'>
+      {recommendIdx === 0 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
           e.preventDefault()
           openUrl('https://bibigpt.co/r/bilibili')
@@ -380,7 +380,7 @@ const Body = () => {
                 className='w-8 h-8'/>✨ BibiGPT ✨</a>
         <span className='text-sm desc'>支持任意视频的网页版总结。</span>
       </div>}
-      {recommendIdx === 1 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-1'>
+      {recommendIdx === 1 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
           e.preventDefault()
           openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
@@ -389,7 +389,7 @@ const Body = () => {
                 className='w-8 h-8'/>YouTube Caption</a>
         <span className='text-sm desc'>YouTube版的字幕列表。</span>
       </div>}
-      {recommendIdx === 2 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10 m-1'>
+      {recommendIdx === 2 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
           e.preventDefault()
           openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')

@@ -14,7 +14,16 @@ import {
   setTotalHeight,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_DEFAULT, WORDS_MIN} from '../const'
+import {
+  EVENT_EXPAND,
+  GEMINI_TOKENS,
+  MODEL_DEFAULT,
+  MODEL_MAP,
+  TOTAL_HEIGHT_MAX,
+  TOTAL_HEIGHT_MIN,
+  WORDS_MIN,
+  WORDS_RATE
+} from '../const'
 import {useInterval} from 'ahooks'
 import {getWholeText} from '../util/biz_util'
 
@@ -156,7 +165,14 @@ const useSubtitleService = () => {
     const items = data?.body
     if (items != null) {
       if (envData.summarizeEnable) { // 分段
-        let size = envData.words??WORDS_DEFAULT
+        let size = envData.words
+        if (!size) { // 默认
+          if (envData.aiType === 'gemini') {
+            size = GEMINI_TOKENS*WORDS_RATE
+          } else {
+            size = (MODEL_MAP[envData.model??MODEL_DEFAULT]?.tokens??4000)*WORDS_RATE
+          }
+        }
         size = Math.max(size, WORDS_MIN)
 
         segments = []

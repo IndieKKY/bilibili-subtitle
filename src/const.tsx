@@ -160,7 +160,7 @@ export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
 export const SEARCH_BAR_HEIGHT = 32
 
-export const WORDS_DEFAULT = import.meta.env.VITE_ENV === 'web-dev'?500:10000
+export const WORDS_RATE = 0.75
 export const WORDS_MIN = 500
 export const WORDS_MAX = 16000
 export const WORDS_STEP = 500

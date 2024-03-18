@@ -3,6 +3,7 @@ import {setEnvData, setPage} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
+  GEMINI_TOKENS,
   HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
   LANGUAGES,
@@ -18,7 +19,7 @@ import {
   TRANSLATE_FETCH_MAX,
   TRANSLATE_FETCH_MIN,
   TRANSLATE_FETCH_STEP,
-  WORDS_DEFAULT,
+  WORDS_RATE,
 } from '../const'
 import {IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
@@ -75,7 +76,7 @@ const Settings = () => {
   const [fontSizeValue, setFontSizeValue] = useState(envData.fontSize)
   const [aiTypeValue, setAiTypeValue] = useState(envData.aiType)
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
-  const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words??WORDS_DEFAULT)
+  const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
   const [moreFold, {toggle: toggleMoreFold}] = useBoolean(true)
   const [promptsFold, {toggle: togglePromptsFold}] = useBoolean(true)
@@ -367,7 +368,7 @@ const Settings = () => {
         </FormItem>
         <FormItem htmlFor='words' title='分段字数' tip='注意，不同模型有不同字数限制'>
           <div className='flex-1 flex flex-col'>
-            <input id='words' type='number' className='input input-sm input-bordered w-full' placeholder='默认2000' value={wordsValue} onChange={e => setWordsValue(e.target.value?parseInt(e.target.value):undefined)}/>
+            <input id='words' type='number' className='input input-sm input-bordered w-full' placeholder={`默认为上限x${WORDS_RATE}`} value={wordsValue??''} onChange={e => setWordsValue(e.target.value?parseInt(e.target.value):undefined)}/>
             {/* <input type="range" min={WORDS_MIN} max={WORDS_MAX} step={WORDS_STEP} value={wordsValue} className="range range-primary" onChange={onWordsChange} /> */}
             {/* <div className="w-full flex justify-between text-xs px-2"> */}
             {/*  {wordsList.map(words => <span key={words}>{words}</span>)} */}
@@ -375,7 +376,7 @@ const Settings = () => {
           </div>
         </FormItem>
         <div className='desc text-xs'>
-          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知'}</span>
+          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{aiTypeValue === 'gemini'?GEMINI_TOKENS:(MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知')}</span>
           （太接近上限总结会报错）
         </div>
       </Section>

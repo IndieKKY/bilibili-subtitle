@@ -102,6 +102,7 @@ const refreshVideoInfo = async () => {
       //send setVideoInfo
       iframe.contentWindow.postMessage({
         type: 'setVideoInfo',
+        url: location.origin + location.pathname,
         title,
         aid,
         pages,

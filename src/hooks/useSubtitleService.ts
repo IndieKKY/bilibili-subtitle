@@ -12,6 +12,7 @@ import {
   setSegments,
   setTitle,
   setTotalHeight,
+  setUrl,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
 import {
@@ -55,6 +56,7 @@ const useSubtitleService = () => {
 
       if (data.type === 'setVideoInfo') {
         dispatch(setInfos(data.infos))
+        dispatch(setUrl(data.url))
         dispatch(setTitle(data.title))
         console.debug('video title: ', data.title)
       }
@@ -86,7 +88,6 @@ const useSubtitleService = () => {
         if (data.data.totalHeight) {
           dispatch(setTotalHeight(Math.min(Math.max(data.data.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
         }
-        console.debug('setSettings', data.data)
       }
     }
 

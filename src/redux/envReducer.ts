@@ -30,6 +30,7 @@ interface EnvState {
   data?: Transcript
   uploadedTranscript?: Transcript
   segments?: Segment[]
+  url?: string
   title?: string
 
   taskIds?: string[]
@@ -260,6 +261,9 @@ export const slice = createSlice({
     setCurrentTime: (state, action: PayloadAction<number | undefined>) => {
       state.currentTime = action.payload
     },
+    setUrl: (state, action: PayloadAction<string | undefined>) => {
+      state.url = action.payload
+    },
     setTitle: (state, action: PayloadAction<string | undefined>) => {
       state.title = action.payload
     },
@@ -288,6 +292,7 @@ export const slice = createSlice({
 })
 
 export const {
+  setUrl,
   setAskFold,
   setAskQuestion,
   setAskStatus,

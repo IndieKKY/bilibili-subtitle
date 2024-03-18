@@ -66,6 +66,7 @@ const MoreBtn = (props: Props) => {
   const [moreVisible, setMoreVisible] = useState(false)
   const eventBus = useContext(EventBusContext)
   const segments = useAppSelector(state => state.env.segments)
+  const url = useAppSelector(state => state.env.url)
   const title = useAppSelector(state => state.env.title)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
@@ -76,19 +77,19 @@ const MoreBtn = (props: Props) => {
 
     let s, fileName
     if (!downloadType || downloadType === 'text') {
-      s = ''
+      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += item.content + '\n'
       }
       fileName = 'download.txt'
     } else if (downloadType === 'textWithTime') {
-      s = ''
+      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += formatTime(item.from) + ' ' + item.content + '\n'
       }
       fileName = 'download.txt'
     } else if (downloadType === 'article') {
-      s = ''
+      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += item.content + ', '
       }
@@ -138,9 +139,10 @@ const MoreBtn = (props: Props) => {
       s = JSON.stringify(data)
       fileName = 'download.json'
     } else if (downloadType === 'summarize') {
+      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       const [success, content] = getSummarize(title, segments, curSummaryType)
       if (!success) return
-      s = content
+      s += content
       fileName = '总结.txt'
     } else {
       return
@@ -153,7 +155,7 @@ const MoreBtn = (props: Props) => {
       }).catch(console.error)
     }
     setMoreVisible(false)
-  }, [curSummaryType, data, downloadType, segments, title])
+  }, [curSummaryType, data, downloadType, segments, title, url])
 
   const downloadAudioCallback = useCallback(() => {
     window.parent.postMessage({

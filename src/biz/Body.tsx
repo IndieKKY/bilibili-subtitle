@@ -18,6 +18,7 @@ import {
   AiOutlineCloseCircle,
   BsDashSquare,
   BsPlusSquare,
+  FaGripfire,
   FaQuestion,
   FaRegArrowAltCircleDown,
   IoWarning,
@@ -71,7 +72,7 @@ const Body = () => {
   const title = useAppSelector(state => state.env.title)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
-  const recommendIdx = useMemo(() => random(0, 2), [])
+  const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
   }, [envData.askEnabled, envData.searchEnabled, segments])
@@ -209,7 +210,7 @@ const Body = () => {
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
-      if (bodyRef.current.scrollTop <= curOffsetTop - bodyRef.current.offsetTop - (totalHeight-120) + (floatKeyPointsSegIdx != null ? 100 : 0) ||
+      if (bodyRef.current.scrollTop <= curOffsetTop - bodyRef.current.offsetTop - (totalHeight-160) + (floatKeyPointsSegIdx != null ? 100 : 0) ||
         bodyRef.current.scrollTop >= curOffsetTop - bodyRef.current.offsetTop - 40 - 10
       ) {
         dispatch(setNeedScroll(true))
@@ -348,6 +349,11 @@ const Body = () => {
                  e.preventDefault()
                  openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
                }} className='link text-sm text-accent'>Edge商店</a>
+            <a title='Crx搜搜(国内可访问)' href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+               }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
           </div>
         </div>
         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
@@ -362,6 +368,12 @@ const Body = () => {
                  e.preventDefault()
                  openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')
                }} className='link text-sm text-accent'>Chrome商店</a>
+            <a title='Crx搜搜(国内可访问)'
+               href='https://www.crxsoso.com/webstore/detail/mcijpllinkhflgpkggimnafkbmpiijah'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://www.crxsoso.com/webstore/detail/mcijpllinkhflgpkggimnafkbmpiijah')
+               }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
           </div>
         </div>
       </div>}
@@ -371,7 +383,7 @@ const Body = () => {
     <div className='p-0.5' style={{
       height: `${RECOMMEND_HEIGHT}px`
     }}>
-      {recommendIdx === 0 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
+      {recommendIdx === 0 && <div className='flex items-center gap-1.5 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
           e.preventDefault()
           openUrl('https://bibigpt.co/r/bilibili')
@@ -397,6 +409,15 @@ const Body = () => {
                 alt='Immersive Summary logo'
                 className='w-8 h-8'/>Immersive Summary</a>
         <span className='text-sm desc'>沉浸式总结网页文章。</span>
+      </div>}
+      {recommendIdx === 3 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
+        <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
+          e.preventDefault()
+          openUrl('https://api.openai-up.com/register?aff=varM')
+        }}><img src='/openai-up.ico'
+                alt='Openai Up logo'
+                className='w-8 h-8'/>Openai代理</a>
+        <span className='text-sm desc flex items-center'>目前价格不到官方的6折<FaGripfire className='text-amber-600'/></span>
       </div>}
     </div>
   </div>

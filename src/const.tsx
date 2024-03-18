@@ -170,7 +170,6 @@ export const SUMMARIZE_LANGUAGE_DEFAULT = 'cn'
 export const SUMMARIZE_ALL_THRESHOLD = 5
 export const ASK_ENABLED_DEFAULT = true
 export const SERVER_URL_OPENAI = 'https://api.openai.com'
-export const SERVER_URL_THIRD = 'https://op.kongkongye.com'
 
 export const MODELS = [{
   code: 'gpt-3.5-turbo',

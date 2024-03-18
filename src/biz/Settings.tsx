@@ -13,7 +13,6 @@ import {
   PAGE_MAIN,
   PROMPT_DEFAULTS,
   PROMPT_TYPES,
-  SERVER_URL_THIRD,
   SUMMARIZE_LANGUAGE_DEFAULT,
   TRANSLATE_FETCH_DEFAULT,
   TRANSLATE_FETCH_MAX,
@@ -21,7 +20,7 @@ import {
   TRANSLATE_FETCH_STEP,
   WORDS_RATE,
 } from '../const'
-import {IoWarning} from 'react-icons/all'
+import {FaGripfire, IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
@@ -210,7 +209,7 @@ const Settings = () => {
             <button onClick={onSelFontSize2} className={classNames('btn btn-xs no-animation', fontSizeValue === 'large'?'btn-active':'')}>加大</button>
           </div>
         </FormItem>
-        <FormItem title='AI类型' tip='不同AI质量可能有差异'>
+        <FormItem title='AI类型' tip='OPENAI质量更高'>
           <div className="btn-group">
             <button onClick={onSelOpenai} className={classNames('btn btn-xs no-animation', (!aiTypeValue || aiTypeValue === 'openai')?'btn-active':'')}>OpenAI</button>
             <button onClick={onSelGemini} className={classNames('btn btn-xs no-animation', aiTypeValue === 'gemini'?'btn-active':'')}>Gemini</button>
@@ -220,35 +219,41 @@ const Settings = () => {
 
       {(!aiTypeValue || aiTypeValue === 'openai') && <Section title='openai配置'>
         <FormItem title='ApiKey' htmlFor='apiKey'>
-          <input id='apiKey' type='text' className='input input-sm input-bordered w-full' placeholder='sk-xxx' value={apiKeyValue} onChange={onChangeApiKeyValue}/>
+          <input id='apiKey' type='text' className='input input-sm input-bordered w-full' placeholder='sk-xxx'
+                 value={apiKeyValue} onChange={onChangeApiKeyValue}/>
         </FormItem>
         <FormItem title='服务器' htmlFor='serverUrl'>
-          <input id='serverUrl' type='text' className='input input-sm input-bordered w-full' placeholder='服务器地址,默认使用官方地址' value={serverUrlValue} onChange={e => setServerUrlValue(e.target.value)}/>
+          <input id='serverUrl' type='text' className='input input-sm input-bordered w-full'
+                 placeholder='默认使用官方地址' value={serverUrlValue}
+                 onChange={e => setServerUrlValue(e.target.value)}/>
         </FormItem>
-        <div className='flex justify-center'>
-          <a className='link text-xs' onClick={toggleMoreFold}>{moreFold?'点击查看说明':'点击折叠说明'}</a>
+        <div>
+          <div className='desc text-xs text-center'>
+            <div className='flex justify-center font-semibold'>【官方地址】</div>
+            <div>官方网址：<a className='link link-primary' href='https://platform.openai.com/' target='_blank'
+                             rel="noreferrer">点击访问</a></div>
+            <div>服务器地址：<a className='link link-primary'
+                               onClick={() => setServerUrlValue('https://api.openai.com')}
+                               rel='noreferrer'>点击设置</a></div>
+            <div className='flex justify-center font-semibold'>【第三方代理】</div>
+            <div>代理网址：<a className='link link-primary' href='https://api.openai-up.com/register?aff=varM'
+                             target='_blank'
+                             rel="noreferrer">点击访问</a></div>
+            <div>服务器地址：<a className='link link-primary'
+                               onClick={() => setServerUrlValue('https://api.openai-up.com')}
+                               rel='noreferrer'>点击设置</a></div>
+            <div className='text-amber-600 flex justify-center items-center'><FaGripfire/>目前价格不到官方价格的6折<FaGripfire/></div>
+          </div>
         </div>
-        {!moreFold && <div>
-          <ul className='pl-3 list-decimal desc text-xs'>
-            <li>官方服务器需要科学上网才能访问</li>
-            <li>官方网址：<a className='link' href='https://platform.openai.com/' target='_blank' rel="noreferrer">openai.com</a></li>
-            <li>支持官方代理(使用官方ApiKey)：<a className='link' onClick={() => setServerUrlValue(SERVER_URL_THIRD)} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://api2d.com/' target='_blank' rel="noreferrer">api2d</a> | <a className='link' onClick={() => setServerUrlValue('https://openai.api2d.net')} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://openaimax.com/' target='_blank' rel="noreferrer">OpenAI-Max</a> | <a className='link' onClick={() => setServerUrlValue('https://api.openaimax.com')} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://openai-sb.com/' target='_blank' rel="noreferrer">OpenAI-SB</a> | <a className='link' onClick={() => setServerUrlValue('https://api.openai-sb.com')} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://www.ohmygpt.com/' target='_blank' rel="noreferrer">OhMyGPT</a> | <a className='link' onClick={() => setServerUrlValue('https://api.ohmygpt.com')} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://aiproxy.io/' target='_blank' rel="noreferrer">AIProxy</a> | <a className='link' onClick={() => setServerUrlValue('https://api.aiproxy.io')} rel='noreferrer'>点击设置</a></li>
-            <li>支持代理(配合ApiKey)：<a className='link' href='https://key-rental.bowen.cool/' target='_blank' rel="noreferrer">Key Rental</a> | <a className='link' onClick={() => setServerUrlValue('https://key-rental-api.bowen.cool/openai')} rel='noreferrer'>点击设置</a></li>
-            <li>支持其他第三方代理，有问题可加群交流</li>
-          </ul>
-        </div>}
         <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>
-          <select id='modelSel' className="select select-sm select-bordered" value={modelValue} onChange={onChangeModelValue}>
+          <select id='modelSel' className="select select-sm select-bordered" value={modelValue}
+                  onChange={onChangeModelValue}>
             {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
           </select>
         </FormItem>
         <div className='flex justify-center'>
-          <a className='link text-xs' onClick={togglePromptsFold}>{promptsFold?'点击查看提示词':'点击折叠提示词'}</a>
+          <a className='link text-xs'
+             onClick={togglePromptsFold}>{promptsFold ? '点击查看提示词' : '点击折叠提示词'}</a>
         </div>
         {!promptsFold && <div>
           {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
@@ -257,16 +262,18 @@ const Settings = () => {
               setPromptsValue({
                 ...promptsValue,
                 // @ts-expect-error
-                [item.type]: PROMPT_DEFAULTS[item.type]??''
+                [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
               })
-            }}>点击填充默认</div>
+            }}>点击填充默认
+            </div>
           </div>} htmlFor={`prompt-${item.type}`}>
-            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full' placeholder='留空使用默认提示词' value={promptsValue[item.type]??''} onChange={(e) => {
-              setPromptsValue({
-                ...promptsValue,
-                [item.type]: e.target.value
-              })
-            }}/>
+            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
+                      placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
+                        setPromptsValue({
+                          ...promptsValue,
+                          [item.type]: e.target.value
+                        })
+                      }}/>
           </FormItem>)}
         </div>}
       </Section>}
@@ -276,15 +283,14 @@ const Settings = () => {
           <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx'
                  value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
         </FormItem>
-        <div className='flex justify-center'>
-          <a className='link text-xs' onClick={toggleMoreFold}>{moreFold ? '点击查看说明' : '点击折叠说明'}</a>
+        <div>
+          <div className='desc text-xs'>
+            <div>官方网址：<a className='link link-primary' href='https://makersuite.google.com/app/apikey' target='_blank'
+                            rel="noreferrer">Google AI Studio</a> (目前免费)
+            </div>
+            <div className='text-xs text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!</div>
+          </div>
         </div>
-        {!moreFold && <div>
-          <ul className='pl-3 list-decimal desc text-xs'>
-            <li>官方网址：<a className='link' href='https://makersuite.google.com/app/apikey' target='_blank'
-                            rel="noreferrer">Google AI Studio</a> (目前免费)</li>
-          </ul>
-        </div>}
         <div className='flex justify-center'>
           <a className='link text-xs'
              onClick={togglePromptsFold}>{promptsFold ? '点击查看提示词' : '点击折叠提示词'}</a>

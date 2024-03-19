@@ -43,6 +43,7 @@ import {getSummarize} from '../util/biz_util'
 import {openUrl} from '@kky002/kky-util'
 import Markdown from '../components/Markdown'
 import {random} from 'lodash-es'
+import useKeyService from '../hooks/useKeyService'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -207,6 +208,9 @@ const Body = () => {
     dispatch(setAskFold(!askFold))
   }, [askFold, dispatch])
 
+  // service
+  useKeyService()
+
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
@@ -304,6 +308,13 @@ const Body = () => {
                                                            segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
 
       {/* tip */}
+      <div className='text-sm font-semibold text-center'>快捷键提示</div>
+      <ul className='list-disc text-sm desc pl-5'>
+        <li>单击字幕跳转，双击字幕跳转+切换暂停。</li>
+        <li>alt+单击字幕复制单条字幕。</li>
+        <li>上下方向键来移动当前字幕(可先点击字幕使焦点在字幕列表内)。</li>
+      </ul>
+
       {/* <div className='flex flex-col items-center text-center pt-1 pb-2'> */}
       {/*  <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div> */}
       {/*  <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span */}
@@ -314,7 +325,7 @@ const Body = () => {
       {/*  </button>} */}
       {/* </div> */}
       <div className='flex flex-col'>
-        <div className='flex flex-col items-center text-center py-2 mx-4'>
+        <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
           <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
                                                                                   alt='BibiGPT logo'
                                                                                   className='w-8 h-8'/>BibiGPT

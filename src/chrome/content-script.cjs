@@ -158,6 +158,9 @@ window.addEventListener("message", (event) => {
     const video = getVideoElement()
     if (video) {
       video.currentTime = data.time
+      if (data.togglePause) {
+        video.paused ? video.play() : video.pause()
+      }
     }
   }
 

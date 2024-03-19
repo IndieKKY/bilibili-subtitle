@@ -46,7 +46,7 @@ const SummarizeItemOverview = (props: {
     if (event.altKey) { // 复制
       navigator.clipboard.writeText(overviewItem.key).catch(console.error)
     } else {
-      move(time)
+      move(time, false)
     }
   }, [overviewItem.key, move, time])
 

@@ -33,7 +33,15 @@ const SegmentItem = (props: {
     if (event.altKey) { // 复制
       navigator.clipboard.writeText(item.content).catch(console.error)
     } else {
-      move(item.from)
+      move(item.from, false)
+    }
+  }, [item.content, item.from, move])
+
+  const move2Callback = useCallback((event: any) => {
+    if (event.altKey) { // 复制
+      navigator.clipboard.writeText(item.content).catch(console.error)
+    } else {
+      move(item.from, true)
     }
   }, [item.content, item.from, move])
 
@@ -63,6 +71,7 @@ const SegmentItem = (props: {
         isIn={isIn}
         last={last}
         moveCallback={moveCallback}
+        move2Callback={move2Callback}
       />
       :
       <NormalSegmentItem
@@ -70,6 +79,7 @@ const SegmentItem = (props: {
         idx={idx}
         isIn={isIn}
         moveCallback={moveCallback}
+        move2Callback={move2Callback}
       />
     }
   </span>

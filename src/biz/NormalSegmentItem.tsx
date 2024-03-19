@@ -9,8 +9,9 @@ const NormalSegmentItem = (props: {
   idx: number
   isIn: boolean
   moveCallback: (event: any) => void
+  move2Callback: (event: any) => void
 }) => {
-  const {item, idx, isIn, moveCallback} = props
+  const {item, idx, isIn, moveCallback, move2Callback} = props
   const transResult = useAppSelector(state => state.env.transResults[idx])
   const envData = useAppSelector(state => state.env.envData)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
@@ -19,7 +20,7 @@ const NormalSegmentItem = (props: {
   const display = useMemo(() => getDisplay(envData.transDisplay, item.content, transText), [envData.transDisplay, item.content, transText])
 
   return <div className={classNames('flex py-0.5 cursor-pointer rounded-sm hover:bg-base-200', fontSize === 'large'?'text-sm':'text-xs')}
-              onClick={moveCallback}>
+              onClick={moveCallback} onDoubleClick={move2Callback}>
     <div className='desc w-[66px] flex justify-center'>{formatTime(item.from)}</div>
     <div className={'flex-1'}>
       <div className={classNames('font-medium', isIn ? 'text-primary underline' : '')}>{display.main}</div>

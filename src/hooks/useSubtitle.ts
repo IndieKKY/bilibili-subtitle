@@ -5,8 +5,8 @@ import {setNeedScroll} from '../redux/envReducer'
 const useSubtitle = () => {
   const dispatch = useAppDispatch()
 
-  const move = useCallback((time: number) => {
-    window.parent.postMessage({type: 'move', time}, '*')
+  const move = useCallback((time: number, togglePause: boolean) => {
+    window.parent.postMessage({type: 'move', time, togglePause}, '*')
   }, [])
 
   const scrollIntoView = useCallback((ref: React.RefObject<HTMLDivElement>) => {

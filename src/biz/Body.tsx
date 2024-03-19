@@ -313,7 +313,7 @@ const Body = () => {
       {/*                                          onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/> */}
       {/*  </button>} */}
       {/* </div> */}
-      {((infos == null) || infos.length === 0) && <div className='flex flex-col'>
+      <div className='flex flex-col'>
         <div className='flex flex-col items-center text-center py-2 mx-4'>
           <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
                                                                                   alt='BibiGPT logo'
@@ -349,7 +349,8 @@ const Body = () => {
                  e.preventDefault()
                  openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
                }} className='link text-sm text-accent'>Edge商店</a>
-            <a title='Crx搜搜(国内可访问)' href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
+            <a title='Crx搜搜(国内可访问)'
+               href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
                onClick={(e) => {
                  e.preventDefault()
                  openUrl('https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
@@ -376,7 +377,7 @@ const Body = () => {
                }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
           </div>
         </div>
-      </div>}
+      </div>
     </div>
 
     {/* recommend */}
@@ -417,7 +418,8 @@ const Body = () => {
         }}><img src='/openai-up.ico'
                 alt='Openai Up logo'
                 className='w-8 h-8'/>Openai代理</a>
-        <span className='text-sm desc flex items-center'>目前价格不到官方的6折<FaGripfire className='text-amber-600'/></span>
+        <span className='text-sm desc flex items-center'>目前价格不到官方的6折<FaGripfire
+          className='text-amber-600'/></span>
       </div>}
     </div>
   </div>

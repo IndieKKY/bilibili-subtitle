@@ -56,7 +56,7 @@ const FormItem = (props: {
 const Settings = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
-  // const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
+  const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
   // const {value: autoScrollValue, onChange: setAutoScrollValue} = useEventChecked(envData.autoScroll)
   const {value: translateEnableValue, onChange: setTranslateEnableValue} = useEventChecked(envData.translateEnable)
   const {value: summarizeEnableValue, onChange: setSummarizeEnableValue} = useEventChecked(envData.summarizeEnable)
@@ -109,7 +109,7 @@ const Settings = () => {
 
   const onSave = useCallback(() => {
     dispatch(setEnvData({
-      // autoExpand: autoExpandValue,
+      autoExpand: autoExpandValue,
       aiType: aiTypeValue,
       apiKey: apiKeyValue,
       serverUrl: serverUrlValue,
@@ -133,7 +133,7 @@ const Settings = () => {
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [dispatch, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -192,10 +192,10 @@ const Settings = () => {
   }}>
     <div className="flex flex-col gap-3 p-2">
       <Section title='通用配置'>
-        {/* <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'> */}
-        {/*  <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue} */}
-        {/*         onChange={setAutoExpandValue}/> */}
-        {/* </FormItem> */}
+        <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'>
+          <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue}
+                 onChange={setAutoExpandValue}/>
+        </FormItem>
         <FormItem title='主题'>
           <div className="btn-group">
             <button onClick={onSelTheme1} className={classNames('btn btn-xs no-animation', (!themeValue || themeValue === 'system')?'btn-active':'')}>系统</button>

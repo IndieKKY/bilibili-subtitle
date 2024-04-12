@@ -1,6 +1,8 @@
+import {DEFAULT_SERVER_URL_OPENAI} from '../const'
+
 const getServerUrl = (serverUrl?: string) => {
   if (!serverUrl) {
-    return 'https://api.openai.com'
+    return DEFAULT_SERVER_URL_OPENAI
   }
   if (serverUrl.endsWith('/')) {
     serverUrl = serverUrl.slice(0, -1)

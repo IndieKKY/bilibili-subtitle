@@ -7,6 +7,8 @@ interface EnvData {
   apiKey?: string
   serverUrl?: string
   model?: string
+  customModel?: string
+  customModelTokens?: number
   // gemini
   geminiApiKey?: string
 

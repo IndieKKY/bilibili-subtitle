@@ -3,6 +3,8 @@ import {setEnvData, setPage} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
+  CUSTOM_MODEL_TOKENS,
+  DEFAULT_SERVER_URL_OPENAI,
   GEMINI_TOKENS,
   HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
@@ -69,6 +71,8 @@ const Settings = () => {
   const [geminiApiKeyValue, { onChange: onChangeGeminiApiKeyValue }] = useEventTarget({initialValue: envData.geminiApiKey??''})
   const [languageValue, { onChange: onChangeLanguageValue }] = useEventTarget({initialValue: envData.language??LANGUAGE_DEFAULT})
   const [modelValue, { onChange: onChangeModelValue }] = useEventTarget({initialValue: envData.model??MODEL_DEFAULT})
+  const [customModelValue, { onChange: onChangeCustomModelValue }] = useEventTarget({initialValue: envData.customModel})
+  const [customModelTokensValue, setCustomModelTokensValue] = useState(envData.customModelTokens)
   const [summarizeLanguageValue, { onChange: onChangeSummarizeLanguageValue }] = useEventTarget({initialValue: envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT})
   const [hideOnDisableAutoTranslateValue, setHideOnDisableAutoTranslateValue] = useState(envData.hideOnDisableAutoTranslate)
   const [themeValue, setThemeValue] = useState(envData.theme)
@@ -114,6 +118,8 @@ const Settings = () => {
       apiKey: apiKeyValue,
       serverUrl: serverUrlValue,
       model: modelValue,
+      customModel: customModelValue,
+      customModelTokens: customModelTokensValue,
       geminiApiKey: geminiApiKeyValue,
       translateEnable: translateEnableValue,
       language: languageValue,
@@ -133,7 +139,7 @@ const Settings = () => {
     }))
     dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
-  }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     dispatch(setPage(PAGE_MAIN))
@@ -224,7 +230,7 @@ const Settings = () => {
         </FormItem>
         <FormItem title='服务器' htmlFor='serverUrl'>
           <input id='serverUrl' type='text' className='input input-sm input-bordered w-full'
-                 placeholder='默认使用官方地址' value={serverUrlValue}
+                 placeholder={DEFAULT_SERVER_URL_OPENAI} value={serverUrlValue}
                  onChange={e => setServerUrlValue(e.target.value)}/>
         </FormItem>
         <div>
@@ -233,7 +239,7 @@ const Settings = () => {
             <div>官方网址：<a className='link link-primary' href='https://platform.openai.com/' target='_blank'
                              rel="noreferrer">点击访问</a></div>
             <div>服务器地址：<a className='link link-primary'
-                               onClick={() => setServerUrlValue('https://api.openai.com')}
+                               onClick={() => setServerUrlValue(DEFAULT_SERVER_URL_OPENAI)}
                                rel='noreferrer'>点击设置</a></div>
             <div className='flex justify-center font-semibold'>【第三方代理】</div>
             <div>代理网址：<a className='link link-primary' href='https://api.openai-up.com/register?aff=varM'
@@ -251,31 +257,14 @@ const Settings = () => {
             {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
           </select>
         </FormItem>
-        <div className='flex justify-center'>
-          <a className='link text-xs'
-             onClick={togglePromptsFold}>{promptsFold ? '点击查看提示词' : '点击折叠提示词'}</a>
-        </div>
-        {!promptsFold && <div>
-          {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
-            <div>{item.name}</div>
-            <div className='link text-xs' onClick={() => {
-              setPromptsValue({
-                ...promptsValue,
-                // @ts-expect-error
-                [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
-              })
-            }}>点击填充默认
-            </div>
-          </div>} htmlFor={`prompt-${item.type}`}>
-            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
-                      placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
-                        setPromptsValue({
-                          ...promptsValue,
-                          [item.type]: e.target.value
-                        })
-                      }}/>
-          </FormItem>)}
-        </div>}
+        {modelValue === 'custom' && <FormItem title='模型名' htmlFor='customModel'>
+          <input id='customModel' type='text' className='input input-sm input-bordered w-full' placeholder='llama2'
+                 value={customModelValue} onChange={onChangeCustomModelValue}/>
+        </FormItem>}
+        {modelValue === 'custom' && <FormItem title='Token上限' htmlFor='customModelTokens'>
+          <input id='customModelTokens' type='number' className='input input-sm input-bordered w-full' placeholder={''+CUSTOM_MODEL_TOKENS}
+                 value={customModelTokensValue} onChange={e => setCustomModelTokensValue(e.target.value?parseInt(e.target.value):undefined)}/>
+        </FormItem>}
       </Section>}
 
       {aiTypeValue === 'gemini' && <Section title='gemini配置'>
@@ -291,32 +280,29 @@ const Settings = () => {
             <div className='text-xs text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!</div>
           </div>
         </div>
-        <div className='flex justify-center'>
-          <a className='link text-xs'
-             onClick={togglePromptsFold}>{promptsFold ? '点击查看提示词' : '点击折叠提示词'}</a>
-        </div>
-        {!promptsFold && <div>
-          {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
-            <div>{item.name}</div>
-            <div className='link text-xs' onClick={() => {
-              setPromptsValue({
-                ...promptsValue,
-                // @ts-expect-error
-                [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
-              })
-            }}>点击填充默认
-            </div>
-          </div>} htmlFor={`prompt-${item.type}`}>
-            <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
-                      placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
-                        setPromptsValue({
-                          ...promptsValue,
-                          [item.type]: e.target.value
-                        })
-                      }}/>
-          </FormItem>)}
-        </div>}
       </Section>}
+
+      <Section title='提示词配置'>
+        {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
+          <div>{item.name}</div>
+          <div className='link text-xs' onClick={() => {
+            setPromptsValue({
+              ...promptsValue,
+              // @ts-expect-error
+              [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
+            })
+          }}>点击填充默认
+          </div>
+        </div>} htmlFor={`prompt-${item.type}`}>
+          <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
+                    placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
+                      setPromptsValue({
+                        ...promptsValue,
+                        [item.type]: e.target.value
+                      })
+                    }}/>
+        </FormItem>)}
+      </Section>
 
       <Section title={<div className='flex items-center'>
         翻译配置
@@ -329,7 +315,8 @@ const Settings = () => {
                  onChange={setTranslateEnableValue}/>
         </FormItem>
         <FormItem title='目标语言' htmlFor='language'>
-          <select id='language' className="select select-sm select-bordered" value={languageValue} onChange={onChangeLanguageValue}>
+          <select id='language' className="select select-sm select-bordered" value={languageValue}
+                  onChange={onChangeLanguageValue}>
             {LANGUAGES.map(language => <option key={language.code} value={language.code}>{language.name}</option>)}
           </select>
         </FormItem>

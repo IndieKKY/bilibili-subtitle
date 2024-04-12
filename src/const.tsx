@@ -169,7 +169,8 @@ export const SUMMARIZE_THRESHOLD = 100
 export const SUMMARIZE_LANGUAGE_DEFAULT = 'cn'
 export const SUMMARIZE_ALL_THRESHOLD = 5
 export const ASK_ENABLED_DEFAULT = true
-export const SERVER_URL_OPENAI = 'https://api.openai.com'
+export const DEFAULT_SERVER_URL_OPENAI = 'https://api.openai.com'
+export const CUSTOM_MODEL_TOKENS = 16385
 
 export const MODELS = [{
   code: 'gpt-3.5-turbo',
@@ -183,6 +184,9 @@ export const MODELS = [{
   code: 'gpt-3.5-turbo-1106',
   name: 'gpt-3.5-turbo-1106',
   tokens: 16385,
+}, {
+  code: 'custom',
+  name: '自定义',
 }]
 export const GEMINI_TOKENS = 32768
 export const MODEL_DEFAULT = MODELS[1].code

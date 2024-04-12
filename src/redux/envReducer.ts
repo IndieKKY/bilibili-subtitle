@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {find} from 'lodash-es'
 import {getDevData} from '../util/biz_util'
-import {SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../const'
+import {DEFAULT_SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../const'
 
 interface EnvState {
   envData: EnvData
@@ -51,7 +51,7 @@ interface EnvState {
 
 const initialState: EnvState = {
   envData: {
-    serverUrl: SERVER_URL_OPENAI,
+    serverUrl: DEFAULT_SERVER_URL_OPENAI,
     translateEnable: true,
     summarizeEnable: true,
     autoExpand: true,

@@ -15,18 +15,9 @@ import {
   setUrl,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {
-  EVENT_EXPAND,
-  GEMINI_TOKENS,
-  MODEL_DEFAULT,
-  MODEL_MAP,
-  TOTAL_HEIGHT_MAX,
-  TOTAL_HEIGHT_MIN,
-  WORDS_MIN,
-  WORDS_RATE
-} from '../const'
+import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../const'
 import {useInterval} from 'ahooks'
-import {getWholeText} from '../util/biz_util'
+import {getModelMaxTokens, getWholeText} from '../util/biz_util'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -172,7 +163,7 @@ const useSubtitleService = () => {
           if (envData.aiType === 'gemini') {
             size = GEMINI_TOKENS*WORDS_RATE
           } else {
-            size = (MODEL_MAP[envData.model??MODEL_DEFAULT]?.tokens??4000)*WORDS_RATE
+            size = getModelMaxTokens(envData)*WORDS_RATE
           }
         }
         size = Math.max(size, WORDS_MIN)
@@ -209,7 +200,7 @@ const useSubtitleService = () => {
       }
     }
     dispatch(setSegments(segments))
-  }, [data?.body, dispatch, envData.aiType, envData.model, envData.summarizeEnable, envData.words])
+  }, [data?.body, dispatch, envData])
 
   // 每秒更新当前视频时间
   useInterval(() => {

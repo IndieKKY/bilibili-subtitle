@@ -16,7 +16,6 @@ import {
 import {
   LANGUAGE_DEFAULT,
   LANGUAGES_MAP,
-  MODEL_DEFAULT,
   PROMPT_DEFAULTS,
   PROMPT_TYPE_ASK,
   PROMPT_TYPE_TRANSLATE,
@@ -28,7 +27,7 @@ import {
 } from '../const'
 import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
-import {extractJsonArray, extractJsonObject} from '../util/biz_util'
+import {extractJsonArray, extractJsonObject, getModel} from '../util/biz_util'
 import {formatTime} from '../util/util'
 
 const useTranslate = () => {
@@ -104,7 +103,7 @@ const useTranslate = () => {
                 }
               }
             :{
-                model: envData.model??MODEL_DEFAULT,
+                model: getModel(envData),
                 messages: [
                   {
                     role: 'user',
@@ -137,7 +136,7 @@ const useTranslate = () => {
         dispatch(addTaskId(task.id))
       }
     }
-  }, [data?.body, envData.fetchAmount, envData.prompts, envData.aiType, envData.serverUrl, envData.model, envData.apiKey, envData.geminiApiKey, language.name, title, dispatch])
+  }, [data?.body, envData, language.name, title, dispatch])
 
   const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
@@ -173,7 +172,7 @@ const useTranslate = () => {
               }
             }
           :{
-              model: envData.model??MODEL_DEFAULT,
+              model: getModel(envData),
               messages: [
                 {
                   role: 'user',
@@ -198,7 +197,7 @@ const useTranslate = () => {
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, envData.model, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
+  }, [dispatch, envData, summarizeLanguage.name, title])
 
   const addAskTask = useCallback(async (segment: Segment, question: string) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
@@ -228,7 +227,7 @@ const useTranslate = () => {
               }
             }
           :{
-              model: envData.model??MODEL_DEFAULT,
+              model: getModel(envData),
               messages: [
                 {
                   role: 'user',
@@ -251,7 +250,7 @@ const useTranslate = () => {
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, envData.model, envData.prompts, envData.serverUrl, summarizeLanguage.name, title])
+  }, [dispatch, envData, summarizeLanguage.name, title])
 
   const handleTranslate = useMemoizedFn((task: Task, content: string) => {
     let map: {[key: string]: string} = {}

@@ -27,6 +27,9 @@
 
 安装扩展后，在哔哩哔哩网站观看视频时，视频右侧会显示字幕列表面板。
 
+### 使用本地Ollama模型
+如果你使用本地Ollama模型，需要配置环境变量：`OLLAMA_ORIGINS=chrome-extension://bciglihaegkdhoogebcdblfhppoilclp`，否则访问会出现403错误。
+
 ## 交流联系
 
 QQ群：194536885

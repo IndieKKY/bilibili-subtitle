@@ -30,6 +30,8 @@
 ### 使用本地Ollama模型
 如果你使用本地Ollama模型，需要配置环境变量：`OLLAMA_ORIGINS=chrome-extension://bciglihaegkdhoogebcdblfhppoilclp`，否则访问会出现403错误。
 
+然后在插件配置里，apiKey随便填一个，服务器地址填`http://localhost:11434`，模型选自定义，然后填入自定义模型名如`llama2`。
+
 ## 交流联系
 
 QQ群：194536885

@@ -369,22 +369,22 @@ const Body = () => {
           </div>
         </div>
         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-          <div className='font-semibold text-accent flex items-center gap-1'><img src='/immersive-summary.png'
-                                                                                  alt='Immersive Summary logo'
-                                                                                  className='w-8 h-8'/>Immersive Summary
+          <div className='font-semibold text-accent flex items-center gap-1'><img src='/my-article-summarizer.png'
+                                                                                  alt='My Article Summarizer logo'
+                                                                                  className='w-8 h-8'/>My Article Summarizer
           </div>
-          <div className='text-sm px-2 desc'>沉浸式总结，多种方式总结网页文章。</div>
+          <div className='text-sm px-2 desc'>网页文章总结（有每日免费额度，无需apikey）。</div>
           <div className='flex gap-2'>
-            <a title='Chrome商店' href='https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah'
+            <a title='Chrome商店' href='https://chromewebstore.google.com/detail/my-article-summarizer/nanlpakfialleijdidafldapoifndngn'
                onClick={(e) => {
                  e.preventDefault()
-                 openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')
+                 openUrl('https://chromewebstore.google.com/detail/my-article-summarizer/nanlpakfialleijdidafldapoifndngn')
                }} className='link text-sm text-accent'>Chrome商店</a>
             <a title='Crx搜搜(国内可访问)'
-               href='https://www.crxsoso.com/webstore/detail/mcijpllinkhflgpkggimnafkbmpiijah'
+               href='https://www.crxsoso.com/webstore/detail/nanlpakfialleijdidafldapoifndngn'
                onClick={(e) => {
                  e.preventDefault()
-                 openUrl('https://www.crxsoso.com/webstore/detail/mcijpllinkhflgpkggimnafkbmpiijah')
+                 openUrl('https://www.crxsoso.com/webstore/detail/nanlpakfialleijdidafldapoifndngn')
                }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
           </div>
         </div>
@@ -416,11 +416,11 @@ const Body = () => {
       {recommendIdx === 2 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {
           e.preventDefault()
-          openUrl('https://chromewebstore.google.com/detail/mcijpllinkhflgpkggimnafkbmpiijah')
-        }}><img src='/immersive-summary.png'
-                alt='Immersive Summary logo'
-                className='w-8 h-8'/>Immersive Summary</a>
-        <span className='text-sm desc'>沉浸式总结网页文章。</span>
+          openUrl('https://chromewebstore.google.com/detail/nanlpakfialleijdidafldapoifndngn')
+        }}><img src='/my-article-summarizer.png'
+                alt='My Article Summarizer logo'
+                className='w-8 h-8'/>My Article Summarizer</a>
+        <span className='text-sm desc'>网页文章总结。</span>
       </div>}
       {recommendIdx === 3 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'>
         <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => {

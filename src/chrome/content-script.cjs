@@ -24,7 +24,7 @@ const timerIframe = setInterval(function () {
       const iframe = document.createElement('iframe')
       iframe.id = IFRAME_ID
       iframe.src = chrome.runtime.getURL('index.html')
-      iframe.style = 'border: none; width: 100%; height: 44px;'
+      iframe.style = 'border: none; width: 100%; height: 44px;margin-bottom: 3px;'
       iframe.allow = 'clipboard-read; clipboard-write;'
       if (vKey) {
         iframe.dataset[vKey] = danmukuBox?.dataset[vKey]

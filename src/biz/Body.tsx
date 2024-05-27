@@ -257,6 +257,7 @@ const Body = () => {
             e.preventDefault()
             e.stopPropagation()
             onAsk()
+            dispatch(setSearchText(''))
           }
         }
       }}/>

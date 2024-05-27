@@ -45,6 +45,11 @@ interface EnvState {
   askError?: string
   askContent?: string
 
+  /**
+   * 是否输入中（中文）
+   */
+  inputting: boolean
+
   searchText: string
   searchResult: Set<number>
 }
@@ -70,6 +75,8 @@ const initialState: EnvState = {
   fold: true,
   data: import.meta.env.VITE_ENV === 'web-dev' ? getDevData() : undefined,
   transResults: {},
+
+  inputting: false,
 
   searchText: '',
   searchResult: new Set(),
@@ -288,6 +295,9 @@ export const slice = createSlice({
     setFold: (state, action: PayloadAction<boolean>) => {
       state.fold = action.payload
     },
+    setInputting: (state, action: PayloadAction<boolean>) => {
+      state.inputting = action.payload
+    },
   },
 })
 
@@ -335,6 +345,7 @@ export const {
   setFold,
   setSearchText,
   setSearchResult,
+  setInputting,
 } = slice.actions
 
 export default slice.reducer

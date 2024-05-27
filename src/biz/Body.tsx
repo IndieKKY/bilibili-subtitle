@@ -40,11 +40,11 @@ import useTranslate from '../hooks/useTranslate'
 import {getSummarize} from '../util/biz_util'
 import {openUrl} from '@kky002/kky-util'
 import Markdown from '../components/Markdown'
-import {random} from 'lodash-es'
 import useKeyService from '../hooks/useKeyService'
 
 const Body = () => {
   const dispatch = useAppDispatch()
+  const inputting = useAppSelector(state => state.env.inputting)
   const noVideo = useAppSelector(state => state.env.noVideo)
   const autoTranslate = useAppSelector(state => state.env.autoTranslate)
   const autoScroll = useAppSelector(state => state.env.autoScroll)
@@ -56,7 +56,7 @@ const Body = () => {
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
   const {addSummarizeTask, addAskTask} = useTranslate()
-  const infos = useAppSelector(state => state.env.infos)
+  // const infos = useAppSelector(state => state.env.infos)
   const askFold = useAppSelector(state => state.env.askFold)
   const askQuestion = useAppSelector(state => state.env.askQuestion)
   const askContent = useAppSelector(state => state.env.askContent)
@@ -71,7 +71,7 @@ const Body = () => {
   const title = useAppSelector(state => state.env.title)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
-  const recommendIdx = useMemo(() => random(0, 3), [])
+  // const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
   }, [envData.askEnabled, envData.searchEnabled, segments])
@@ -79,7 +79,7 @@ const Body = () => {
     let placeholder = ''
     if (envData.searchEnabled) {
       if (envData.askEnabled??ASK_ENABLED_DEFAULT) {
-        placeholder = '搜索或提问字幕内容'
+        placeholder = '搜索或提问字幕内容(按Enter提问)'
       } else {
         placeholder = '搜索字幕内容'
       }
@@ -254,7 +254,16 @@ const Body = () => {
 
     {/* search */}
     {showSearchInput && <div className='px-2 py-1 flex flex-col relative'>
-      <input type='text' className='input input-xs bg-base-200' placeholder={searchPlaceholder} value={searchText} onChange={onSearchTextChange}/>
+      <input type='text' className='input input-xs bg-base-200' placeholder={searchPlaceholder} value={searchText} onChange={onSearchTextChange} onKeyDown={e => {
+        // enter
+        if (e.key === 'Enter') {
+          if (!inputting) {
+            e.preventDefault()
+            e.stopPropagation()
+            onAsk()
+          }
+        }
+      }}/>
       {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle/></button>}
     </div>}
 

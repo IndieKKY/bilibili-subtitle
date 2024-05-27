@@ -1,14 +1,39 @@
 import {useEffect} from 'react'
 import {useMemoizedFn} from 'ahooks/es'
-import {useAppSelector} from './redux'
+import {useAppDispatch, useAppSelector} from './redux'
 import useSubtitle from './useSubtitle'
+import {setInputting} from '../redux/envReducer'
 
 const useKeyService = () => {
+  const dispatch = useAppDispatch()
+  const inputting = useAppSelector(state => state.env.inputting)
   const curIdx = useAppSelector(state => state.env.curIdx)
   const data = useAppSelector(state => state.env.data)
   const {move} = useSubtitle()
 
+  // 输入中
+  useEffect(() => {
+    const onInputtingStart = (e: CompositionEvent) => {
+      dispatch(setInputting(true))
+    }
+    const onInputtingEnd = (e: CompositionEvent) => {
+      dispatch(setInputting(false))
+    }
+
+    document.addEventListener('compositionstart', onInputtingStart)
+    document.addEventListener('compositionend', onInputtingEnd)
+    return () => {
+      document.removeEventListener('compositionstart', onInputtingStart)
+      document.removeEventListener('compositionend', onInputtingEnd)
+    }
+  }, [dispatch])
+
   const onKeyDown = useMemoizedFn((e: KeyboardEvent) => {
+    // 当前在输入中（如中文输入法）
+    if (inputting) {
+      return
+    }
+
     // 有按其他控制键时，不触发
     if (e.ctrlKey || e.metaKey || e.shiftKey) {
       return

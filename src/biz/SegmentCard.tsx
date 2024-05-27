@@ -108,9 +108,9 @@ const Summarize = (props: {
           {summary.content.summary}
         </div>}
       {summary?.type === 'question' && (summary.content != null) &&
-        <div className={classNames('font-medium max-w-[90%] flex flex-col gap-1', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
+        <div className={classNames('max-w-[90%] flex flex-col gap-1', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
           {summary.content.map((question: any, idx: number) => <div key={idx}>
-            <h2 className={classNames('font-medium underline', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.q}</h2>
+            <h2 className={classNames('font-semibold underline', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.q}</h2>
             <div className={classNames('font-normal', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.a}</div>
           </div>)}
         </div>}

@@ -8,6 +8,7 @@ export const STORAGE_TEMP = 'bilibili-subtitle_temp'
 export const PROMPT_TYPE_TRANSLATE = 'translate'
 export const PROMPT_TYPE_SUMMARIZE_OVERVIEW = 'summarize_overview'
 export const PROMPT_TYPE_SUMMARIZE_KEYPOINT = 'summarize_keypoint'
+export const PROMPT_TYPE_SUMMARIZE_QUESTION = 'summarize_question'
 export const PROMPT_TYPE_SUMMARIZE_BRIEF = 'summarize_brief'
 export const PROMPT_TYPE_ASK = 'ask'
 export const PROMPT_TYPES = [{
@@ -22,6 +23,9 @@ export const PROMPT_TYPES = [{
 }, {
   name: '总结',
   type: PROMPT_TYPE_SUMMARIZE_BRIEF,
+}, {
+  name: '问题',
+  type: PROMPT_TYPE_SUMMARIZE_QUESTION,
 }, {
   name: '提问',
   type: PROMPT_TYPE_ASK,
@@ -45,6 +49,12 @@ export const SUMMARIZE_TYPES = {
     desc: '完整的要点提取',
     downloadName: '💡视频要点💡',
     promptType: PROMPT_TYPE_SUMMARIZE_KEYPOINT,
+  },
+  question: {
+    name: '问题',
+    desc: '常见问题',
+    downloadName: '💡常见问题💡',
+    promptType: PROMPT_TYPE_SUMMARIZE_QUESTION,
   },
 }
 
@@ -124,6 +134,46 @@ The video's subtitles:
 '''
 {{segment}}
 '''`,
+  [PROMPT_TYPE_SUMMARIZE_QUESTION]: `You are a helpful assistant that skilled at extracting questions from video subtitle.
+
+## Context
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{segment}}
+'''
+
+## Command
+
+Accurately extract key questions and their corresponding answers from the video subtitles based on the actual content provided. The number of questions should be between 3 and 5.
+
+- Identify questions as sentences starting with interrogative words (e.g., "What", "How", "Why") and extract the following sentences that directly answer these questions.
+- Include only those questions and answers that are relevant to the main points of the video, and ensure they cover different aspects of the video's content.
+- If an answer spans multiple non-consecutive parts of the subtitles, concatenate them into a coherent response without adding any information not present in the subtitles.
+- In cases where the number of potential Q&As exceeds 5, prioritize the most informative and directly answered ones.
+- If clear questions and answers are not available in the subtitles, refrain from creating them and instead note the absence of direct Q&As.
+- Answer in language '{{language}}'.
+- Format the output in markdown json format, as specified.
+
+## Output format
+
+Provide an example to illustrate the expected output:
+
+\`\`\`json
+[
+    {
+        "q": "What is the main theme of the video?",
+        "a": "The main theme of the video is explained as..."
+    },
+    {
+        "q": "How is the topic developed?",
+        "a": "The topic is developed through various examples, including..."
+    }
+]
+\`\`\`
+`,
   [PROMPT_TYPE_ASK]: `You are a helpful assistant who answers question related to video subtitles.
 Answer in language '{{language}}'.
 

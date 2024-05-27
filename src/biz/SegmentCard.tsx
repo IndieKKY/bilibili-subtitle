@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import {FaClipboardList} from 'react-icons/fa'
 import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../const'
 import useTranslate from '../hooks/useTranslate'
-import {BsDashSquare, BsPlusSquare, CgFileDocument, GrOverview, RiFileCopy2Line} from 'react-icons/all'
+import {BsDashSquare, BsPlusSquare, CgFileDocument, FaQuestion, GrOverview, RiFileCopy2Line} from 'react-icons/all'
 import toast from 'react-hot-toast'
 import {getLastTime, getSummaryStr, isSummaryEmpty, parseStrTimeToSeconds} from '../util/biz_util'
 import {useInViewport} from 'ahooks'
@@ -107,6 +107,13 @@ const Summarize = (props: {
         <div className={classNames('font-medium max-w-[90%]', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
           {summary.content.summary}
         </div>}
+      {summary?.type === 'question' && (summary.content != null) &&
+        <div className={classNames('font-medium max-w-[90%] flex flex-col gap-1', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
+          {summary.content.map((question: any, idx: number) => <div key={idx}>
+            <h2 className={classNames('font-medium underline', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.q}</h2>
+            <div className={classNames('font-normal', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.a}</div>
+          </div>)}
+        </div>}
     </div>
     <div className='flex flex-col justify-center items-center'>
       {segment.text.length < SUMMARIZE_THRESHOLD && <div className='desc-lighter text-xs'>文字过短，无法总结.</div>}
@@ -189,6 +196,12 @@ const SegmentCard = (props: {
     }))
   }, [dispatch])
 
+  const onSelQuestion = useCallback(() => {
+    dispatch(setTempData({
+      curSummaryType: 'question'
+    }))
+  }, [dispatch])
+
   return <div
     className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1 shadow', showCurrent && 'shadow-primary')}>
     <div className='relative flex justify-center min-h-[20px]'>
@@ -203,6 +216,7 @@ const SegmentCard = (props: {
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'brief' && 'tab-active')} onClick={onSelBrief}><CgFileDocument/>总结</a>
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'overview' && 'tab-active')} onClick={onSelOverview}><GrOverview/>概览</a>
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'keypoint' && 'tab-active')} onClick={onSelKeypoint}><FaClipboardList/>要点</a>
+        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'question' && 'tab-active')} onClick={onSelQuestion}><FaQuestion/>问题</a>
         <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
       </div>}
       <div

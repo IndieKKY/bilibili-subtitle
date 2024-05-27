@@ -140,4 +140,4 @@ interface BriefSummary extends Summary {
 }
 
 type SummaryStatus = 'init' | 'pending' | 'done'
-type SummaryType = 'overview' | 'keypoint' | 'brief'
+type SummaryType = 'overview' | 'keypoint' | 'brief' | 'question'

@@ -22,7 +22,7 @@ import {
   TRANSLATE_FETCH_STEP,
   WORDS_RATE,
 } from '../const'
-import {FaGripfire, IoWarning} from 'react-icons/all'
+import {IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
@@ -241,14 +241,14 @@ const Settings = () => {
             <div>服务器地址：<a className='link link-primary'
                                onClick={() => setServerUrlValue(DEFAULT_SERVER_URL_OPENAI)}
                                rel='noreferrer'>点击设置</a></div>
-            <div className='flex justify-center font-semibold'>【第三方代理】</div>
-            <div>代理网址：<a className='link link-primary' href='https://api.openai-up.com/register?aff=varM'
-                             target='_blank'
-                             rel="noreferrer">点击访问</a></div>
-            <div>服务器地址：<a className='link link-primary'
-                               onClick={() => setServerUrlValue('https://api.openai-up.com')}
-                               rel='noreferrer'>点击设置</a></div>
-            <div className='text-amber-600 flex justify-center items-center'><FaGripfire/>目前价格不到官方价格的6折<FaGripfire/></div>
+            {/* <div className='flex justify-center font-semibold'>【第三方代理】</div> */}
+            {/* <div>代理网址：<a className='link link-primary' href='https://api.openai-up.com/register?aff=varM' */}
+            {/*                 target='_blank' */}
+            {/*                 rel="noreferrer">点击访问</a></div> */}
+            {/* <div>服务器地址：<a className='link link-primary' */}
+            {/*                   onClick={() => setServerUrlValue('https://api.openai-up.com')} */}
+            {/*                   rel='noreferrer'>点击设置</a></div> */}
+            {/* <div className='text-amber-600 flex justify-center items-center'><FaGripfire/>目前价格不到官方价格的6折<FaGripfire/></div> */}
           </div>
         </div>
         <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>

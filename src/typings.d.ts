@@ -105,6 +105,17 @@ interface Summary {
   content?: any
 }
 
+interface AskInfo {
+  id: string
+  fold?: boolean
+  question: string
+  status: SummaryStatus
+  error?: string
+  content?: string
+}
+
+type PartialOfAskInfo = Partial<PartOfAskInfo>
+
 /**
  * 概览
  */

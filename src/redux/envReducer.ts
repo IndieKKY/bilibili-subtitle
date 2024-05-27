@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {find} from 'lodash-es'
+import {find, findIndex} from 'lodash-es'
 import {getDevData} from '../util/biz_util'
 import {DEFAULT_SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../const'
 
@@ -39,11 +39,7 @@ interface EnvState {
   lastSummarizeTime?: number
 
   // ask
-  askFold?: boolean
-  askQuestion?: string
-  askStatus: SummaryStatus
-  askError?: string
-  askContent?: string
+  asks: AskInfo[]
 
   /**
    * 是否输入中（中文）
@@ -66,7 +62,6 @@ const initialState: EnvState = {
   tempData: {
     curSummaryType: 'overview',
   },
-  askStatus: 'init',
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
   currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
@@ -80,6 +75,8 @@ const initialState: EnvState = {
 
   searchText: '',
   searchResult: new Set(),
+
+  asks: [],
 }
 
 export const slice = createSlice({
@@ -211,26 +208,20 @@ export const slice = createSlice({
         }
       }
     },
-    setAskFold: (state, action: PayloadAction<boolean>) => {
-      state.askFold = action.payload
+    addAskInfo: (state, action: PayloadAction<AskInfo>) => {
+      state.asks.push(action.payload)
     },
-    setAskQuestion: (state, action: PayloadAction<string | undefined>) => {
-      state.askQuestion = action.payload
+    delAskInfo: (state, action: PayloadAction<string>) => {
+      state.asks = state.asks.filter(ask => ask.id !== action.payload)
     },
-    setAskContent: (state, action: PayloadAction<{
-      content?: any
-    }>) => {
-      state.askContent = action.payload.content
-    },
-    setAskStatus: (state, action: PayloadAction<{
-      status: SummaryStatus
-    }>) => {
-      state.askStatus = action.payload.status
-    },
-    setAskError: (state, action: PayloadAction<{
-      error?: string
-    }>) => {
-      state.askError = action.payload.error
+    mergeAskInfo: (state, action: PayloadAction<PartialOfAskInfo>) => {
+      const idx = findIndex(state.asks, {id: action.payload.id})
+      if (idx >= 0) {
+        state.asks[idx] = {
+          ...state.asks[idx],
+          ...action.payload,
+        }
+      }
     },
     setSegmentFold: (state, action: PayloadAction<{
       segmentStartIdx: number
@@ -303,11 +294,6 @@ export const slice = createSlice({
 
 export const {
   setUrl,
-  setAskFold,
-  setAskQuestion,
-  setAskStatus,
-  setAskError,
-  setAskContent,
   setTempReady,
   setTempData,
   setUploadedTranscript,
@@ -346,6 +332,9 @@ export const {
   setSearchText,
   setSearchResult,
   setInputting,
+  addAskInfo,
+  delAskInfo,
+  mergeAskInfo,
 } = slice.actions
 
 export default slice.reducer

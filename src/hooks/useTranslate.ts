@@ -4,9 +4,7 @@ import {
   addTaskId,
   addTransResults,
   delTaskId,
-  setAskContent,
-  setAskError,
-  setAskStatus,
+  mergeAskInfo,
   setLastSummarizeTime,
   setLastTransTime,
   setSummaryContent,
@@ -199,7 +197,7 @@ const useTranslate = () => {
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
 
-  const addAskTask = useCallback(async (segment: Segment, question: string) => {
+  const addAskTask = useCallback(async (id: string, segment: Segment, question: string) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
       let prompt: string = envData.prompts?.[PROMPT_TYPE_ASK]??PROMPT_DEFAULTS[PROMPT_TYPE_ASK]
       // replace params
@@ -243,10 +241,14 @@ const useTranslate = () => {
           // startIdx: segment.startIdx,
           apiKey: envData.apiKey,
           geminiApiKey: envData.geminiApiKey,
+          askId: id,
         }
       }
       console.debug('addAskTask', taskDef)
-      dispatch(setAskStatus({status: 'pending'}))
+      dispatch(mergeAskInfo({
+        id,
+        status: 'pending'
+      }))
       const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
       dispatch(addTaskId(task.id))
     }
@@ -304,9 +306,13 @@ const useTranslate = () => {
   })
 
   const handleAsk = useMemoizedFn((task: Task, content?: string) => {
-    dispatch(setAskContent({content}))
-    dispatch(setAskStatus({status: 'done'}))
-    dispatch(setAskError({error: task.error}))
+    dispatch(mergeAskInfo({
+      id: task.def.extra.askId,
+      content,
+      status: 'done',
+      error: task.error,
+    }))
+
     console.debug('setAsk', content, task.error)
   })
 

@@ -88,6 +88,9 @@ export const isSummaryEmpty = (summary: Summary) => {
   } else if (summary.type === 'brief') {
     const content: string[] = summary.content??''
     return content.length === 0
+  } else if (summary.type === 'question') {
+    const content: any[] = summary.content??[]
+    return content.length === 0
   }
   return true
 }
@@ -109,6 +112,11 @@ export const getSummaryStr = (summary: Summary) => {
       summary: ''
     }
     s += content.summary + '\n'
+  } else if (summary.type === 'question') {
+    const content: Array<{ q: string, a: string }> = summary.content ?? []
+    s += content.map(item => {
+      return item.q + '\n' + item.a + '\n'
+    }).join('\n')
   }
   return s
 }

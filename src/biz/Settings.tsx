@@ -282,28 +282,6 @@ const Settings = () => {
         </div>
       </Section>}
 
-      <Section title='提示词配置'>
-        {PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
-          <div>{item.name}</div>
-          <div className='link text-xs' onClick={() => {
-            setPromptsValue({
-              ...promptsValue,
-              // @ts-expect-error
-              [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
-            })
-          }}>点击填充默认
-          </div>
-        </div>} htmlFor={`prompt-${item.type}`}>
-          <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
-                    placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
-                      setPromptsValue({
-                        ...promptsValue,
-                        [item.type]: e.target.value
-                      })
-                    }}/>
-        </FormItem>)}
-      </Section>
-
       <Section title={<div className='flex items-center'>
         翻译配置
         {!apiKeySetted && <div className='tooltip tooltip-right ml-1' data-tip='未设置ApiKey无法使用'>
@@ -393,6 +371,32 @@ const Settings = () => {
                  onChange={setAskEnabledValue}/>
         </FormItem>
       </Section>
+
+      <Section title='提示词配置'>
+        <div className='flex justify-center'>
+          <a className='text-xs link link-primary' onClick={togglePromptsFold}>点击{promptsFold ? '展开' : '折叠'}</a>
+        </div>
+        {!promptsFold && PROMPT_TYPES.map((item, idx) => <FormItem key={item.type} title={<div>
+          <div>{item.name}</div>
+          <div className='link text-xs' onClick={() => {
+            setPromptsValue({
+              ...promptsValue,
+              // @ts-expect-error
+              [item.type]: PROMPT_DEFAULTS[item.type] ?? ''
+            })
+          }}>点击填充默认
+          </div>
+        </div>} htmlFor={`prompt-${item.type}`}>
+          <textarea id={`prompt-${item.type}`} className='mt-2 textarea input-bordered w-full'
+                    placeholder='留空使用默认提示词' value={promptsValue[item.type] ?? ''} onChange={(e) => {
+                      setPromptsValue({
+                        ...promptsValue,
+                        [item.type]: e.target.value
+                      })
+                    }}/>
+        </FormItem>)}
+      </Section>
+
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>
         <button className='btn btn-sm' onClick={onCancel}>取消</button>

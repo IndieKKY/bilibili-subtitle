@@ -75,26 +75,27 @@ const MoreBtn = (props: Props) => {
       return
     }
 
-    let s, fileName
+    let fileName = title
+    let s, suffix
     if (!downloadType || downloadType === 'text') {
       s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += item.content + '\n'
       }
-      fileName = 'download.txt'
+      suffix = 'txt'
     } else if (downloadType === 'textWithTime') {
       s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += formatTime(item.from) + ' ' + item.content + '\n'
       }
-      fileName = 'download.txt'
+      suffix = 'txt'
     } else if (downloadType === 'article') {
       s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       for (const item of data.body) {
         s += item.content + ', '
       }
       s = s.substring(0, s.length - 1) // remove last ','
-      fileName = 'download.txt'
+      suffix = 'txt'
     } else if (downloadType === 'srt') {
       /**
        * 1
@@ -113,7 +114,7 @@ const MoreBtn = (props: Props) => {
         s += ss
       }
       s = s.substring(0, s.length - 1)// remove last '\n'
-      fileName = 'download.srt'
+      suffix = 'srt'
     } else if (downloadType === 'vtt') {
       /**
        * WEBVTT title
@@ -134,21 +135,22 @@ const MoreBtn = (props: Props) => {
         s += ss
       }
       s = s.substring(0, s.length - 1)// remove last '\n'
-      fileName = 'download.vtt'
+      suffix = 'vtt'
     } else if (downloadType === 'json') {
       s = JSON.stringify(data)
-      fileName = 'download.json'
+      suffix = 'json'
     } else if (downloadType === 'summarize') {
       s = `${title??'无标题'}\n${url??'无链接'}\n\n`
       const [success, content] = getSummarize(title, segments, curSummaryType)
       if (!success) return
       s += content
-      fileName = '总结.txt'
+      fileName += ' - 总结'
+      suffix = 'txt'
     } else {
       return
     }
     if (download) {
-      downloadText(s, fileName)
+      downloadText(s, fileName+'.'+suffix)
     } else {
       navigator.clipboard.writeText(s).then(() => {
         toast.success('复制成功')

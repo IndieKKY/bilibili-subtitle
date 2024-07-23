@@ -11,6 +11,7 @@ import {
   LANGUAGES,
   MODEL_DEFAULT,
   MODEL_MAP,
+  MODEL_TIP,
   MODELS,
   PAGE_MAIN,
   PROMPT_DEFAULTS,
@@ -257,13 +258,18 @@ const Settings = () => {
             {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
           </select>
         </FormItem>
+        <div className='desc text-xs'>
+          {MODEL_TIP}
+        </div>
         {modelValue === 'custom' && <FormItem title='模型名' htmlFor='customModel'>
           <input id='customModel' type='text' className='input input-sm input-bordered w-full' placeholder='llama2'
                  value={customModelValue} onChange={onChangeCustomModelValue}/>
         </FormItem>}
         {modelValue === 'custom' && <FormItem title='Token上限' htmlFor='customModelTokens'>
-          <input id='customModelTokens' type='number' className='input input-sm input-bordered w-full' placeholder={''+CUSTOM_MODEL_TOKENS}
-                 value={customModelTokensValue} onChange={e => setCustomModelTokensValue(e.target.value?parseInt(e.target.value):undefined)}/>
+          <input id='customModelTokens' type='number' className='input input-sm input-bordered w-full'
+                 placeholder={'' + CUSTOM_MODEL_TOKENS}
+                 value={customModelTokensValue}
+                 onChange={e => setCustomModelTokensValue(e.target.value ? parseInt(e.target.value) : undefined)}/>
         </FormItem>}
       </Section>}
 
@@ -274,10 +280,12 @@ const Settings = () => {
         </FormItem>
         <div>
           <div className='desc text-xs'>
-            <div>官方网址：<a className='link link-primary' href='https://makersuite.google.com/app/apikey' target='_blank'
-                            rel="noreferrer">Google AI Studio</a> (目前免费)
+            <div>官方网址：<a className='link link-primary' href='https://makersuite.google.com/app/apikey'
+                             target='_blank'
+                             rel="noreferrer">Google AI Studio</a> (目前免费)
             </div>
-            <div className='text-xs text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!</div>
+            <div className='text-xs text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!
+            </div>
           </div>
         </div>
       </Section>}

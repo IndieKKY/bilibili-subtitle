@@ -1,5 +1,10 @@
 import {SyntheticEvent} from 'react'
 
+export const isEdgeBrowser = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.includes('edg/') && !userAgent.includes('edge/');
+}
+
 export const formatTime = (time: number) => {
   if (!time) return '00:00'
 

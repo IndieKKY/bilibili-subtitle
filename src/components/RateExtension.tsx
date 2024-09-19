@@ -4,6 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { setTempData } from '../redux/envReducer';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { openUrl } from '@kky002/kky-util';
+import { isEdgeBrowser } from '../util/util';
 
 const RateExtension: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -15,7 +16,11 @@ const RateExtension: React.FC = () => {
       reviewed: true
     }))
     // Chrome Web Store URL for your extension
-    openUrl(import.meta.env.VITE_REVIEW_URL)
+    if (isEdgeBrowser()) {
+      openUrl('https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan')
+    } else {
+      openUrl('https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp/reviews')
+    }
   };
 
   if (reviewed === true || reviewed === undefined) return null;

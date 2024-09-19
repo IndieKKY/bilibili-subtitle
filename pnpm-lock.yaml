@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@crxjs/vite-plugin':
         specifier: ^1.0.14
-        version: 1.0.14(vite@3.1.1)
+        version: 1.0.14(vite@3.1.1(less@4.1.3))
       '@kky002/kky-hooks':
         specifier: ^1.2.1
         version: 1.2.1
@@ -28,10 +28,10 @@ importers:
         version: 2.11.6
       '@reduxjs/toolkit':
         specifier: ^1.8.5
-        version: 1.8.5(react-redux@8.0.2)(react@18.2.0)
+        version: 1.8.5(react-redux@8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(redux@4.2.0))(react@18.2.0)
       '@tippyjs/react':
         specifier: ^4.2.6
-        version: 4.2.6(react-dom@18.2.0)(react@18.2.0)
+        version: 4.2.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       ahooks:
         specifier: ^3.7.1
         version: 3.7.1(react@18.2.0)
@@ -40,7 +40,7 @@ importers:
         version: 2.3.2
       daisyui:
         specifier: ^2.42.1
-        version: 2.42.1(autoprefixer@10.4.13)(postcss@8.4.19)
+        version: 2.42.1(autoprefixer@10.4.13(postcss@8.4.19))(postcss@8.4.19)
       js-search:
         specifier: ^2.0.0
         version: 2.0.0
@@ -64,7 +64,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       react-hot-toast:
         specifier: ^2.4.0
-        version: 2.4.0(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.4.0(csstype@3.1.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-icons:
         specifier: ^4.4.0
         version: 4.4.0(react@18.2.0)
@@ -73,10 +73,10 @@ importers:
         version: 8.0.3(@types/react@18.0.20)(react@18.2.0)
       react-popper:
         specifier: ^2.3.0
-        version: 2.3.0(@popperjs/core@2.11.6)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.3.0(@popperjs/core@2.11.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-redux:
         specifier: ^8.0.2
-        version: 8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
+        version: 8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(redux@4.2.0)
       react-slider:
         specifier: ^2.0.4
         version: 2.0.4(react@18.2.0)
@@ -98,10 +98,10 @@ importers:
     devDependencies:
       '@tailwindcss/line-clamp':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.2.4)
+        version: 0.4.2(tailwindcss@3.2.4(postcss@8.4.19))
       '@tailwindcss/typography':
         specifier: ^0.5.8
-        version: 0.5.8(tailwindcss@3.2.4)
+        version: 0.5.8(tailwindcss@3.2.4(postcss@8.4.19))
       '@types/chrome':
         specifier: ^0.0.203
         version: 0.0.203
@@ -131,13 +131,13 @@ importers:
         version: 8.3.4
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.37.0
-        version: 5.37.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)(typescript@4.8.3)
+        version: 5.37.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)(typescript@4.8.3)
       '@typescript-eslint/parser':
         specifier: ^5.37.0
         version: 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       '@vitejs/plugin-react':
         specifier: ^2.1.0
-        version: 2.1.0(vite@3.1.1)
+        version: 2.1.0(vite@3.1.1(less@4.1.3))
       autoprefixer:
         specifier: ^10.4.13
         version: 10.4.13(postcss@8.4.19)
@@ -146,13 +146,13 @@ importers:
         version: 8.22.0
       eslint-config-standard:
         specifier: ^17.0.0
-        version: 17.0.0(eslint-plugin-import@2.26.0)(eslint-plugin-n@15.2.5)(eslint-plugin-promise@6.0.1)(eslint@8.22.0)
+        version: 17.0.0(eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0))(eslint-plugin-n@15.2.5(eslint@8.22.0))(eslint-plugin-promise@6.0.1(eslint@8.22.0))(eslint@8.22.0)
       eslint-config-standard-with-typescript:
         specifier: ^23.0.0
-        version: 23.0.0(@typescript-eslint/eslint-plugin@5.37.0)(eslint-plugin-import@2.26.0)(eslint-plugin-n@15.2.5)(eslint-plugin-promise@6.0.1)(eslint@8.22.0)(typescript@4.8.3)
+        version: 23.0.0(@typescript-eslint/eslint-plugin@5.37.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)(typescript@4.8.3))(eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0))(eslint-plugin-n@15.2.5(eslint@8.22.0))(eslint-plugin-promise@6.0.1(eslint@8.22.0))(eslint@8.22.0)(typescript@4.8.3)
       eslint-plugin-import:
         specifier: ^2.26.0
-        version: 2.26.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)
+        version: 2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)
       eslint-plugin-n:
         specifier: ^15.2.5
         version: 15.2.5(eslint@8.22.0)
@@ -170,7 +170,7 @@ importers:
         version: 8.4.19
       rollup-plugin-visualizer:
         specifier: ^5.8.3
-        version: 5.8.3
+        version: 5.8.3(rollup@2.78.1)
       tailwindcss:
         specifier: ^3.2.4
         version: 3.2.4(postcss@8.4.19)
@@ -2653,7 +2653,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  '@crxjs/vite-plugin@1.0.14(vite@3.1.1)':
+  '@crxjs/vite-plugin@1.0.14(vite@3.1.1(less@4.1.3))':
     dependencies:
       '@rollup/pluginutils': 4.2.1
       '@webcomponents/custom-elements': 1.5.1
@@ -2671,7 +2671,7 @@ snapshots:
       rollup: 2.78.1
       vite: 3.1.1(less@4.1.3)
     optionalDependencies:
-      '@vitejs/plugin-react': 2.1.0(vite@3.1.1)
+      '@vitejs/plugin-react': 2.1.0(vite@3.1.1(less@4.1.3))
     transitivePeerDependencies:
       - supports-color
 
@@ -2797,14 +2797,15 @@ snapshots:
 
   '@popperjs/core@2.11.6': {}
 
-  '@reduxjs/toolkit@1.8.5(react-redux@8.0.2)(react@18.2.0)':
+  '@reduxjs/toolkit@1.8.5(react-redux@8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(redux@4.2.0))(react@18.2.0)':
     dependencies:
       immer: 9.0.16
-      react: 18.2.0
-      react-redux: 8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
       redux: 4.2.0
       redux-thunk: 2.4.1(redux@4.2.0)
       reselect: 4.1.6
+    optionalDependencies:
+      react: 18.2.0
+      react-redux: 8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(redux@4.2.0)
 
   '@rollup/pluginutils@4.2.1':
     dependencies:
@@ -2816,11 +2817,11 @@ snapshots:
       lodash.orderby: 4.6.0
       lodash.pick: 4.4.0
 
-  '@tailwindcss/line-clamp@0.4.2(tailwindcss@3.2.4)':
+  '@tailwindcss/line-clamp@0.4.2(tailwindcss@3.2.4(postcss@8.4.19))':
     dependencies:
       tailwindcss: 3.2.4(postcss@8.4.19)
 
-  '@tailwindcss/typography@0.5.8(tailwindcss@3.2.4)':
+  '@tailwindcss/typography@0.5.8(tailwindcss@3.2.4(postcss@8.4.19))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
@@ -2828,7 +2829,7 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.2.4(postcss@8.4.19)
 
-  '@tippyjs/react@4.2.6(react-dom@18.2.0)(react@18.2.0)':
+  '@tippyjs/react@4.2.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2908,7 +2909,7 @@ snapshots:
 
   '@types/uuid@8.3.4': {}
 
-  '@typescript-eslint/eslint-plugin@5.37.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)(typescript@4.8.3)':
+  '@typescript-eslint/eslint-plugin@5.37.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)(typescript@4.8.3)':
     dependencies:
       '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       '@typescript-eslint/scope-manager': 5.37.0
@@ -2921,6 +2922,7 @@ snapshots:
       regexpp: 3.2.0
       semver: 7.3.7
       tsutils: 3.21.0(typescript@4.8.3)
+    optionalDependencies:
       typescript: 4.8.3
     transitivePeerDependencies:
       - supports-color
@@ -2932,6 +2934,7 @@ snapshots:
       '@typescript-eslint/typescript-estree': 5.37.0(typescript@4.8.3)
       debug: 4.3.4
       eslint: 8.22.0
+    optionalDependencies:
       typescript: 4.8.3
     transitivePeerDependencies:
       - supports-color
@@ -2948,6 +2951,7 @@ snapshots:
       debug: 4.3.4
       eslint: 8.22.0
       tsutils: 3.21.0(typescript@4.8.3)
+    optionalDependencies:
       typescript: 4.8.3
     transitivePeerDependencies:
       - supports-color
@@ -2963,6 +2967,7 @@ snapshots:
       is-glob: 4.0.3
       semver: 7.3.7
       tsutils: 3.21.0(typescript@4.8.3)
+    optionalDependencies:
       typescript: 4.8.3
     transitivePeerDependencies:
       - supports-color
@@ -2985,7 +2990,7 @@ snapshots:
       '@typescript-eslint/types': 5.37.0
       eslint-visitor-keys: 3.3.0
 
-  '@vitejs/plugin-react@2.1.0(vite@3.1.1)':
+  '@vitejs/plugin-react@2.1.0(vite@3.1.1(less@4.1.3))':
     dependencies:
       '@babel/core': 7.19.1
       '@babel/plugin-transform-react-jsx': 7.19.0(@babel/core@7.19.1)
@@ -3284,7 +3289,7 @@ snapshots:
 
   csstype@3.1.2: {}
 
-  daisyui@2.42.1(autoprefixer@10.4.13)(postcss@8.4.19):
+  daisyui@2.42.1(autoprefixer@10.4.13(postcss@8.4.19))(postcss@8.4.19):
     dependencies:
       autoprefixer: 10.4.13(postcss@8.4.19)
       color: 4.2.3
@@ -3509,23 +3514,23 @@ snapshots:
 
   escape-string-regexp@5.0.0: {}
 
-  eslint-config-standard-with-typescript@23.0.0(@typescript-eslint/eslint-plugin@5.37.0)(eslint-plugin-import@2.26.0)(eslint-plugin-n@15.2.5)(eslint-plugin-promise@6.0.1)(eslint@8.22.0)(typescript@4.8.3):
+  eslint-config-standard-with-typescript@23.0.0(@typescript-eslint/eslint-plugin@5.37.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)(typescript@4.8.3))(eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0))(eslint-plugin-n@15.2.5(eslint@8.22.0))(eslint-plugin-promise@6.0.1(eslint@8.22.0))(eslint@8.22.0)(typescript@4.8.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 5.37.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)(typescript@4.8.3)
+      '@typescript-eslint/eslint-plugin': 5.37.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)(typescript@4.8.3)
       '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       eslint: 8.22.0
-      eslint-config-standard: 17.0.0(eslint-plugin-import@2.26.0)(eslint-plugin-n@15.2.5)(eslint-plugin-promise@6.0.1)(eslint@8.22.0)
-      eslint-plugin-import: 2.26.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)
+      eslint-config-standard: 17.0.0(eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0))(eslint-plugin-n@15.2.5(eslint@8.22.0))(eslint-plugin-promise@6.0.1(eslint@8.22.0))(eslint@8.22.0)
+      eslint-plugin-import: 2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)
       eslint-plugin-n: 15.2.5(eslint@8.22.0)
       eslint-plugin-promise: 6.0.1(eslint@8.22.0)
       typescript: 4.8.3
     transitivePeerDependencies:
       - supports-color
 
-  eslint-config-standard@17.0.0(eslint-plugin-import@2.26.0)(eslint-plugin-n@15.2.5)(eslint-plugin-promise@6.0.1)(eslint@8.22.0):
+  eslint-config-standard@17.0.0(eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0))(eslint-plugin-n@15.2.5(eslint@8.22.0))(eslint-plugin-promise@6.0.1(eslint@8.22.0))(eslint@8.22.0):
     dependencies:
       eslint: 8.22.0
-      eslint-plugin-import: 2.26.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0)
+      eslint-plugin-import: 2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0)
       eslint-plugin-n: 15.2.5(eslint@8.22.0)
       eslint-plugin-promise: 6.0.1(eslint@8.22.0)
 
@@ -3536,10 +3541,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.7.4(@typescript-eslint/parser@5.37.0)(eslint-import-resolver-node@0.3.6)(eslint@8.22.0):
+  eslint-module-utils@2.7.4(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint-import-resolver-node@0.3.6)(eslint@8.22.0):
     dependencies:
-      '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       debug: 3.2.7
+    optionalDependencies:
+      '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       eslint: 8.22.0
       eslint-import-resolver-node: 0.3.6
     transitivePeerDependencies:
@@ -3551,16 +3557,15 @@ snapshots:
       eslint-utils: 2.1.0
       regexpp: 3.2.0
 
-  eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0)(eslint@8.22.0):
+  eslint-plugin-import@2.26.0(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint@8.22.0):
     dependencies:
-      '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
       array-includes: 3.1.5
       array.prototype.flat: 1.3.0
       debug: 2.6.9
       doctrine: 2.1.0
       eslint: 8.22.0
       eslint-import-resolver-node: 0.3.6
-      eslint-module-utils: 2.7.4(@typescript-eslint/parser@5.37.0)(eslint-import-resolver-node@0.3.6)(eslint@8.22.0)
+      eslint-module-utils: 2.7.4(@typescript-eslint/parser@5.37.0(eslint@8.22.0)(typescript@4.8.3))(eslint-import-resolver-node@0.3.6)(eslint@8.22.0)
       has: 1.0.3
       is-core-module: 2.10.0
       is-glob: 4.0.3
@@ -3568,6 +3573,8 @@ snapshots:
       object.values: 1.1.5
       resolve: 1.22.1
       tsconfig-paths: 3.14.1
+    optionalDependencies:
+      '@typescript-eslint/parser': 5.37.0(eslint@8.22.0)(typescript@4.8.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -4533,8 +4540,9 @@ snapshots:
   postcss-load-config@3.1.4(postcss@8.4.19):
     dependencies:
       lilconfig: 2.0.6
-      postcss: 8.4.19
       yaml: 1.10.2
+    optionalDependencies:
+      postcss: 8.4.19
 
   postcss-nested@6.0.0(postcss@8.4.19):
     dependencies:
@@ -4587,7 +4595,7 @@ snapshots:
 
   react-fast-compare@3.2.0: {}
 
-  react-hot-toast@2.4.0(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0):
+  react-hot-toast@2.4.0(csstype@3.1.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       goober: 2.1.12(csstype@3.1.2)
       react: 18.2.0
@@ -4625,7 +4633,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-popper@2.3.0(@popperjs/core@2.11.6)(react-dom@18.2.0)(react@18.2.0):
+  react-popper@2.3.0(@popperjs/core@2.11.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@popperjs/core': 2.11.6
       react: 18.2.0
@@ -4633,19 +4641,20 @@ snapshots:
       react-fast-compare: 3.2.0
       warning: 4.0.3
 
-  react-redux@8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0):
+  react-redux@8.0.2(@types/react-dom@18.0.6)(@types/react@18.0.20)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(redux@4.2.0):
     dependencies:
       '@babel/runtime': 7.19.0
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.0.20
-      '@types/react-dom': 18.0.6
       '@types/use-sync-external-store': 0.0.3
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
       react-is: 18.2.0
-      redux: 4.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
+    optionalDependencies:
+      '@types/react': 18.0.20
+      '@types/react-dom': 18.0.6
+      react-dom: 18.2.0(react@18.2.0)
+      redux: 4.2.0
 
   react-refresh@0.13.0: {}
 
@@ -4736,11 +4745,13 @@ snapshots:
     dependencies:
       glob: 7.2.3
 
-  rollup-plugin-visualizer@5.8.3:
+  rollup-plugin-visualizer@5.8.3(rollup@2.78.1):
     dependencies:
       open: 8.4.0
       source-map: 0.7.4
       yargs: 17.6.2
+    optionalDependencies:
+      rollup: 2.78.1
 
   rollup@2.78.1:
     optionalDependencies:
@@ -5031,12 +5042,12 @@ snapshots:
   vite@3.1.1(less@4.1.3):
     dependencies:
       esbuild: 0.15.7
-      less: 4.1.3
       postcss: 8.4.19
       resolve: 1.22.1
       rollup: 2.78.1
     optionalDependencies:
       fsevents: 2.3.2
+      less: 4.1.3
 
   warning@4.0.3:
     dependencies:

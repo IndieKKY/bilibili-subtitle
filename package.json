@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "vite",
     "build_chrome": "tsc && vite build -m production_chrome && node fixChrome.cjs",
-    "build_edge": "tsc && vite build -m production_edge && node fixChrome.cjs",
     "build_firefox": "tsc && vite build -m production_chrome && node fixFirefox.cjs",
     "fix": "eslint --fix --quiet ."
   },

@@ -40,6 +40,8 @@ interface TempData {
   curSummaryType: SummaryType
   downloadType?: string
   compact?: boolean // 是否紧凑视图
+  reviewActions?: number // 点击或总结行为达到一定次数后，显示评分（一个视频最多只加1次）
+  reviewed?: boolean // 是否点击过评分,undefined: 不显示；true: 已点击；false: 未点击(需要显示)
 }
 
 interface TaskDef {

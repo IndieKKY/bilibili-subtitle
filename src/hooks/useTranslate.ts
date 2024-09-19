@@ -9,7 +9,9 @@ import {
   setLastTransTime,
   setSummaryContent,
   setSummaryError,
-  setSummaryStatus
+  setSummaryStatus,
+  setReviewAction,
+  setTempData
 } from '../redux/envReducer'
 import {
   LANGUAGE_DEFAULT,
@@ -38,6 +40,9 @@ const useTranslate = () => {
   const language = LANGUAGES_MAP[envData.language??LANGUAGE_DEFAULT]
   const summarizeLanguage = LANGUAGES_MAP[envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT]
   const title = useAppSelector(state => state.env.title)
+  const reviewed = useAppSelector(state => state.env.tempData.reviewed)
+  const reviewAction = useAppSelector(state => state.env.reviewAction)
+  const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
 
   /**
    * 获取下一个需要翻译的行
@@ -137,6 +142,14 @@ const useTranslate = () => {
   }, [data?.body, envData, language.name, title, dispatch])
 
   const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
+    //review action
+    if (reviewed === undefined && !reviewAction) {
+      dispatch(setReviewAction(true))
+      dispatch(setTempData({
+        reviewActions: (reviewActions ?? 0) + 1
+      }))
+    }
+
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
       let subtitles = ''
       for (const item of segment.items) {

@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
-import {setEnvData, setPage} from '../redux/envReducer'
+import {setEnvData, setPage, setTempData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
@@ -408,6 +408,12 @@ const Settings = () => {
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>
         <button className='btn btn-sm' onClick={onCancel}>取消</button>
+        <button className='btn btn-sm' onClick={() => {
+          dispatch(setTempData({
+            reviewed: undefined,
+            // reviewActions: 0
+          }))
+        }}>重置</button>
       </div>
     </div>
   </div>

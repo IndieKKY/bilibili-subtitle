@@ -12,7 +12,7 @@ export default ({mode}) => {
     visualizer() as PluginOption,
   ]
   // @ts-ignore
-  if (mode === 'production_chrome') {
+  if (mode === 'production_chrome' || mode === 'production_edge') {
     plugins.push(crx({
       manifest,
     }))

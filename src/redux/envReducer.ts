@@ -48,6 +48,9 @@ interface EnvState {
 
   searchText: string
   searchResult: Set<number>
+
+  //当前视频是否计算过操作
+  reviewAction: boolean
 }
 
 const initialState: EnvState = {
@@ -77,6 +80,8 @@ const initialState: EnvState = {
   searchResult: new Set(),
 
   asks: [],
+
+  reviewAction: false,
 }
 
 export const slice = createSlice({
@@ -97,6 +102,9 @@ export const slice = createSlice({
         ...state.tempData,
         ...action.payload,
       }
+    },
+    setReviewAction: (state, action: PayloadAction<boolean>) => {
+      state.reviewAction = action.payload
     },
     setTempReady: (state) => {
       state.tempReady = true
@@ -319,6 +327,7 @@ export const {
   setAutoTranslate,
   setAutoScroll,
   setNoVideo,
+  setReviewAction,
   setNeedScroll,
   setCurIdx,
   setEnvData,

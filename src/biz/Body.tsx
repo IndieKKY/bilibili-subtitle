@@ -38,6 +38,7 @@ import {openUrl} from '@kky002/kky-util'
 import useKeyService from '../hooks/useKeyService'
 import Ask from './Ask'
 import {v4} from 'uuid'
+import RateExtension from '../components/RateExtension'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -368,8 +369,8 @@ const Body = () => {
         {/*  </div> */}
         {/* </div> */}
       </div>
+      <div className='p-2'><RateExtension/></div>
     </div>
-
     {/* recommend */}
     {/* <div className='p-0.5' style={{ */}
     {/*  height: `${RECOMMEND_HEIGHT}px` */}

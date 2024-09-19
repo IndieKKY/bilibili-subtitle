@@ -408,12 +408,12 @@ const Settings = () => {
       <div className='flex justify-center gap-5'>
         <button className='btn btn-primary btn-sm' onClick={onSave}>保存</button>
         <button className='btn btn-sm' onClick={onCancel}>取消</button>
-        <button className='btn btn-sm' onClick={() => {
+        {/* <button className='btn btn-sm' onClick={() => {
           dispatch(setTempData({
             reviewed: undefined,
             // reviewActions: 0
           }))
-        }}>重置</button>
+        }}>重置</button> */}
       </div>
     </div>
   </div>

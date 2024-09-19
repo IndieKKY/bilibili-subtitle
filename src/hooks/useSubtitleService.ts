@@ -45,7 +45,7 @@ const useSubtitleService = () => {
 
   //如果reviewActions达到15次，则设置reviewed为false
   useEffect(() => {
-    if (reviewed === undefined && reviewActions && reviewActions >= 3) {
+    if (reviewed === undefined && reviewActions && reviewActions >= 15) {
       dispatch(setTempData({
         reviewed: false
       }))

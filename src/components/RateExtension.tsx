@@ -19,7 +19,7 @@ const RateExtension: React.FC = () => {
     if (isEdgeBrowser()) {
       openUrl('https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan')
     } else {
-      openUrl('https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp/reviews')
+      openUrl('https://chromewebstore.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp/reviews')
     }
   };
 

@@ -36,12 +36,6 @@
 
 ## 交流联系
 
-QQ群：194536885
-
-微信公众号：IndieKKY
-
-twitter：[https://twitter.com/IndieKky](https://twitter.com/IndieKky)
-
 github: [IndieKKY](https://github.com/IndieKKY)
 
 ## 问题反馈
@@ -52,8 +46,10 @@ github: [IndieKKY](https://github.com/IndieKKY)
 node版本：18.15.0
 包管理器：pnpm
 
-本地开发时，`pnpm run dev`可以开启本地调试，但只能调试部分功能；
-`pnpm run build_chrome`可以构建项目，然后浏览器扩展中加载`dist`目录即可,此方式可以调试完整功能，但不是很方便，从改代码到构建完看到效果耗时比较长（取决于你的电脑性能）。
+- 本地调试：`pnpm run dev`，然后加载`dist`目录。
+- 打生产包：`pnpm run build`，然后加载`dist`目录。
+
+注：`./push.sh`是作者自用脚本，可以忽略。
 
 ## 贡献指南
 

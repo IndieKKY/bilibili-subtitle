@@ -4,10 +4,10 @@ import {visualizer} from "rollup-plugin-visualizer";
 import {crx} from '@crxjs/vite-plugin'
 import path from "path"
 // @ts-ignore
-import manifest from './manifest.json'
+import manifest from './manifest.config'
 
 // https://vitejs.dev/config/
-export default ({mode}) => {
+export default () => {
   return defineConfig({
     base: '/',
     build: {

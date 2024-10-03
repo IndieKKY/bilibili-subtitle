@@ -27,10 +27,9 @@ export default defineManifest(async (env) => ({
     "service_worker": "src/chrome/background.ts",
     "type": "module"
   },
-  "options_page": "options.html",
   "content_scripts": [
     {
-      "matches": ["https://www.bilibili.com/video/*", "https://www.bilibili.com/list/*"],
+      "matches": ["https://*.bilibili.com/*"],
       "js": ["src/inject/inject.ts"]
     }
   ],
@@ -51,9 +50,7 @@ export default defineManifest(async (env) => ({
   },
   "web_accessible_resources": [
     {
-      "matches": [
-        "https://www.bilibili.com/video/*", "https://www.bilibili.com/list/*"
-      ],
+      "matches": ["https://*.bilibili.com/*"],
       "resources": [
         "index.html",
       ],

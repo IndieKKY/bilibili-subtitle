@@ -188,6 +188,7 @@ window.addEventListener("message", (event) => {
           info: data.info,
           data: res,
         }, type: 'setSubtitle'
+                // @ts-ignore
       }, '*')
     })
   }
@@ -199,6 +200,7 @@ window.addEventListener("message", (event) => {
         data: {
           currentTime: video.currentTime
         }, type: 'setCurrentTime'
+        // @ts-ignore
       }, '*')
     }
   }
@@ -211,6 +213,7 @@ window.addEventListener("message", (event) => {
         noVideo: !videoElement,
         totalHeight,
       }, type: 'setSettings'
+        // @ts-ignore
     }, '*')
   }
 

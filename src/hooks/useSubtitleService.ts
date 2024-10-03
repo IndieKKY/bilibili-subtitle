@@ -74,13 +74,12 @@ const useSubtitleService = () => {
   useEffect(() => {
     if (curInfo && !curFetched) {
       sendInject(MESSAGE_TO_INJECT_GET_SUBTITLE, {info: curInfo}).then(data => {
-        const data_ = data.data
-        data_?.body?.forEach((item: TranscriptItem, idx: number) => {
+        data?.body?.forEach((item: TranscriptItem, idx: number) => {
           item.idx = idx
         })
         // dispatch(setCurInfo(data.data.info))
         dispatch(setCurFetched(true))
-        dispatch(setData(data_))
+        dispatch(setData(data))
 
         console.log('subtitle', data)
       })

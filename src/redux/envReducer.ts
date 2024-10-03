@@ -46,7 +46,7 @@ interface EnvState {
   inputting: boolean
 
   searchText: string
-  searchResult: Set<number>
+  searchResult: Record<string, boolean>
 
   //当前视频是否计算过操作
   reviewAction: boolean
@@ -74,7 +74,7 @@ const initialState: EnvState = {
   inputting: false,
 
   searchText: '',
-  searchResult: new Set(),
+  searchResult: {},
 
   asks: [],
 
@@ -109,7 +109,7 @@ export const slice = createSlice({
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload
     },
-    setSearchResult: (state, action: PayloadAction<Set<number>>) => {
+    setSearchResult: (state, action: PayloadAction<Record<string, boolean>>) => {
       state.searchResult = action.payload
     },
     setFloatKeyPointsSegIdx: (state, action: PayloadAction<number | undefined>) => {

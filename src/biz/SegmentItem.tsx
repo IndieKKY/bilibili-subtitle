@@ -23,7 +23,7 @@ const SegmentItem = (props: {
   const searchResult = useAppSelector(state => state.env.searchResult)
   const display = useMemo(() => {
     if (searchText) {
-      return searchResult.has(item.idx) ? 'inline' : 'none'
+      return searchResult[item.idx+''] ? 'inline' : 'none'
     } else {
       return 'inline'
     }

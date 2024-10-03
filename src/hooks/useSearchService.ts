@@ -42,14 +42,14 @@ const useSearchService = () => {
 
   // search text
   useEffect(() => {
-    const searchResult: Set<number> = new Set()
+    const searchResult: Record<string, boolean> = {}
 
     if (envData.searchEnabled && searchText) {
       // @ts-expect-error
       const documents: Document[] | undefined = search(searchText)
       if (documents != null) {
         for (const document of documents) {
-          searchResult.add(document.idx)
+          searchResult[''+document.idx] = true
         }
       }
     }

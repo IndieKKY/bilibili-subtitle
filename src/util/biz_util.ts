@@ -1,4 +1,3 @@
-import devData from '../data/data.json'
 import {APP_DOM_ID, CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYPES} from '../const'
 import {isDarkMode} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
@@ -64,18 +63,6 @@ export const getTimeDisplay = (seconds: number) => {
   const m = Math.floor(seconds / 60 % 60)
   const s = Math.floor(seconds % 60)
   return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`
-}
-
-export const getDevData = () => {
-  // add idx
-  const body = devData.body.map((item, idx) => ({
-    ...item,
-    idx,
-  }))
-  return {
-    ...devData,
-    body,
-  }
 }
 
 export const isSummaryEmpty = (summary: Summary) => {

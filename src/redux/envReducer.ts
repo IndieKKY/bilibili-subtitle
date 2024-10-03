@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {find, findIndex} from 'lodash-es'
-import {getDevData} from '../util/biz_util'
 import {DEFAULT_SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../const'
 
 interface EnvState {
@@ -67,11 +66,9 @@ const initialState: EnvState = {
   },
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
-  // currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
   envReady: false,
   tempReady: false,
   fold: true,
-  // data: import.meta.env.VITE_ENV === 'web-dev' ? getDevData() : undefined,
   transResults: {},
 
   inputting: false,

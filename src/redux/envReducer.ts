@@ -67,11 +67,11 @@ const initialState: EnvState = {
   },
   totalHeight: TOTAL_HEIGHT_DEF,
   autoScroll: true,
-  currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
+  // currentTime: import.meta.env.VITE_ENV === 'web-dev' ? 30 : undefined,
   envReady: false,
   tempReady: false,
   fold: true,
-  data: import.meta.env.VITE_ENV === 'web-dev' ? getDevData() : undefined,
+  // data: import.meta.env.VITE_ENV === 'web-dev' ? getDevData() : undefined,
   transResults: {},
 
   inputting: false,

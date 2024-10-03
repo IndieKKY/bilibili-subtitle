@@ -7,8 +7,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build_chrome": "tsc && vite build -m production_chrome && node fixChrome.cjs",
-    "build_firefox": "tsc && vite build -m production_chrome && node fixFirefox.cjs",
+    "build": "tsc && vite build",
     "fix": "eslint --fix --quiet ."
   },
   "author": "IndieKKY",
@@ -47,6 +46,7 @@
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
+    "@types/node": "^20.8.10",
     "@types/chrome": "^0.0.203",
     "@types/js-search": "^1.4.0",
     "@types/lodash-es": "^4.17.6",

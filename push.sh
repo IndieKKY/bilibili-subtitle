@@ -17,13 +17,11 @@ done
 
 # Update the version in package.json
 sed -i '' "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/g" package.json
-# Update the version in manifest.json
-sed -i '' "s/\"version\": \"$current_version\"/\"version\": \"$new_version\"/g" manifest.json
 
 echo "Version updated to: $new_version"
 
 # build
-pnpm run build_chrome
+pnpm run build
 # zip dist
 rm -f dist.zip
 cd dist

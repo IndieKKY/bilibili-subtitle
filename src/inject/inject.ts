@@ -1,9 +1,9 @@
-const {TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID} = require("../const");
-var totalHeight = TOTAL_HEIGHT_DEF
+import {TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID} from '@/const'
+let totalHeight = TOTAL_HEIGHT_DEF
 
 const getVideoElement = () => {
   const videoWrapper = document.getElementById('bilibili-player')
-  return videoWrapper.querySelector('video')
+  return videoWrapper?.querySelector('video') as HTMLVideoElement | undefined
 }
 
 const timerIframe = setInterval(function () {
@@ -24,7 +24,10 @@ const timerIframe = setInterval(function () {
       const iframe = document.createElement('iframe')
       iframe.id = IFRAME_ID
       iframe.src = chrome.runtime.getURL('index.html')
-      iframe.style = 'border: none; width: 100%; height: 44px;margin-bottom: 3px;'
+      iframe.style.border = 'none'
+      iframe.style.width = '100%'
+      iframe.style.height = '44px'
+      iframe.style.marginBottom = '3px'
       iframe.allow = 'clipboard-read; clipboard-write;'
       if (vKey) {
         iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
@@ -37,19 +40,19 @@ const timerIframe = setInterval(function () {
   }
 }, 1000)
 
-let aid = 0
+let aid: number | null = null
 let title = ''
-let pages = []
-let pagesMap = {}
+let pages: any[] = []
+let pagesMap: Record<string, any> = {}
 
-let lastAidOrBvid = null
+let lastAidOrBvid: string | null = null
 const refreshVideoInfo = async () => {
-  const iframe = document.getElementById(IFRAME_ID)
+  const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
   if (!iframe) return
 
   // fix: https://github.com/IndieKKY/bilibili-subtitle/issues/5
   // 处理稍后再看的url( https://www.bilibili.com/list/watchlater?bvid=xxx&oid=xxx )
-  const pathSearchs = {}
+  const pathSearchs: Record<string, string> = {}
   location.search.slice(1).replace(/([^=&]*)=([^=&]*)/g, (matchs, a, b, c) => pathSearchs[a] = b)
 
   // bvid
@@ -72,7 +75,7 @@ const refreshVideoInfo = async () => {
       let cid
       let subtitles
       if (aidOrBvid.toLowerCase().startsWith('av')) {//avxxx
-        aid = aidOrBvid.slice(2)
+        aid = parseInt(aidOrBvid.slice(2))
         pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, {credentials: 'include'}).then(res => res.json()).then(res => res.data)
         cid = pages[0].cid
         title = pages[0].part
@@ -100,7 +103,7 @@ const refreshVideoInfo = async () => {
       console.debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
 
       //send setVideoInfo
-      iframe.contentWindow.postMessage({
+      iframe.contentWindow?.postMessage({
         type: 'setVideoInfo',
         url: location.origin + location.pathname,
         title,
@@ -112,10 +115,10 @@ const refreshVideoInfo = async () => {
   }
 }
 
-let lastAid = null
-let lastCid = null
+let lastAid: number | null = null
+let lastCid: number | null = null
 const refreshSubtitles = () => {
-  const iframe = document.getElementById(IFRAME_ID)
+  const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
   if (!iframe) return
 
   const urlSearchParams = new URLSearchParams(window.location.search)
@@ -136,7 +139,7 @@ const refreshSubtitles = () => {
         .then(res => res.json())
         .then(res => {
           // console.log('refreshSubtitles: ', aid, cid, res)
-          iframe.contentWindow.postMessage({
+          iframe.contentWindow?.postMessage({
             type: 'setInfos',
             infos: res.data.subtitle.subtitles
           }, '*')
@@ -150,8 +153,10 @@ window.addEventListener("message", (event) => {
   const {data} = event
 
   if (data.type === 'fold') {
-    const iframe = document.getElementById(IFRAME_ID)
-    iframe.style.height = (data.fold ? HEADER_HEIGHT : totalHeight) + 'px'
+    const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+    if (iframe) {
+      iframe.style.height = (data.fold ? HEADER_HEIGHT : totalHeight) + 'px'
+    }
   }
 
   if (data.type === 'move') {
@@ -178,7 +183,7 @@ window.addEventListener("message", (event) => {
       url = url.replace('http://', 'https://')
     }
     fetch(url).then(res => res.json()).then(res => {
-      event.source.postMessage({
+      event.source?.postMessage({
         data: {
           info: data.info,
           data: res,
@@ -190,7 +195,7 @@ window.addEventListener("message", (event) => {
   if (data.type === 'getCurrentTime') {
     const video = getVideoElement()
     if (video) {
-      event.source.postMessage({
+      event.source?.postMessage({
         data: {
           currentTime: video.currentTime
         }, type: 'setCurrentTime'
@@ -201,7 +206,7 @@ window.addEventListener("message", (event) => {
   if (data.type === 'getSettings') {
     const videoElement = getVideoElement()
     totalHeight = videoElement ? Math.min(Math.max(videoElement.offsetHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX) : TOTAL_HEIGHT_DEF
-    event.source.postMessage({
+    event.source?.postMessage({
       data: {
         noVideo: !videoElement,
         totalHeight,
@@ -211,7 +216,7 @@ window.addEventListener("message", (event) => {
 
   if (data.type === 'downloadAudio') {
     const html = document.getElementsByTagName('html')[0].innerHTML
-    const playInfo = JSON.parse(html.match(/window.__playinfo__=(.+?)<\/script/)[1])
+    const playInfo = JSON.parse(html.match(/window.__playinfo__=(.+?)<\/script/)?.[1] ?? '{}')
     const audioUrl = playInfo.data.dash.audio[0].baseUrl
 
     fetch(audioUrl).then(res => res.blob()).then(blob => {

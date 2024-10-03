@@ -75,7 +75,7 @@ function App() {
   useTranslateService()
   useSearchService()
 
-  return <div className={classNames('select-none', import.meta.env.VITE_ENV === 'web-dev'?'w-[350px]':'w-full')} style={{
+  return <div className='select-none w-full' style={{
     height: fold?undefined:`${totalHeight}px`,
   }}>
     <Header foldCallback={foldCallback}/>

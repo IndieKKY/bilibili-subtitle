@@ -2,24 +2,33 @@ import {defineConfig, PluginOption} from 'vite'
 import react from '@vitejs/plugin-react'
 import {visualizer} from "rollup-plugin-visualizer";
 import {crx} from '@crxjs/vite-plugin'
+import path from "path"
 // @ts-ignore
 import manifest from './manifest.json'
 
 // https://vitejs.dev/config/
 export default ({mode}) => {
-  const plugins = [
-    react(),
-    visualizer() as PluginOption,
-  ]
-  // @ts-ignore
-  if (mode === 'production_chrome' || mode === 'production_edge') {
-    plugins.push(crx({
-      manifest,
-    }))
-  }
   return defineConfig({
     base: '/',
-    plugins,
+    build: {
+      rollupOptions: {
+        input: {
+          index: 'index.html',
+        },
+      },
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      }
+    },
+    plugins: [
+      react(),
+      crx({
+        manifest,
+      }),
+      visualizer() as PluginOption,
+    ],
     css: {
       modules: {
         localsConvention: "camelCase"

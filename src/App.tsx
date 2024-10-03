@@ -6,16 +6,17 @@ import Header from './biz/Header'
 import Body from './biz/Body'
 import useSubtitleService from './hooks/useSubtitleService'
 import {cloneDeep} from 'lodash-es'
-import {EVENT_EXPAND, PAGE_MAIN, PAGE_SETTINGS, STORAGE_ENV, STORAGE_TEMP} from './const'
+import {EVENT_EXPAND, MESSAGE_TO_INJECT_FOLD, PAGE_MAIN, PAGE_SETTINGS, STORAGE_ENV, STORAGE_TEMP} from './const'
 import {EventBusContext} from './Router'
 import useTranslateService from './hooks/useTranslateService'
 import Settings from './biz/Settings'
-import classNames from 'classnames'
 import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
 import {setTheme} from './util/biz_util'
+import {sendInject} from './util/biz_util'
 import useSearchService from './hooks/useSearchService'
+import useMessageService from './hooks/useMessageService'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -29,7 +30,7 @@ function App() {
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
     dispatch(setPage(PAGE_MAIN))
-    window.parent.postMessage({type: 'fold', fold: !fold}, '*')
+    sendInject(MESSAGE_TO_INJECT_FOLD, {fold: !fold})
   }, [dispatch, fold])
 
   // handle event
@@ -74,6 +75,7 @@ function App() {
   useSubtitleService()
   useTranslateService()
   useSearchService()
+  useMessageService()
 
   return <div className='select-none w-full' style={{
     height: fold?undefined:`${totalHeight}px`,

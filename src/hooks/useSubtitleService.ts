@@ -16,9 +16,11 @@ import {
   setTempData,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../const'
+import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_UPDATETRANSRESULT} from '../const'
 import {useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../util/biz_util'
+import {sendInject} from '../util/biz_util'
+import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../const'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -52,55 +54,6 @@ const useSubtitleService = () => {
     }
   }, [reviewActions, dispatch, reviewed])
 
-  // 监听消息
-  useEffect(() => {
-    const listener = (event: MessageEvent) => {
-      const data = event.data
-
-      if (data.type === 'setVideoInfo') {
-        dispatch(setInfos(data.infos))
-        dispatch(setUrl(data.url))
-        dispatch(setTitle(data.title))
-        console.debug('video title: ', data.title)
-      }
-
-      if (data.type === 'setInfos') {
-        dispatch(setInfos(data.infos))
-        dispatch(setCurInfo(undefined))
-        dispatch(setCurFetched(false))
-        dispatch(setData(undefined))
-        // console.log('setInfos', data.infos)
-      }
-
-      if (data.type === 'setSubtitle') {
-        const data_ = data.data.data
-        data_?.body?.forEach((item: TranscriptItem, idx: number) => {
-          item.idx = idx
-        })
-        // dispatch(setCurInfo(data.data.info))
-        dispatch(setCurFetched(true))
-        dispatch(setData(data_))
-        // console.log('setSubtitle', data.data)
-      }
-
-      if (data.type === 'setCurrentTime') {
-        dispatch(setCurrentTime(data.data.currentTime))
-      }
-      if (data.type === 'setSettings') {
-        dispatch(setNoVideo(data.data.noVideo))
-        if (data.data.totalHeight) {
-          dispatch(setTotalHeight(Math.min(Math.max(data.data.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
-        }
-      }
-    }
-
-    window.addEventListener('message', listener)
-
-    return () => {
-      window.removeEventListener('message', listener)
-    }
-  }, [dispatch, eventBus])
-
   // 有数据时自动展开
   useEffect(() => {
     if ((data != null) && data.body.length > 0) {
@@ -120,15 +73,30 @@ const useSubtitleService = () => {
   // 获取
   useEffect(() => {
     if (curInfo && !curFetched) {
-      window.parent.postMessage({type: 'getSubtitle', info: curInfo}, '*')
+      sendInject(MESSAGE_TO_INJECT_GET_SUBTITLE, {info: curInfo}).then(data => {
+        const data_ = data.data
+        data_?.body?.forEach((item: TranscriptItem, idx: number) => {
+          item.idx = idx
+        })
+        // dispatch(setCurInfo(data.data.info))
+        dispatch(setCurFetched(true))
+        dispatch(setData(data_))
+
+        console.log('subtitle', data)
+      })
     }
   }, [curFetched, curInfo])
 
   useEffect(() => {
     // 初始获取列表
-    window.parent.postMessage({type: 'refreshVideoInfo'}, '*')
+    sendInject(MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, {})
     // 初始获取设置信息
-    window.parent.postMessage({type: 'getSettings'}, '*')
+    sendInject(MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, {}).then(info => {
+      dispatch(setNoVideo(info.noVideo))
+      if (info.totalHeight) {
+        dispatch(setTotalHeight(Math.min(Math.max(info.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
+      }
+    })
   }, [])
 
   // 更新当前位置
@@ -216,21 +184,23 @@ const useSubtitleService = () => {
 
   // 每秒更新当前视频时间
   useInterval(() => {
-    window.parent.postMessage({type: 'getCurrentTime'}, '*')
+    sendInject(MESSAGE_TO_INJECT_GET_VIDEO_STATUS, {}).then(status => {
+      dispatch(setCurrentTime(status.currentTime))
+    })
   }, 500)
 
   // show translated text in the video
   useEffect(() => {
     if (hideOnDisableAutoTranslate && !autoTranslate) {
-      window.parent.postMessage({type: 'updateTransResult'}, '*')
+      sendInject(MESSAGE_TO_INJECT_HIDE_TRANS, {})
       return
     }
 
     const transResult = curIdx?transResults[curIdx]:undefined
     if (transResult?.code === '200' && transResult.data) {
-      window.parent.postMessage({type: 'updateTransResult', result: transResult.data}, '*')
+      sendInject(MESSAGE_TO_INJECT_UPDATETRANSRESULT, {result: transResult.data})
     } else {
-      window.parent.postMessage({type: 'updateTransResult'}, '*')
+      sendInject(MESSAGE_TO_INJECT_HIDE_TRANS, {})
     }
   }, [autoTranslate, curIdx, hideOnDisableAutoTranslate, transResults])
 }

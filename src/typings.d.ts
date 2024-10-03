@@ -1,3 +1,23 @@
+
+interface MessageData {
+  target: string
+  method: string
+  params?: any
+  [key: string]: any
+}
+
+interface MessageResult {
+  success: boolean
+  code: number
+  message?: string
+  data?: any
+}
+
+interface MethodContext {
+  event: any
+  sender?: chrome.runtime.MessageSender | null
+}
+
 interface EnvData {
   autoExpand?: boolean
   flagDot?: boolean

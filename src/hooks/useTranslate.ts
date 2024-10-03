@@ -16,6 +16,8 @@ import {
 import {
   LANGUAGE_DEFAULT,
   LANGUAGES_MAP,
+  MESSAGE_TO_EXTENSION_ADD_TASK,
+  MESSAGE_TO_EXTENSION_GET_TASK,
   PROMPT_DEFAULTS,
   PROMPT_TYPE_ASK,
   PROMPT_TYPE_TRANSLATE,
@@ -27,7 +29,7 @@ import {
 } from '../const'
 import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
-import {extractJsonArray, extractJsonObject, getModel} from '../util/biz_util'
+import {extractJsonArray, extractJsonObject, getModel, sendExtension} from '../util/biz_util'
 import {formatTime} from '../util/util'
 
 const useTranslate = () => {
@@ -135,7 +137,7 @@ const useTranslate = () => {
           }
         })
         dispatch(addTransResults(result))
-        const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
+        const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
         dispatch(addTaskId(task.id))
       }
     }
@@ -205,7 +207,7 @@ const useTranslate = () => {
       console.debug('addSummarizeTask', taskDef)
       dispatch(setSummaryStatus({segmentStartIdx: segment.startIdx, type, status: 'pending'}))
       dispatch(setLastSummarizeTime(Date.now()))
-      const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
+      const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -262,7 +264,7 @@ const useTranslate = () => {
         id,
         status: 'pending'
       }))
-      const task = await chrome.runtime.sendMessage({type: 'addTask', taskDef})
+      const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -330,7 +332,7 @@ const useTranslate = () => {
   })
 
   const getTask = useCallback(async (taskId: string) => {
-    const taskResp = await chrome.runtime.sendMessage({type: 'getTask', taskId})
+    const taskResp = await sendExtension(MESSAGE_TO_EXTENSION_GET_TASK, {taskId})
     if (taskResp.code === 'ok') {
       console.debug('getTask', taskResp.task)
       const task: Task = taskResp.task

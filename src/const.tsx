@@ -1,3 +1,26 @@
+export const MESSAGE_TARGET_EXTENSION = 'BilibiliExtension'
+export const MESSAGE_TARGET_INJECT = 'BilibiliInject'
+export const MESSAGE_TARGET_APP = 'BilibiliAPP'
+
+export const MESSAGE_TO_EXTENSION_ADD_TASK = 'addTask'
+export const MESSAGE_TO_EXTENSION_GET_TASK = 'getTask'
+
+export const MESSAGE_TO_INJECT_FOLD = 'fold'
+export const MESSAGE_TO_INJECT_MOVE = 'move'
+export const MESSAGE_TO_INJECT_PLAY = 'play'
+export const MESSAGE_TO_INJECT_DOWNLOAD_AUDIO = 'downloadAudio'
+export const MESSAGE_TO_INJECT_GET_VIDEO_STATUS = 'getVideoStatus'
+export const MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO = 'getVideoElementInfo'
+export const MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO = 'refreshVideoInfo'
+export const MESSAGE_TO_INJECT_UPDATETRANSRESULT = 'updateTransResult'
+export const MESSAGE_TO_INJECT_HIDE_TRANS = 'hideTrans'
+export const MESSAGE_TO_INJECT_GET_SUBTITLE = 'getSubtitle'
+
+export const MESSAGE_TO_APP_SET_INFOS = 'setInfos'
+export const MESSAGE_TO_APP_SET_VIDEO_INFO = 'setVideoInfo'
+
+export const EVENT_EXPAND = 'expand'
+
 export const APP_DOM_ID = 'bilibili-subtitle'
 
 export const IFRAME_ID = 'bilibili-subtitle-iframe'
@@ -188,8 +211,6 @@ Question: '''{{question}}'''
 Answer:
 `,
 }
-
-export const EVENT_EXPAND = 'expand'
 
 export const TASK_EXPIRE_TIME = 15*60*1000
 

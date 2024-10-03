@@ -13,11 +13,11 @@ import {Placement} from '@popperjs/core/lib/enums'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {setEnvData, setPage, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, PAGE_SETTINGS} from '../const'
+import {EVENT_EXPAND, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, PAGE_SETTINGS} from '../const'
 import {formatSrtTime, formatTime, formatVttTime} from '../util/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
-import {getSummarize} from '../util/biz_util'
+import {getSummarize, sendInject} from '../util/biz_util'
 
 interface Props {
   placement: Placement
@@ -160,9 +160,7 @@ const MoreBtn = (props: Props) => {
   }, [curSummaryType, data, downloadType, segments, title, url])
 
   const downloadAudioCallback = useCallback(() => {
-    window.parent.postMessage({
-      type: 'downloadAudio',
-    }, '*')
+    sendInject(MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, {})
   }, [])
 
   const selectCallback = useCallback((e: any) => {

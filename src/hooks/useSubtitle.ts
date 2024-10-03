@@ -1,6 +1,8 @@
 import {useAppDispatch, useAppSelector} from './redux'
 import React, {useCallback} from 'react'
 import {setNeedScroll, setReviewAction, setTempData} from '../redux/envReducer'
+import {sendInject} from '../util/biz_util'
+import {MESSAGE_TO_INJECT_MOVE} from '../const'
 
 const useSubtitle = () => {
   const dispatch = useAppDispatch()
@@ -9,7 +11,7 @@ const useSubtitle = () => {
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
 
   const move = useCallback((time: number, togglePause: boolean) => {
-    window.parent.postMessage({type: 'move', time, togglePause}, '*')
+    sendInject(MESSAGE_TO_INJECT_MOVE, {time, togglePause})
 
     //review action
     if (reviewed === undefined && !reviewAction) {

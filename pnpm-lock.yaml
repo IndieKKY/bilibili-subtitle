@@ -18,8 +18,8 @@ importers:
         specifier: ^1.0.9
         version: 1.0.9
       '@kky002/kky-util':
-        specifier: ^1.4.2
-        version: 1.4.2
+        specifier: ^1.13.13
+        version: 1.13.13
       '@logto/react':
         specifier: 1.0.0-beta.13
         version: 1.0.0-beta.13(react@18.2.0)
@@ -53,6 +53,9 @@ importers:
       pako:
         specifier: ^2.1.0
         version: 2.1.0
+      postmessage-promise:
+        specifier: ^3.2.1
+        version: 3.2.1
       qs:
         specifier: ^6.11.0
         version: 6.11.0
@@ -390,8 +393,8 @@ packages:
   '@kky002/kky-ui@1.0.9':
     resolution: {integrity: sha512-pepfRcLfC1eIQ1lsSJLWNr4PgdLqFLuvQMlitJy7W668yZ7qu8yAHSjg8A20R7HB4mFkJ+B96WETalOar1e/kA==}
 
-  '@kky002/kky-util@1.4.2':
-    resolution: {integrity: sha512-gpZHWuCBBgYV1rnZ07FhriCR7x2228LOnf6PI6nyfWXxYYy1RQ8MZcdegbBsi/HRmh7EsW1yPqq85pwNLX0B9w==}
+  '@kky002/kky-util@1.13.13':
+    resolution: {integrity: sha512-DvePr8J7dyOaVteU/bskuoL3noHiOKpX3IGhN1h0v/Nt/fGI/tA1JKwUVrg4PE89xKAhH7c2Z+RHLa8zj7w7ng==}
 
   '@logto/browser@1.0.0-beta.13':
     resolution: {integrity: sha512-ddAVggFcbS9yfG8Gvn2xknE2NZd6+lGxOQ6UbjIJKsYBAsJG95u1ITYaP7tNSDdxqZPmSBGXp4rfsQB+u0JPJQ==}
@@ -2005,6 +2008,9 @@ packages:
     resolution: {integrity: sha512-h+pbPsyhlYj6N2ozBmHhHrs9DzGmbaarbLvWipMRO7RLS+v4onj26MPFXA5OBYFxyqYhUJK456SwDcY9H2/zsA==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postmessage-promise@3.2.1:
+    resolution: {integrity: sha512-cSs5eg+DvBQIdIQK9Cimd1wB2eb85xlzJXkJwm6jYNcTlsiwTFXvdyF/69JFozX6vIkdYz2Jv31W+BvSKQXNVg==}
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -2382,6 +2388,10 @@ packages:
   typescript@4.8.3:
     resolution: {integrity: sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==}
     engines: {node: '>=4.2.0'}
+    hasBin: true
+
+  ua-parser-js@1.0.39:
+    resolution: {integrity: sha512-k24RCVWlEcjkdOxYmVJgeD/0a1TiSpqLg+ZalVGV9lsnr4yqu0w7tX/x2xX6G4zpkgQnRf89lxuZ1wsbjXM8lw==}
     hasBin: true
 
   uberproto@1.2.0:
@@ -2804,7 +2814,7 @@ snapshots:
 
   '@kky002/kky-hooks@1.2.1':
     dependencies:
-      '@kky002/kky-util': 1.4.2
+      '@kky002/kky-util': 1.13.13
       ahooks: 3.7.5(react@18.2.0)
       lodash-es: 4.17.21
       react: 18.2.0
@@ -2813,10 +2823,11 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@kky002/kky-util@1.4.2':
+  '@kky002/kky-util@1.13.13':
     dependencies:
       lodash-es: 4.17.21
       qs: 6.11.0
+      ua-parser-js: 1.0.39
 
   '@logto/browser@1.0.0-beta.13':
     dependencies:
@@ -4657,6 +4668,10 @@ snapshots:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
+  postmessage-promise@3.2.1:
+    dependencies:
+      '@babel/runtime': 7.19.0
+
   prelude-ls@1.2.1: {}
 
   prop-types@15.8.1:
@@ -5044,6 +5059,8 @@ snapshots:
   type-fest@1.4.0: {}
 
   typescript@4.8.3: {}
+
+  ua-parser-js@1.0.39: {}
 
   uberproto@1.2.0: {}
 

@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
+import React, {PropsWithChildren, useCallback, useEffect, useMemo, useState} from 'react'
 import {setEnvData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
@@ -35,7 +35,7 @@ const Section = (props: {
 } & PropsWithChildren) => {
   const {title, htmlFor, children} = props
   return <div className='flex flex-col gap-1'>
-    <label className='font-medium desc-lighter text-xs' htmlFor={htmlFor}>{title}</label>
+    <label className='font-medium desc-lighter text-sm' htmlFor={htmlFor}>{title}</label>
     <div className='flex flex-col gap-1 rounded py-2 px-2 bg-base-200/75'>{children}</div>
   </div>
 }
@@ -47,7 +47,7 @@ const FormItem = (props: {
 } & PropsWithChildren) => {
   const {title, tip, htmlFor, children} = props
   return <div className='flex items-center gap-2'>
-    <div className={classNames('basis-3/12 flex-center', tip && 'tooltip tooltip-right z-[100] underline underline-offset-2 decoration-dashed')} data-tip={tip}>
+    <div className={classNames('basis-3/12 justify-end flex-center', tip && 'tooltip tooltip-right z-[100] underline underline-offset-2 decoration-dashed')} data-tip={tip}>
       <label className='font-medium desc' htmlFor={htmlFor}>{title}</label>
     </div>
     <div className='basis-9/12 flex items-center'>
@@ -56,7 +56,7 @@ const FormItem = (props: {
   </div>
 }
 
-const Settings = () => {
+const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
@@ -82,10 +82,7 @@ const Settings = () => {
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
   const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
-  const [moreFold, {toggle: toggleMoreFold}] = useBoolean(true)
   const [promptsFold, {toggle: togglePromptsFold}] = useBoolean(true)
-  const fold = useAppSelector(state => state.env.fold)
-  const totalHeight = useAppSelector(state => state.env.totalHeight)
   const [promptsValue, setPromptsValue] = useState<{[key: string]: string}>(envData.prompts??{})
   // const wordsList = useMemo(() => {
   //   const list = []
@@ -197,10 +194,8 @@ const Settings = () => {
     setAiTypeValue('gemini')
   }, [])
 
-  return <div className='text-sm overflow-y-auto' style={{
-    height: fold?undefined:`${totalHeight-HEADER_HEIGHT}px`,
-  }}>
-    <div className="flex flex-col gap-3 p-2">
+  return <div className='flex justify-center'>
+    <div className="w-2/3 max-w-[600px] flex flex-col gap-3 p-2">
       <Section title='通用配置'>
         <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'>
           <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue}
@@ -422,4 +417,4 @@ const Settings = () => {
   </div>
 }
 
-export default Settings
+export default OptionsPage

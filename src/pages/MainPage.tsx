@@ -22,7 +22,8 @@ function App() {
   const eventBus = useContext(EventBusContext)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const {sendInject} = useMessage()
-
+  const envData = useAppSelector(state => state.env.envData)
+  
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
     sendInject(MESSAGE_TO_INJECT_FOLD, {fold: !fold})
@@ -36,6 +37,11 @@ function App() {
       }
     }
   })
+
+  // theme改变时，设置主题
+  useEffect(() => {
+    setTheme(envData.theme)
+  }, [envData.theme])
 
   useSubtitleService()
   useTranslateService()

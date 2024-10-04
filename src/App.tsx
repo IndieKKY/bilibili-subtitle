@@ -4,11 +4,10 @@ import {useAppDispatch, useAppSelector} from './hooks/redux'
 import {setEnvData, setEnvReady, setTempData, setTempReady} from './redux/envReducer'
 import {cloneDeep} from 'lodash-es'
 import {STORAGE_ENV, STORAGE_TEMP} from './const'
-import Settings from './biz/Settings'
+import OptionsPage from './pages/OptionsPage'
 import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
-import {setTheme} from './util/biz_util'
 import useMessagingService from './hooks/useMessagingService'
 import MainPage from './pages/MainPage'
 
@@ -17,6 +16,8 @@ function App() {
   const envData = useAppSelector(state => state.env.envData)
   const tempData = useAppSelector(state => state.env.tempData)
   const path = useAppSelector(state => state.env.path)
+  const envReady = useAppSelector(state => state.env.envReady)
+  const tempReady = useAppSelector(state => state.env.tempReady)
 
   // env数据
   const savedEnvData = useMemo(() => {
@@ -42,18 +43,13 @@ function App() {
   }, [dispatch])
   useLocalStorage<TempData>('chrome_client', STORAGE_TEMP, savedTempData, onLoadTemp)
 
-  // theme改变时，设置主题
-  useEffect(() => {
-    setTheme(envData.theme)
-  }, [envData.theme])
-
   // services
   useMessagingService()
 
   return <div>
     <Toaster position={path === 'app'?'bottom-center':'top-center'}/>
     {path === 'app' && <MainPage/>}
-    {path === 'options' && <Settings/>}
+    {path === 'options' && envReady && tempReady && <OptionsPage/>}
   </div>
 }
 

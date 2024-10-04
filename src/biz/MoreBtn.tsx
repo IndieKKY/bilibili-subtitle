@@ -11,9 +11,9 @@ import {
 import Popover from '../components/Popover'
 import {Placement} from '@popperjs/core/lib/enums'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setEnvData, setPage, setTempData} from '../redux/envReducer'
+import {setEnvData, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, PAGE_SETTINGS} from '../const'
+import {EVENT_EXPAND, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO} from '../const'
 import {formatSrtTime, formatTime, formatVttTime} from '../util/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
@@ -288,7 +288,7 @@ const MoreBtn = (props: Props) => {
         {/* </li> */}
         <li className='hover:bg-accent'>
           <a className='flex items-center' onClick={(e) => {
-            dispatch(setPage(PAGE_SETTINGS))
+            chrome.runtime.openOptionsPage()
             setMoreVisible(false)
             e.preventDefault()
             e.stopPropagation()

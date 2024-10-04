@@ -7,7 +7,6 @@ import {
   setCheckAutoScroll,
   setFoldAll,
   setNeedScroll,
-  setPage,
   setSearchText,
   setSegmentFold,
   setTempData
@@ -104,7 +103,7 @@ const Body = () => {
   const onSummarizeAll = useCallback(() => {
     const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
     if (!apiKey) {
-      dispatch(setPage(PAGE_SETTINGS))
+      chrome.runtime.openOptionsPage()
       toast.error('需要先设置ApiKey!')
       return
     }
@@ -148,7 +147,7 @@ const Body = () => {
     if (apiKey) {
       dispatch(setAutoTranslate(!autoTranslate))
     } else {
-      dispatch(setPage(PAGE_SETTINGS))
+      chrome.runtime.openOptionsPage()
       toast.error('需要先设置ApiKey!')
     }
   }, [autoTranslate, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey])
@@ -197,7 +196,7 @@ const Body = () => {
           }))
         }
       } else {
-        dispatch(setPage(PAGE_SETTINGS))
+        chrome.runtime.openOptionsPage()
         toast.error('需要先设置ApiKey!')
       }
     }

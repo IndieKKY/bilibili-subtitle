@@ -2,9 +2,8 @@ import {AiOutlineCloseCircle, BsDashSquare, BsPlusSquare, FaQuestion} from 'reac
 import classNames from 'classnames'
 import Markdown from '../components/Markdown'
 import React, {useCallback} from 'react'
-import {delAskInfo, mergeAskInfo, setPage} from '../redux/envReducer'
+import {delAskInfo, mergeAskInfo} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {PAGE_SETTINGS} from '../const'
 import toast from 'react-hot-toast'
 import useTranslate from '../hooks/useTranslate'
 
@@ -25,7 +24,7 @@ const Ask = (props: {
         addAskTask(ask.id, segments[0], ask.question).catch(console.error)
       }
     } else {
-      dispatch(setPage(PAGE_SETTINGS))
+      chrome.runtime.openOptionsPage()
       toast.error('需要先设置ApiKey!')
     }
   }, [addAskTask, ask.id, ask.question, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])

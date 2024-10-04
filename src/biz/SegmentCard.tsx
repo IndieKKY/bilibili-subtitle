@@ -1,6 +1,6 @@
 import React, {MutableRefObject, useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setFloatKeyPointsSegIdx, setPage, setSegmentFold, setTempData} from '../redux/envReducer'
+import {setFloatKeyPointsSegIdx, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
 import {FaClipboardList} from 'react-icons/fa'
 import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../const'
@@ -76,7 +76,7 @@ const Summarize = (props: {
     if (apiKey) {
       addSummarizeTask(curSummaryType, segment).catch(console.error)
     } else {
-      dispatch(setPage(PAGE_SETTINGS))
+      chrome.runtime.openOptionsPage()
       toast.error('需要先设置ApiKey!')
     }
   }, [addSummarizeTask, curSummaryType, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segment])
@@ -145,7 +145,6 @@ const SegmentCard = (props: {
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
   const summarizeFloat = useAppSelector(state => state.env.envData.summarizeFloat)
   const fold = useAppSelector(state => state.env.fold)
-  const page = useAppSelector(state => state.env.page)
   const compact = useAppSelector(state => state.env.tempData.compact)
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const showCurrent = useMemo(() => curIdx != null && segment.startIdx <= curIdx && curIdx <= segment.endIdx, [curIdx, segment.endIdx, segment.startIdx])
@@ -168,7 +167,7 @@ const SegmentCard = (props: {
   // 检测设置floatKeyPointsSegIdx
   useEffect(() => {
     if (summarizeFloat) { // 已启用
-      if (!fold && page === PAGE_MAIN && showCurrent) { // 当前Card有控制权
+      if (!fold && showCurrent) { // 当前Card有控制权
         if (!inViewport && (summary != null) && !isSummaryEmpty(summary)) {
           dispatch(setFloatKeyPointsSegIdx(segment.startIdx))
         } else {
@@ -176,7 +175,7 @@ const SegmentCard = (props: {
         }
       }
     }
-  }, [dispatch, fold, inViewport, page, segment.startIdx, showCurrent, summarizeFloat, summary])
+  }, [dispatch, fold, inViewport, segment.startIdx, showCurrent, summarizeFloat, summary])
 
   const onSelBrief = useCallback(() => {
     dispatch(setTempData({

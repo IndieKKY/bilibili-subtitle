@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
-import {setEnvData, setPage, setTempData} from '../redux/envReducer'
+import {setEnvData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
@@ -138,13 +138,16 @@ const Settings = () => {
       cnSearchEnabled: cnSearchEnabledValue,
       askEnabled: askEnabledValue,
     }))
-    dispatch(setPage(PAGE_MAIN))
     toast.success('保存成功')
+    // 3秒后关闭
+    setTimeout(() => {
+      window.close()
+    }, 3000)
   }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
-    dispatch(setPage(PAGE_MAIN))
-  }, [dispatch])
+    window.close()
+  }, [])
 
   const onFetchAmountChange = useCallback((e: any) => {
     setFetchAmountValue(parseInt(e.target.value))

@@ -1,47 +1,22 @@
-import React, {useCallback, useContext, useEffect, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import 'tippy.js/dist/tippy.css'
 import {useAppDispatch, useAppSelector} from './hooks/redux'
-import {setEnvData, setEnvReady, setFold, setPage, setTempData, setTempReady} from './redux/envReducer'
-import Header from './biz/Header'
-import Body from './biz/Body'
-import useSubtitleService from './hooks/useSubtitleService'
+import {setEnvData, setEnvReady, setTempData, setTempReady} from './redux/envReducer'
 import {cloneDeep} from 'lodash-es'
-import {EVENT_EXPAND, MESSAGE_TO_INJECT_FOLD, PAGE_MAIN, PAGE_SETTINGS, STORAGE_ENV, STORAGE_TEMP} from './const'
-import {EventBusContext} from './Router'
-import useTranslateService from './hooks/useTranslateService'
+import {STORAGE_ENV, STORAGE_TEMP} from './const'
 import Settings from './biz/Settings'
 import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
 import {setTheme} from './util/biz_util'
-import useSearchService from './hooks/useSearchService'
-import useMessage from './messaging/useMessage'
 import useMessagingService from './hooks/useMessagingService'
+import MainPage from './pages/MainPage'
 
 function App() {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
   const tempData = useAppSelector(state => state.env.tempData)
-  const fold = useAppSelector(state => state.env.fold)
-  const eventBus = useContext(EventBusContext)
-  const page = useAppSelector(state => state.env.page)
-  const totalHeight = useAppSelector(state => state.env.totalHeight)
-  const {sendInject} = useMessage()
-
-  const foldCallback = useCallback(() => {
-    dispatch(setFold(!fold))
-    dispatch(setPage(PAGE_MAIN))
-    sendInject(MESSAGE_TO_INJECT_FOLD, {fold: !fold})
-  }, [dispatch, fold])
-
-  // handle event
-  eventBus.useSubscription((event: any) => {
-    if (event.type === EVENT_EXPAND) {
-      if (fold) {
-        foldCallback()
-      }
-    }
-  })
+  const path = useAppSelector(state => state.env.path)
 
   // env数据
   const savedEnvData = useMemo(() => {
@@ -73,18 +48,12 @@ function App() {
   }, [envData.theme])
 
   // services
-  useSubtitleService()
-  useTranslateService()
-  useSearchService()
   useMessagingService()
 
-  return <div className='select-none w-full' style={{
-    height: fold?undefined:`${totalHeight}px`,
-  }}>
-    <Header foldCallback={foldCallback}/>
-    {!fold && page === PAGE_MAIN && <Body/>}
-    {!fold && page === PAGE_SETTINGS && <Settings/>}
-    <Toaster position='bottom-center'/>
+  return <div>
+    <Toaster position={path === 'app'?'bottom-center':'top-center'}/>
+    {path === 'app' && <MainPage/>}
+    {path === 'options' && <Settings/>}
   </div>
 }
 

@@ -9,9 +9,10 @@ interface EnvState {
   tempData: TempData
   tempReady: boolean
 
+  path?: 'app' | 'options'
+
   fold: boolean // fold app
   foldAll?: boolean // fold all segments
-  page?: string
   autoTranslate?: boolean
   autoScroll?: boolean
   checkAutoScroll?: boolean
@@ -103,6 +104,9 @@ export const slice = createSlice({
     setReviewAction: (state, action: PayloadAction<boolean>) => {
       state.reviewAction = action.payload
     },
+    setPath: (state, action: PayloadAction<'app' | 'options' | undefined>) => {
+      state.path = action.payload
+    },
     setTempReady: (state) => {
       state.tempReady = true
     },
@@ -117,9 +121,6 @@ export const slice = createSlice({
     },
     setFoldAll: (state, action: PayloadAction<boolean>) => {
       state.foldAll = action.payload
-    },
-    setPage: (state, action: PayloadAction<string | undefined>) => {
-      state.page = action.payload
     },
     setTotalHeight: (state, action: PayloadAction<number>) => {
       state.totalHeight = action.payload
@@ -298,6 +299,7 @@ export const slice = createSlice({
 })
 
 export const {
+  setPath,
   setUrl,
   setTempReady,
   setTempData,
@@ -314,7 +316,6 @@ export const {
   setTitle,
   setSegments,
   setLastSummarizeTime,
-  setPage,
   setLastTransTime,
   clearTransResults,
   addTransResults,

@@ -294,7 +294,7 @@ const MoreBtn = (props: Props) => {
             e.stopPropagation()
           }}>
             <IoMdSettings className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
-            设置
+            选项
           </a>
         </li>
       </ul>

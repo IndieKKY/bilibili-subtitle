@@ -76,10 +76,9 @@ const Summarize = (props: {
     if (apiKey) {
       addSummarizeTask(curSummaryType, segment).catch(console.error)
     } else {
-      chrome.runtime.openOptionsPage()
-      toast.error('需要先设置ApiKey!')
+      toast.error('请先在选项页面设置ApiKey!')
     }
-  }, [addSummarizeTask, curSummaryType, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segment])
+  }, [addSummarizeTask, curSummaryType, envData.aiType, envData.apiKey, envData.geminiApiKey, segment])
 
   const onCopy = useCallback(() => {
     if (summary != null) {

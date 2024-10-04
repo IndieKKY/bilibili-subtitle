@@ -103,8 +103,7 @@ const Body = () => {
   const onSummarizeAll = useCallback(() => {
     const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
     if (!apiKey) {
-      chrome.runtime.openOptionsPage()
-      toast.error('需要先设置ApiKey!')
+      toast.error('请先在选项页面设置ApiKey!')
       return
     }
     const segments_ = []
@@ -147,8 +146,7 @@ const Body = () => {
     if (apiKey) {
       dispatch(setAutoTranslate(!autoTranslate))
     } else {
-      chrome.runtime.openOptionsPage()
-      toast.error('需要先设置ApiKey!')
+      toast.error('请先在选项页面设置ApiKey!')
     }
   }, [autoTranslate, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey])
 
@@ -196,8 +194,7 @@ const Body = () => {
           }))
         }
       } else {
-        chrome.runtime.openOptionsPage()
-        toast.error('需要先设置ApiKey!')
+        toast.error('请先在选项页面设置ApiKey!')
       }
     }
   }, [addAskTask, dispatch, envData.aiType, envData.apiKey, envData.askEnabled, envData.geminiApiKey, searchText, segments])

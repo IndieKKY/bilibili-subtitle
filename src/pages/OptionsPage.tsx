@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useCallback, useEffect, useMemo, useState} from 'react'
-import {setEnvData} from '../redux/envReducer'
+import {setEnvData, setTempData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,

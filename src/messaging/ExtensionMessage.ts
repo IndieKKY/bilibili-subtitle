@@ -26,6 +26,7 @@ class ExtensionMessage {
       const method = this.methods?.[event.method]
       if (method != null) {
         method(event.params, {
+          from: event.from,
           event,
           sender,
         }).then(data => sendResponse({

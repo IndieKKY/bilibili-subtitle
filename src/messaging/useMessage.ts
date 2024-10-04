@@ -5,6 +5,7 @@ import { useCallback } from 'react'
 const useMessage = () => {
     const sendExtension = useCallback(async <T = any>(method: string, params?: any) => {
         return await chrome.runtime.sendMessage<MessageData, MessageResult>({
+            from: 'app',
             target: MESSAGE_TARGET_EXTENSION,
             method,
             params: params ?? {},

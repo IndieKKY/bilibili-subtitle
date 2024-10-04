@@ -1,5 +1,7 @@
+type MessageFrom = 'extension' | 'inject' | 'app'
 
 interface MessageData {
+  from: MessageFrom
   target: string
   method: string
   params?: any
@@ -14,6 +16,7 @@ interface MessageResult {
 }
 
 interface MethodContext {
+  from: MessageFrom
   event: any
   sender?: chrome.runtime.MessageSender | null
 }

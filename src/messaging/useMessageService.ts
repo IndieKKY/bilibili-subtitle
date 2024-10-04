@@ -19,12 +19,12 @@ export const injectWaiter = new Waiter<typeof postInjectMessage>(() => ({
 }), 100, 15000)
 
 const useMessageService = (methods?: {
-  [key: string]: (params: any, from: string, context: MethodContext) => boolean
+  [key: string]: (params: any, context: MethodContext) => boolean
 }) => {
-  const messageHandler = useCallback((method: string, params: any, from: string, context: any): boolean => {
+  const messageHandler = useCallback((method: string, params: any, context: MethodContext): boolean => {
     const handler = methods?.[method]
     if (handler != null) {
-      return handler(params, from, context)
+      return handler(params, context)
     }else {
       debug('unknown message method: ', method)
       return false
@@ -48,7 +48,13 @@ const useMessageService = (methods?: {
       listenMessage((method, params, sendResponse) => {
         debug('inject => ', method, params)
 
-        const success = messageHandler(method, params, MESSAGE_TARGET_INJECT, {})
+        const success = messageHandler(method, params, {
+          from: 'inject',
+          event: {
+            method,
+            params,
+          },
+        })
         sendResponse({
           success,
           code: success ? 200 : 500
@@ -69,8 +75,10 @@ const useMessageService = (methods?: {
     // check event target
     if (!event || event.target !== MESSAGE_TARGET_APP) return
 
-    messageHandler(event.method, event.params, MESSAGE_TARGET_EXTENSION, {
-      sender
+    messageHandler(event.method, event.params, {
+      from: 'extension',
+      event,
+      sender,
     })
   }, [messageHandler])
 

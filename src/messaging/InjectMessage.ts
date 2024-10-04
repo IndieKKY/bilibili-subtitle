@@ -25,6 +25,7 @@ class InjectMessage {
         const method = this.methods?.[event.method]
         if (method != null) {
             method(event.params, {
+                from: event.from,
                 event,
                 sender,
             }).then(data => {
@@ -71,6 +72,7 @@ class InjectMessage {
             this.postMessageToApp = postMessage
             listenMessage((method, params, sendResponse) => {
                 this.messageHandler({
+                    from: 'app',
                     target: MESSAGE_TARGET_INJECT,
                     method,
                     params,
@@ -87,6 +89,7 @@ class InjectMessage {
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {
         return await chrome.runtime.sendMessage<MessageData, MessageResult>({
+            from: 'inject',
             target: MESSAGE_TARGET_EXTENSION,
             method,
             params: params ?? {},

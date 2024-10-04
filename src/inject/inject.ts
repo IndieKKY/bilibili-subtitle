@@ -7,6 +7,12 @@ const debug = (...args: any[]) => {
 }
 
 (function () {
+  // 如果路径不是/video或/list，则不注入
+  if (!location.pathname.startsWith('/video') && !location.pathname.startsWith('/list')) {
+    debug('Not inject')
+    return
+  }
+
   const runtime: {
     postMessageToApp?: (method: string, payload: PostMessagePayload) => Promise<PostMessageResponse>
     // lastV?: string | null

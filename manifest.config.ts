@@ -27,6 +27,7 @@ export default defineManifest(async (env) => ({
     "service_worker": "src/chrome/background.ts",
     "type": "module"
   },
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": ["https://*.bilibili.com/*"],

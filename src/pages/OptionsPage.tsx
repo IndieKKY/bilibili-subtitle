@@ -59,6 +59,7 @@ const FormItem = (props: {
 const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
+  const {value: autoInsertValue, onChange: setAutoInsertValue} = useEventChecked(!envData.manualInsert)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
   // const {value: autoScrollValue, onChange: setAutoScrollValue} = useEventChecked(envData.autoScroll)
   const {value: translateEnableValue, onChange: setTranslateEnableValue} = useEventChecked(envData.translateEnable)
@@ -111,6 +112,7 @@ const OptionsPage = () => {
 
   const onSave = useCallback(() => {
     dispatch(setEnvData({
+      manualInsert: !autoInsertValue,
       autoExpand: autoExpandValue,
       aiType: aiTypeValue,
       apiKey: apiKeyValue,
@@ -140,7 +142,7 @@ const OptionsPage = () => {
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     window.close()
@@ -197,6 +199,10 @@ const OptionsPage = () => {
   return <div className='flex justify-center'>
     <div className="w-2/3 max-w-[600px] flex flex-col gap-3 p-2">
       <Section title='通用配置'>
+        <FormItem title='自动插入' htmlFor='autoInsert' tip='是否自动插入字幕列表(可以手动点击扩展图标插入)'>
+          <input id='autoInsert' type='checkbox' className='toggle toggle-primary' checked={autoInsertValue}
+                 onChange={setAutoInsertValue}/>
+        </FormItem>
         <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'>
           <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue}
                  onChange={setAutoExpandValue}/>

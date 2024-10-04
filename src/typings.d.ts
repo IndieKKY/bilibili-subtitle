@@ -22,6 +22,7 @@ interface MethodContext {
 }
 
 interface EnvData {
+  manualInsert?: boolean //是否手动插入字幕列表
   autoExpand?: boolean
   flagDot?: boolean
 

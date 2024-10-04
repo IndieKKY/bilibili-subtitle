@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import {MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK} from '@/const'
+import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_INJECT_TOGGLE_DISPLAY} from '@/const'
 import ExtensionMessage from '@/messaging/ExtensionMessage'
 
 const methods: {
@@ -63,6 +63,11 @@ chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime
     chrome.storage.sync.remove(event.keys).catch(console.error)
     return
   }
+})
+
+//点击扩展图标
+chrome.action.onClicked.addListener(async (tab) => {
+  extensionMessage.broadcastMessageExact([tab.id!], MESSAGE_TARGET_INJECT, MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
 })
 
 initTaskService()

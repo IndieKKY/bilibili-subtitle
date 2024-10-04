@@ -1,16 +1,30 @@
-import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS } from '@/const'
-import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO} from '@/const'
+import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV } from '@/const'
+import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO } from '@/const'
 import InjectMessage from '@/messaging/InjectMessage'
 
 const debug = (...args: any[]) => {
   console.debug('[Inject]', ...args)
 }
 
-(function () {
+(async function () {
   // 如果路径不是/video或/list，则不注入
   if (!location.pathname.startsWith('/video') && !location.pathname.startsWith('/list')) {
     debug('Not inject')
     return
+  }
+
+  //读取envData
+  const envDataStr = (await chrome.storage.sync.get(STORAGE_ENV))[STORAGE_ENV]
+  let manualInsert: boolean | null = null
+  if (envDataStr) {
+    try {
+      const envData = JSON.parse(envDataStr)
+      debug('envData: ', envData)
+
+      manualInsert = envData.manualInsert
+    } catch (error) {
+      console.error('Error parsing envData:', error)
+    }
   }
 
   const runtime: {
@@ -42,7 +56,7 @@ const debug = (...args: any[]) => {
    */
   const refreshVideoElement = () => {
     const newVideoElement = getVideoElement()
-    const newVideoElementHeight = (newVideoElement != null)?(Math.min(Math.max(newVideoElement.offsetHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)):TOTAL_HEIGHT_DEF
+    const newVideoElementHeight = (newVideoElement != null) ? (Math.min(Math.max(newVideoElement.offsetHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)) : TOTAL_HEIGHT_DEF
     if (newVideoElement === runtime.videoElement && Math.abs(newVideoElementHeight - runtime.videoElementHeight) < 1) {
       return false
     } else {
@@ -54,39 +68,50 @@ const debug = (...args: any[]) => {
     }
   }
 
-  const timerIframe = setInterval(function () {
+  const createIframe = () => {
     var danmukuBox = document.getElementById('danmukuBox')
     if (danmukuBox) {
-      clearInterval(timerIframe)
-
-      //延迟插入iframe（插入太快，网络较差时容易出现b站网页刷新，原因暂时未知，可能b站的某种机制？）
-      setTimeout(() => {
-        var vKey = ''
-        for (const key in danmukuBox?.dataset) {
-          if (key.startsWith('v-')) {
-            vKey = key
-            break
-          }
+      var vKey = ''
+      for (const key in danmukuBox?.dataset) {
+        if (key.startsWith('v-')) {
+          vKey = key
+          break
         }
+      }
 
-        const iframe = document.createElement('iframe')
-        iframe.id = IFRAME_ID
-        iframe.src = chrome.runtime.getURL('index.html')
-        iframe.style.border = 'none'
-        iframe.style.width = '100%'
-        iframe.style.height = '44px'
-        iframe.style.marginBottom = '3px'
-        iframe.allow = 'clipboard-read; clipboard-write;'
-        if (vKey) {
-          iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
-        }
-        //insert before first child
-        danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+      const iframe = document.createElement('iframe')
+      iframe.id = IFRAME_ID
+      iframe.src = chrome.runtime.getURL('index.html')
+      iframe.style.border = 'none'
+      iframe.style.width = '100%'
+      iframe.style.height = '44px'
+      iframe.style.marginBottom = '3px'
+      iframe.allow = 'clipboard-read; clipboard-write;'
 
-        debug('iframe inserted')
-      }, 1500)
+      if (vKey) {
+        iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
+      }
+
+      //insert before first child
+      danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+
+      debug('iframe inserted')
+
+      return iframe
     }
-  }, 1000)
+  }
+
+  if (!manualInsert) {
+    const timerIframe = setInterval(function () {
+      var danmukuBox = document.getElementById('danmukuBox')
+      if (danmukuBox) {
+        clearInterval(timerIframe)
+
+        //延迟插入iframe（插入太快，网络较差时容易出现b站网页刷新，原因暂时未知，可能b站的某种机制？）
+        setTimeout(createIframe, 1500)
+      }
+    }, 1000)
+  }
 
   let aid: number | null = null
   let title = ''
@@ -204,6 +229,14 @@ const debug = (...args: any[]) => {
   const methods: {
     [key: string]: (params: any, context: MethodContext) => Promise<any>
   } = {
+    [MESSAGE_TO_INJECT_TOGGLE_DISPLAY]: async (params) => {
+      const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+      if (iframe != null) {
+        iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none'
+      } else {
+        createIframe()
+      }
+    },
     [MESSAGE_TO_INJECT_FOLD]: async (params) => {
       runtime.fold = params.fold
       updateIframeHeight()
@@ -249,7 +282,7 @@ const debug = (...args: any[]) => {
 
       let text = document.getElementById('trans-result-text')
       if (text) {
-        text.innerHTML = runtime.curTrans??''
+        text.innerHTML = runtime.curTrans ?? ''
       } else {
         const container = document.getElementsByClassName('bpx-player-subtitle-panel-wrap')?.[0]
         if (container) {
@@ -259,7 +292,7 @@ const debug = (...args: any[]) => {
           div.style.margin = '2px'
           text = document.createElement('text')
           text.id = 'trans-result-text'
-          text.innerHTML = runtime.curTrans??''
+          text.innerHTML = runtime.curTrans ?? ''
           text.style.fontSize = '1rem'
           text.style.padding = '5px'
           text.style.color = 'white'
@@ -309,7 +342,10 @@ const debug = (...args: any[]) => {
   runtime.injectMessage.init(methods)
 
   setInterval(() => {
-    refreshVideoInfo().catch(console.error)
-    refreshSubtitles()
+    const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+    if (iframe != null && iframe.style.display !== 'none') {
+      refreshVideoInfo().catch(console.error)
+      refreshSubtitles()
+    }
   }, 1000)
 })()

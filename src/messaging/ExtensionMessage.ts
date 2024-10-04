@@ -61,6 +61,16 @@ class ExtensionMessage {
     })
   }
 
+  broadcastMessageExact = async (tabIds: number[], target: string, method: string, params?: any) => {
+    for (const tabId of tabIds) {
+      try {
+        await chrome.tabs.sendMessage(tabId, {target, method, params})
+      } catch (e) {
+        console.error('send message to tab error', tabId, e)
+      }
+    }
+  }
+
   broadcastMessage = async (ignoreTabIds: number[] | undefined | null, target: string, method: string, params?: any) => {
     const tabs = await chrome.tabs.query({
       discarded: false,

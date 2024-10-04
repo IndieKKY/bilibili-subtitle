@@ -29,9 +29,9 @@ import {
 } from '../const'
 import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
-import {extractJsonArray, extractJsonObject, getModel, sendExtension} from '../util/biz_util'
+import {extractJsonArray, extractJsonObject, getModel} from '../util/biz_util'
 import {formatTime} from '../util/util'
-
+import useMessage from '@/messaging/useMessage'
 const useTranslate = () => {
   const dispatch = useAppDispatch()
   const data = useAppSelector(state => state.env.data)
@@ -45,7 +45,7 @@ const useTranslate = () => {
   const reviewed = useAppSelector(state => state.env.tempData.reviewed)
   const reviewAction = useAppSelector(state => state.env.reviewAction)
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
-
+  const {sendExtension} = useMessage()
   /**
    * 获取下一个需要翻译的行
    * 会检测冷却

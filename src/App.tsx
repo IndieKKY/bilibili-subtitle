@@ -1,12 +1,12 @@
 import React, {useCallback, useContext, useEffect, useMemo} from 'react'
 import 'tippy.js/dist/tippy.css'
 import {useAppDispatch, useAppSelector} from './hooks/redux'
-import {setEnvData, setEnvReady, setFold, setPage, setTempData, setTempReady} from './redux/envReducer'
+import {setCurFetched, setCurInfo, setData, setEnvData, setEnvReady, setFold, setInfos, setPage, setTempData, setTempReady, setTitle, setUrl} from './redux/envReducer'
 import Header from './biz/Header'
 import Body from './biz/Body'
 import useSubtitleService from './hooks/useSubtitleService'
 import {cloneDeep} from 'lodash-es'
-import {EVENT_EXPAND, MESSAGE_TO_INJECT_FOLD, PAGE_MAIN, PAGE_SETTINGS, STORAGE_ENV, STORAGE_TEMP} from './const'
+import {EVENT_EXPAND, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_FOLD, PAGE_MAIN, PAGE_SETTINGS, STORAGE_ENV, STORAGE_TEMP} from './const'
 import {EventBusContext} from './Router'
 import useTranslateService from './hooks/useTranslateService'
 import Settings from './biz/Settings'
@@ -14,9 +14,9 @@ import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
 import {setTheme} from './util/biz_util'
-import {sendInject} from './util/biz_util'
 import useSearchService from './hooks/useSearchService'
-import useMessageService from './hooks/useMessageService'
+import useMessageService from './messaging/useMessageService'
+import useMessage from './messaging/useMessage'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -26,6 +26,7 @@ function App() {
   const eventBus = useContext(EventBusContext)
   const page = useAppSelector(state => state.env.page)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
+  const {sendInject} = useMessage()
 
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
@@ -71,11 +72,29 @@ function App() {
     setTheme(envData.theme)
   }, [envData.theme])
 
+  //methods
+  const methods = useMemo(() => ({
+    [MESSAGE_TO_APP_SET_INFOS]: (params: any, from: string, context: MethodContext) => {
+      dispatch(setInfos(params.infos))
+      dispatch(setCurInfo(undefined))
+      dispatch(setCurFetched(false))
+      dispatch(setData(undefined))
+      return true
+    },
+    [MESSAGE_TO_APP_SET_VIDEO_INFO]: (params: any, from: string, context: MethodContext) => {
+      dispatch(setInfos(params.infos))
+      dispatch(setUrl(params.url))
+      dispatch(setTitle(params.title))
+      console.debug('video title: ', params.title)
+      return true
+    },
+  }), [dispatch])
+
   // services
   useSubtitleService()
   useTranslateService()
   useSearchService()
-  useMessageService()
+  useMessageService(methods)
 
   return <div className='select-none w-full' style={{
     height: fold?undefined:`${totalHeight}px`,

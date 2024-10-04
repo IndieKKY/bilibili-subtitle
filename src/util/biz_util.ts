@@ -2,41 +2,9 @@ import {APP_DOM_ID, CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYP
 import {isDarkMode} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {findIndex} from 'lodash-es'
-import {MESSAGE_TARGET_EXTENSION} from '../const'
-import {injectWaiter} from '../hooks/useMessageService'
 
 export const debug = (...args: any[]) => {
   console.debug('[APP]', ...args)
-}
-
-export const sendExtension = async <T = any>(method: string, params?: any) => {
-  return await chrome.runtime.sendMessage<MessageData, MessageResult>({
-    target: MESSAGE_TARGET_EXTENSION,
-    method,
-    params: params??{},
-  }).then((messageResult) => {
-    if (messageResult.success) {
-      return messageResult.data as T
-    } else {
-      throw new Error(messageResult.message)
-    }
-  })
-}
-
-export const sendInject = async <T = any>(method: string, params?: any) => {
-  // wait
-  const postInjectMessage = await injectWaiter.wait()
-  // send message
-  const messageResult = await postInjectMessage(method, params) as MessageResult | undefined
-  if (messageResult != null) {
-    if (messageResult.success) {
-      return messageResult.data as T
-    } else {
-      throw new Error(messageResult.message)
-    }
-  } else {
-    throw new Error('no response')
-  }
 }
 
 /**

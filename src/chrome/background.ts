@@ -1,10 +1,7 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import {MESSAGE_TARGET_EXTENSION, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK} from '@/const'
-
-const debug = (...args: any[]) => {
-  console.debug('[Extension]', ...args)
-}
+import {MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK} from '@/const'
+import ExtensionMessage from '@/messaging/ExtensionMessage'
 
 const methods: {
   [key: string]: (params: any, context: MethodContext) => Promise<any>
@@ -46,12 +43,12 @@ const methods: {
     }
   },
 }
+// 初始化backgroundMessage
+const extensionMessage = new ExtensionMessage()
+extensionMessage.init(methods)
 
-/**
- * Note: Return true when sending a response asynchronously.
- */
 chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime.MessageSender, sendResponse: (result: any) => void) => {
-  debug((sender.tab != null) ? `tab ${sender.tab.url ?? ''} => ` : 'extension => ', event)
+  // debug((sender.tab != null) ? `tab ${sender.tab.url ?? ''} => ` : 'extension => ', event)
 
   // legacy
   if (event.type === 'syncGet') { // sync.get
@@ -65,44 +62,6 @@ chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime
   } else if (event.type === 'syncRemove') { // sync.remove
     chrome.storage.sync.remove(event.keys).catch(console.error)
     return
-  }
-
-  // check event target
-  if (event.target !== MESSAGE_TARGET_EXTENSION) return
-
-  const method = methods[event.method]
-  if (method != null) {
-    method(event.params, {
-      event,
-      sender,
-    }).then(data => sendResponse({
-      success: true,
-      code: 200,
-      data,
-    })).catch(err => {
-      console.error(err)
-      let message
-      if (err instanceof Error) {
-        message = err.message
-      } else if (typeof err === 'string') {
-        message = err
-      } else {
-        message = 'error: ' + JSON.stringify(err)
-      }
-      sendResponse({
-        success: false,
-        code: 500,
-        message,
-      })
-    })
-    return true
-  } else {
-    console.error('Unknown method:', event.method)
-    sendResponse({
-      success: false,
-      code: 501,
-      message: 'Unknown method: ' + event.method,
-    })
   }
 })
 

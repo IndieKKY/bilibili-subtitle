@@ -1,16 +1,15 @@
-import {useCallback, useContext, useEffect} from 'react'
+import {useCallback, useEffect} from 'react'
 import {
   MESSAGE_TARGET_APP,
   MESSAGE_TARGET_EXTENSION,
   MESSAGE_TARGET_INJECT,
-  MESSAGE_TO_APP_SET_INFOS,
-  MESSAGE_TO_APP_SET_VIDEO_INFO,
 } from '@/const'
-import {debug} from '@/util/biz_util'
 import {callServer, PostMessagePayload, PostMessageResponse} from 'postmessage-promise'
-import {useAppDispatch} from '../hooks/redux'
 import {Waiter} from '@kky002/kky-util'
-import {setInfos, setTitle, setUrl, setCurInfo, setCurFetched, setData} from '@/redux/envReducer'
+
+const debug = (...args: any[]) => {
+  console.debug('[App Messaging]', ...args)
+}
 
 let postInjectMessage: (method: string, params: PostMessagePayload) => Promise<PostMessageResponse> | undefined
 
@@ -19,35 +18,21 @@ export const injectWaiter = new Waiter<typeof postInjectMessage>(() => ({
   data: postInjectMessage
 }), 100, 15000)
 
-const useMessageService = () => {
-  const dispatch = useAppDispatch()
-  const path = 'app' //useAppSelector(state => state.env.path)
-
+const useMessageService = (methods?: {
+  [key: string]: (params: any, from: string, context: MethodContext) => boolean
+}) => {
   const messageHandler = useCallback((method: string, params: any, from: string, context: any): boolean => {
-    switch (method) {
-      case MESSAGE_TO_APP_SET_INFOS:
-        dispatch(setInfos(params.infos))
-        dispatch(setCurInfo(undefined))
-        dispatch(setCurFetched(false))
-        dispatch(setData(undefined))
-        break
-      case MESSAGE_TO_APP_SET_VIDEO_INFO:
-        dispatch(setInfos(params.infos))
-        dispatch(setUrl(params.url))
-        dispatch(setTitle(params.title))
-        console.debug('video title: ', params.title)
-        break
-      default:
-        debug('unknown message method: ', method)
-        return false
+    const handler = methods?.[method]
+    if (handler != null) {
+      return handler(params, from, context)
+    }else {
+      debug('unknown message method: ', method)
+      return false
     }
-    return true
-  }, [dispatch])
+  }, [methods])
 
   // connect to inject
   useEffect(() => {
-    if (path !== 'app') return
-
     let destroyFunc: (() => void) | undefined
 
     const serverObject = {
@@ -76,7 +61,7 @@ const useMessageService = () => {
     return () => {
       destroyFunc?.()
     }
-  }, [messageHandler, path])
+  }, [messageHandler])
 
   const extensionMessageCallback = useCallback((event: MessageData, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
     debug((sender.tab != null) ? `tab ${sender.tab.url??''} => ` : 'extension => ', JSON.stringify(event))

@@ -17,8 +17,8 @@ import {EVENT_EXPAND, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, PAGE_SETTINGS} from '../
 import {formatSrtTime, formatTime, formatVttTime} from '../util/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
-import {getSummarize, sendInject} from '../util/biz_util'
-
+import {getSummarize} from '../util/biz_util'
+import useMessage from '../messaging/useMessage'
 interface Props {
   placement: Placement
 }
@@ -69,6 +69,8 @@ const MoreBtn = (props: Props) => {
   const url = useAppSelector(state => state.env.url)
   const title = useAppSelector(state => state.env.title)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
+
+  const {sendInject} = useMessage()
 
   const downloadCallback = useCallback((download: boolean) => {
     if (data == null) {

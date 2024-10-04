@@ -1,6 +1,6 @@
 import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS } from '@/const'
-import { PostMessagePayload, PostMessageResponse, startListening } from 'postmessage-promise'
-import {MESSAGE_TARGET_EXTENSION, MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO} from '@/const'
+import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO} from '@/const'
+import InjectMessage from '@/messaging/injectMessage'
 
 const debug = (...args: any[]) => {
   console.debug('[Inject]', ...args)
@@ -14,7 +14,7 @@ const debug = (...args: any[]) => {
   }
 
   const runtime: {
-    postMessageToApp?: (method: string, payload: PostMessagePayload) => Promise<PostMessageResponse>
+    injectMessage: InjectMessage
     // lastV?: string | null
     // lastVideoInfo?: VideoInfo
 
@@ -26,38 +26,10 @@ const debug = (...args: any[]) => {
     showTrans: boolean
     curTrans?: string
   } = {
+    injectMessage: new InjectMessage(),
     fold: true,
     videoElementHeight: TOTAL_HEIGHT_DEF,
     showTrans: false,
-  }
-
-  const sendExtension = async <T = any>(method: string, params?: any) => {
-    return await chrome.runtime.sendMessage<MessageData, MessageResult>({
-      target: MESSAGE_TARGET_EXTENSION,
-      method,
-      params: params??{},
-    }).then((messageResult) => {
-      if (messageResult.success) {
-        return messageResult.data as T
-      } else {
-        throw new Error(messageResult.message)
-      }
-    })
-  }
-
-  const sendApp = async <T>(method: string, params: any) => {
-    if (runtime.postMessageToApp != null) {
-      const messageResult = await runtime.postMessageToApp(method, params) as MessageResult | undefined
-      if (messageResult != null) {
-        if (messageResult.success) {
-          return messageResult.data as T
-        } else {
-          throw new Error(messageResult.message)
-        }
-      } else {
-        throw new Error('no response')
-      }
-    }
   }
 
   const getVideoElement = () => {
@@ -179,7 +151,7 @@ const debug = (...args: any[]) => {
         debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
 
         //send setVideoInfo
-        sendApp(MESSAGE_TO_APP_SET_VIDEO_INFO, {
+        runtime.injectMessage.sendApp(MESSAGE_TO_APP_SET_VIDEO_INFO, {
           url: location.origin + location.pathname,
           title,
           aid,
@@ -214,7 +186,7 @@ const debug = (...args: any[]) => {
           .then(res => res.json())
           .then(res => {
             // console.log('refreshSubtitles: ', aid, cid, res)
-            sendApp(MESSAGE_TO_APP_SET_INFOS, {
+            runtime.injectMessage.sendApp(MESSAGE_TO_APP_SET_INFOS, {
               infos: res.data.subtitle.subtitles
             })
           })
@@ -333,73 +305,8 @@ const debug = (...args: any[]) => {
     },
   }
 
-  /**
-   * @param sendResponse No matter what is returned, this method will definitely be called.
-   */
-  const messageHandler = (event: MessageData, sender: chrome.runtime.MessageSender | null, sendResponse: (response?: MessageResult) => void) => {
-    const source = sender != null?((sender.tab != null) ? `tab ${sender.tab.url ?? ''}` : 'extension'):'app'
-    debug(`${source} => `, JSON.stringify(event))
-
-    // check event target
-    if (event.target !== MESSAGE_TARGET_INJECT) return
-
-    const method = methods[event.method]
-    if (method != null) {
-      method(event.params, {
-        event,
-        sender,
-      }).then(data => {
-        // debug(`${source} <= `, event.method, JSON.stringify(data))
-        return data
-      }).then(data => sendResponse({
-        success: true,
-        code: 200,
-        data,
-      })).catch(err => {
-        console.error(err)
-        let message
-        if (err instanceof Error) {
-          message = err.message
-        } else if (typeof err === 'string') {
-          message = err
-        } else {
-          message = 'error: ' + JSON.stringify(err)
-        }
-        sendResponse({
-          success: false,
-          code: 500,
-          message,
-        })
-      })
-      return true
-    } else {
-      console.error('Unknown method:', event.method)
-      sendResponse({
-        success: false,
-        code: 501,
-        message: 'Unknown method: ' + event.method,
-      })
-    }
-  }
-
-  // listen message from app
-  startListening({}).then(e => {
-    const { postMessage, listenMessage, destroy } = e
-    runtime.postMessageToApp = postMessage
-    listenMessage((method, params, sendResponse) => {
-      messageHandler({
-        target: MESSAGE_TARGET_INJECT,
-        method,
-        params,
-      }, null, sendResponse)
-    })
-  }).catch(console.error)
-
-  /**
-   * listen message from extension
-   * Attention: return true if you need to sendResponse asynchronously
-   */
-  chrome.runtime.onMessage.addListener(messageHandler)
+  // 初始化injectMessage
+  runtime.injectMessage.init(methods)
 
   setInterval(() => {
     refreshVideoInfo().catch(console.error)

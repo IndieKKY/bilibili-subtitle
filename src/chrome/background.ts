@@ -85,18 +85,25 @@ chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime
 
 //点击扩展图标
 chrome.action.onClicked.addListener(async (tab) => {
-  chrome.storage.sync.get(STORAGE_ENV, envDatas => {
+  chrome.storage.sync.get(STORAGE_ENV, (envDatas) => {
     const envDataStr = envDatas[STORAGE_ENV]
     const envData = envDataStr ? JSON.parse(envDataStr) : {}
     if (envData.sidePanel) {
       chrome.sidePanel.setOptions({
+        enabled: true,
         tabId: tab.id!,
-        path: 'sidepanel.html?tabId=' + tab.id,
+        path: '/sidepanel.html?tabId=' + tab.id,
+      })
+      chrome.sidePanel.setPanelBehavior({
+        openPanelOnActionClick: true,
       })
       chrome.sidePanel.open({
         tabId: tab.id!,
       })
     } else {
+      chrome.sidePanel.setPanelBehavior({
+        openPanelOnActionClick: false,
+      })
       extensionMessage.broadcastMessageExact([tab.id!], MESSAGE_TARGET_INJECT, MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
     }
   })

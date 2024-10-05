@@ -71,7 +71,7 @@ class ExtensionMessage {
       const id = crypto.randomUUID()
       const name = port.name
       const portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(async (value: MessageData) => {
-        // 初始化
+        // 初始化消息
         if (value.method === '_init') {
           const type = value.params.type
           let tabId = value.params.tabId
@@ -95,6 +95,7 @@ class ExtensionMessage {
           } as MessageResult
         }
 
+        // 处理消息
         return handler(value, portContext)
       }, port)
       const portContext: PortContext = {id, name, port, portMessageHandler, ready: false}

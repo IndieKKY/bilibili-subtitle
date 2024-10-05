@@ -53,9 +53,6 @@ importers:
       pako:
         specifier: ^2.1.0
         version: 2.1.0
-      postmessage-promise:
-        specifier: ^3.2.1
-        version: 3.2.1
       qs:
         specifier: ^6.11.0
         version: 6.11.0
@@ -2007,9 +2004,6 @@ packages:
   postcss@8.4.19:
     resolution: {integrity: sha512-h+pbPsyhlYj6N2ozBmHhHrs9DzGmbaarbLvWipMRO7RLS+v4onj26MPFXA5OBYFxyqYhUJK456SwDcY9H2/zsA==}
     engines: {node: ^10 || ^12 || >=14}
-
-  postmessage-promise@3.2.1:
-    resolution: {integrity: sha512-cSs5eg+DvBQIdIQK9Cimd1wB2eb85xlzJXkJwm6jYNcTlsiwTFXvdyF/69JFozX6vIkdYz2Jv31W+BvSKQXNVg==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -4667,10 +4661,6 @@ snapshots:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
-
-  postmessage-promise@3.2.1:
-    dependencies:
-      '@babel/runtime': 7.19.0
 
   prelude-ls@1.2.1: {}
 

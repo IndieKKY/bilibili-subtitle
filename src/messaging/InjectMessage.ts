@@ -8,15 +8,11 @@ class InjectMessage {
     methods?: {
         [key: string]: (params: any, context: MethodContext) => Promise<any>
     }
-    // postMessageToApp?: (method: string, payload: PostMessagePayload) => Promise<PostMessageResponse>
 
     debug = (...args: any[]) => {
         console.debug('[Inject Messaging]', ...args)
     }
 
-    /**
-     * @param sendResponse No matter what is returned, this method will definitely be called.
-     */
     messageHandler = async (event: MessageData): Promise<MessageResult> => {
         this.debug(`${event.from} => `, JSON.stringify(event))
 

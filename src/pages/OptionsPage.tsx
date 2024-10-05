@@ -59,6 +59,7 @@ const FormItem = (props: {
 const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
+  const {value: sidePanelValue, onChange: setSidePanelValue} = useEventChecked(envData.sidePanel)
   const {value: autoInsertValue, onChange: setAutoInsertValue} = useEventChecked(!envData.manualInsert)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
   // const {value: autoScrollValue, onChange: setAutoScrollValue} = useEventChecked(envData.autoScroll)
@@ -112,6 +113,7 @@ const OptionsPage = () => {
 
   const onSave = useCallback(() => {
     dispatch(setEnvData({
+      sidePanel: sidePanelValue,
       manualInsert: !autoInsertValue,
       autoExpand: autoExpandValue,
       aiType: aiTypeValue,
@@ -142,7 +144,7 @@ const OptionsPage = () => {
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, sidePanelValue, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     window.close()
@@ -199,14 +201,18 @@ const OptionsPage = () => {
   return <div className='flex justify-center'>
     <div className="w-2/3 max-w-[600px] flex flex-col gap-3 p-2">
       <Section title='通用配置'>
-        <FormItem title='自动插入' htmlFor='autoInsert' tip='是否自动插入字幕列表(可以手动点击扩展图标插入)'>
+        <FormItem title='侧边栏' htmlFor='sidePanel' tip='字幕列表是否显示在侧边栏'>
+          <input id='sidePanel' type='checkbox' className='toggle toggle-primary' checked={sidePanelValue}
+                 onChange={setSidePanelValue}/>
+        </FormItem>
+        {!sidePanelValue && <FormItem title='自动插入' htmlFor='autoInsert' tip='是否自动插入字幕列表(可以手动点击扩展图标插入)'>
           <input id='autoInsert' type='checkbox' className='toggle toggle-primary' checked={autoInsertValue}
                  onChange={setAutoInsertValue}/>
-        </FormItem>
-        <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'>
+        </FormItem>}
+        {!sidePanelValue && <FormItem title='自动展开' htmlFor='autoExpand' tip='是否视频有字幕时自动展开字幕列表'>
           <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue}
                  onChange={setAutoExpandValue}/>
-        </FormItem>
+        </FormItem>}
         <FormItem title='主题'>
           <div className="btn-group">
             <button onClick={onSelTheme1} className={classNames('btn btn-xs no-animation', (!themeValue || themeValue === 'system')?'btn-active':'')}>系统</button>

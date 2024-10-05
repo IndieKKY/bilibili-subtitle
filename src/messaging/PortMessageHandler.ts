@@ -1,5 +1,3 @@
-//暂时没用到
-
 export type RespMsg<T = any> = {
   code: number
   data?: T
@@ -21,15 +19,29 @@ class PortMessageHandler<Req = any, Res = any> {
   private timeout: number
   private messageMap: Map<string, { resolve: (value: Res) => void, timer: number }>
   private handler: (value: Req) => Promise<Res>
+  private type?: 'inject' | 'app'
+  private tabId?: number
 
   constructor(handler: (value: Req) => Promise<Res>, port: chrome.runtime.Port, timeout = 30000) {  // 默认超时 30 秒
     this.port = port;
     this.timeout = timeout;
     this.messageMap = new Map();
     this.handler = handler
+  }
 
+  init(type: 'inject' | 'app', tabId?: number) {
+    this.type = type
+    this.tabId = tabId
+    this.port.postMessage({
+      type,
+      tabId,
+    })
+  }
+
+  startListen() {
     // 持久监听 port.onMessage
     this.port.onMessage.addListener((msg: PortMessage<Req, Res>) => {
+      console.log('msg', this.type, this.tabId, msg)
       const { msgId, msgType, req, res } = msg;
       if (msgType === 'req') {
         this.handler(req!).then(res => {
@@ -77,6 +89,7 @@ class PortMessageHandler<Req = any, Res = any> {
 
       // 发送消息，并附带 ID
       this.port.postMessage({ msgId, msgType: 'req', req });
+      console.log('sendMessage>>>', msgId, 'req', req)
     });
   }
 

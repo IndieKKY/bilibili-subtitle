@@ -15,12 +15,14 @@ const debug = (...args: any[]) => {
 
   //读取envData
   const envDataStr = (await chrome.storage.sync.get(STORAGE_ENV))[STORAGE_ENV]
+  let sidePanel: boolean | null = null
   let manualInsert: boolean | null = null
   if (envDataStr) {
     try {
       const envData = JSON.parse(envDataStr)
       debug('envData: ', envData)
 
+      sidePanel = envData.sidePanel
       manualInsert = envData.manualInsert
     } catch (error) {
       console.error('Error parsing envData:', error)
@@ -106,7 +108,7 @@ const debug = (...args: any[]) => {
     }
   }
 
-  if (!manualInsert) {
+  if (!sidePanel && !manualInsert) {
     const timerIframe = setInterval(function () {
       var danmukuBox = document.getElementById('danmukuBox')
       if (danmukuBox) {
@@ -124,9 +126,14 @@ const debug = (...args: any[]) => {
   let pagesMap: Record<string, any> = {}
 
   let lastAidOrBvid: string | null = null
-  const refreshVideoInfo = async () => {
-    const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
-    if (!iframe) return
+  const refreshVideoInfo = async (force: boolean = false) => {
+    if (force) {
+      lastAidOrBvid = null
+    }
+    if (!sidePanel) {
+      const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+      if (!iframe) return
+    }
 
     // fix: https://github.com/IndieKKY/bilibili-subtitle/issues/5
     // 处理稍后再看的url( https://www.bilibili.com/list/watchlater?bvid=xxx&oid=xxx )
@@ -195,8 +202,10 @@ const debug = (...args: any[]) => {
   let lastAid: number | null = null
   let lastCid: number | null = null
   const refreshSubtitles = () => {
-    const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
-    if (!iframe) return
+    if (!sidePanel) {
+      const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+      if (!iframe) return
+    }
 
     const urlSearchParams = new URLSearchParams(window.location.search)
     const p = urlSearchParams.get('p') || 1
@@ -282,7 +291,7 @@ const debug = (...args: any[]) => {
       }
     },
     [MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO]: async (params) => {
-      refreshVideoInfo()
+      refreshVideoInfo(params.force)
     },
     [MESSAGE_TO_INJECT_UPDATETRANSRESULT]: async (params) => {
       runtime.showTrans = true
@@ -350,10 +359,12 @@ const debug = (...args: any[]) => {
   runtime.injectMessage.init(methods)
 
   setInterval(() => {
-    const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
-    if (iframe != null && iframe.style.display !== 'none') {
-      refreshVideoInfo().catch(console.error)
-      refreshSubtitles()
+    if (!sidePanel) {
+      const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
+      if (!iframe || iframe.style.display === 'none') return
     }
+
+    refreshVideoInfo().catch(console.error)
+    refreshSubtitles()
   }, 1000)
 })()

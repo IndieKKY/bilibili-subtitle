@@ -14,7 +14,6 @@ import {Toaster} from 'react-hot-toast'
 import {setTheme} from '../util/biz_util'
 import useSearchService from '../hooks/useSearchService'
 import useMessage from '../messaging/useMessage'
-import useMessagingService from '../hooks/useMessagingService'
 
 function App() {
   const dispatch = useAppDispatch()

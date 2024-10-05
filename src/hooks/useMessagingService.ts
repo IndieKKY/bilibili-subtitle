@@ -9,21 +9,19 @@ const useMessagingService = () => {
   
   //methods
   const methods: {
-    [key: string]: (params: any, context: MethodContext) => boolean
+    [key: string]: (params: any, context: MethodContext) => Promise<any>
   } = useMemo(() => ({
-    [MESSAGE_TO_APP_SET_INFOS]: (params: any, context: MethodContext) => {
+    [MESSAGE_TO_APP_SET_INFOS]: async (params: any, context: MethodContext) => {
       dispatch(setInfos(params.infos))
       dispatch(setCurInfo(undefined))
       dispatch(setCurFetched(false))
       dispatch(setData(undefined))
-      return true
     },
-    [MESSAGE_TO_APP_SET_VIDEO_INFO]: (params: any, context: MethodContext) => {
+    [MESSAGE_TO_APP_SET_VIDEO_INFO]: async (params: any, context: MethodContext) => {
       dispatch(setInfos(params.infos))
       dispatch(setUrl(params.url))
       dispatch(setTitle(params.title))
       console.debug('video title: ', params.title)
-      return true
     },
   }), [dispatch])
 

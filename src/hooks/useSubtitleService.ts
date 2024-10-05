@@ -16,7 +16,7 @@ import {
   setTempData,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_UPDATETRANSRESULT} from '../const'
+import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_UPDATETRANSRESULT, TOTAL_HEIGHT_DEF} from '../const'
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../util/biz_util'
 import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../const'
@@ -67,7 +67,12 @@ const useSubtitleService = () => {
 
   // 当前未展示 & (未折叠 | 自动展开) & 有列表 => 展示第一个
   useEffect(() => {
-    if (!curInfo && (!fold || (envReady && envData.autoExpand)) && (infos != null) && infos.length > 0) {
+    let autoExpand = envData.autoExpand
+    // 如果显示在侧边栏，则自动展开
+    if (envData.sidePanel) {
+      autoExpand = true
+    }
+    if (!curInfo && (!fold || (envReady && autoExpand)) && (infos != null) && infos.length > 0) {
       dispatch(setCurInfo(infos[0]))
       dispatch(setCurFetched(false))
     }
@@ -92,15 +97,18 @@ const useSubtitleService = () => {
     // 等待inject准备好
     await injectWaiter.wait()
     // 初始获取列表
-    sendInject(MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, {})
+    sendInject(MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, {force: true})
     // 初始获取设置信息
     sendInject(MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, {}).then(info => {
       dispatch(setNoVideo(info.noVideo))
-      if (info.totalHeight) {
+      if (envData.sidePanel) {
+        // get screen height
+        dispatch(setTotalHeight(window.innerHeight))
+      }else {
         dispatch(setTotalHeight(Math.min(Math.max(info.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
       }
     })
-  }, [])
+  }, [envData.sidePanel])
 
   // 更新当前位置
   useEffect(() => {
@@ -185,7 +193,7 @@ const useSubtitleService = () => {
     dispatch(setSegments(segments))
   }, [data?.body, dispatch, envData])
 
-  // 每秒更新当前视频时间
+  // 每0.5秒更新当前视频时间
   useInterval(() => {
     sendInject(MESSAGE_TO_INJECT_GET_VIDEO_STATUS, {}).then(status => {
       dispatch(setCurrentTime(status.currentTime))

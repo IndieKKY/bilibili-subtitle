@@ -18,10 +18,12 @@ interface MessageResult {
 interface MethodContext {
   from: MessageFrom
   event: any
-  sender?: chrome.runtime.MessageSender | null
+  tabId?: number
+  // sender?: chrome.runtime.MessageSender | null
 }
 
 interface EnvData {
+  sidePanel?: boolean
   manualInsert?: boolean //是否手动插入字幕列表
   autoExpand?: boolean
   flagDot?: boolean

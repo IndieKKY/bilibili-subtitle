@@ -17,6 +17,7 @@ export default defineManifest(async (env) => ({
   "version": `${major}.${minor}.${patch}`,
   "manifest_version": 3,
   "permissions": [
+    "sidePanel",
     "storage",
   ],
   "host_permissions": [

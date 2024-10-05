@@ -1,4 +1,4 @@
-import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV } from '@/const'
+import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV, MESSAGE_TO_EXTENSION_SHOW_FLAG } from '@/const'
 import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO } from '@/const'
 import InjectMessage from '@/messaging/InjectMessage'
 
@@ -94,6 +94,11 @@ const debug = (...args: any[]) => {
 
       //insert before first child
       danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
+
+      // show badge
+      runtime.injectMessage.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
+        show: true
+      })
 
       debug('iframe inserted')
 
@@ -233,6 +238,9 @@ const debug = (...args: any[]) => {
       const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
       if (iframe != null) {
         iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none'
+        runtime.injectMessage.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
+          show: iframe.style.display !== 'none'
+        })
       } else {
         createIframe()
       }

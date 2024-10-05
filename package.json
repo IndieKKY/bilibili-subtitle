@@ -47,7 +47,7 @@
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.8",
-    "@types/chrome": "^0.0.203",
+    "@types/chrome": "^0.0.277",
     "@types/js-search": "^1.4.0",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^20.8.10",

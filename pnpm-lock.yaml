@@ -106,8 +106,8 @@ importers:
         specifier: ^0.5.8
         version: 0.5.8(tailwindcss@3.2.4(postcss@8.4.19))
       '@types/chrome':
-        specifier: ^0.0.203
-        version: 0.0.203
+        specifier: ^0.0.277
+        version: 0.0.277
       '@types/js-search':
         specifier: ^1.4.0
         version: 1.4.0
@@ -468,8 +468,8 @@ packages:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@types/chrome@0.0.203':
-    resolution: {integrity: sha512-JlQNebwpBETVc8U1Rr2inDFuOTtn0lahRAhnddx1dd0S5RrLAFJEEsyIu7AXI14mkCgSunksnuLGioH8kvBqRA==}
+  '@types/chrome@0.0.277':
+    resolution: {integrity: sha512-qoTgBcDWblSsX+jvFnpUlLUE3LAuOhZfBh9MyMWMQHDsQiYVgBvdZWu9COrdB9+aNnInEyXcFgfc2HE16sdSYQ==}
 
   '@types/debug@4.1.7':
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -2922,7 +2922,7 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       tippy.js: 6.3.7
 
-  '@types/chrome@0.0.203':
+  '@types/chrome@0.0.277':
     dependencies:
       '@types/filesystem': 0.0.32
       '@types/har-format': 1.2.8

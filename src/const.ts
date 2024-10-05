@@ -4,6 +4,7 @@ export const MESSAGE_TARGET_APP = 'BilibiliAPP'
 
 export const MESSAGE_TO_EXTENSION_ADD_TASK = 'addTask'
 export const MESSAGE_TO_EXTENSION_GET_TASK = 'getTask'
+export const MESSAGE_TO_EXTENSION_SHOW_FLAG = 'showFlag'
 
 export const MESSAGE_TO_INJECT_TOGGLE_DISPLAY = 'toggleDisplay'
 export const MESSAGE_TO_INJECT_FOLD = 'fold'

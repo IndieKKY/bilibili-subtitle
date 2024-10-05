@@ -51,10 +51,10 @@ class PortMessageHandler<Req = any, Res = any> {
           const { resolve, timer } = this.messageMap.get(msgId)!;
           // 清除超时定时器
           clearTimeout(timer);
-          // 通过 ID 找到对应的 Promise 并 resolve
-          resolve(res!.data!);
           // 处理完毕后，移除该消息 ID
           this.messageMap.delete(msgId);
+          // 通过 ID 找到对应的 Promise 并 resolve
+          resolve(res!.data!);
         }
       }
     });

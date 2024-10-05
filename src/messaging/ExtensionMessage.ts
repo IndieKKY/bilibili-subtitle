@@ -1,4 +1,4 @@
-import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
+import { MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
 import Layer1Protocol from './Layer1Protocol'
 
 export type PortContext = {
@@ -96,9 +96,7 @@ class ExtensionMessage {
           port.onMessage.removeListener(listener)
           // 开始监听
           portMessageHandler.startListen()
-
-          console.log('start listen>>>', name)
-        }else {
+        } else {
           console.log('no tabId>>>', name)
         }
       }

@@ -22,8 +22,6 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
   private timeout: number
   private messageMap: Map<string, { resolve: (value: L1Res) => void, timer: number }>
   private handler: (value: L1Req) => Promise<L1Res>
-  private type?: 'inject' | 'app'
-  private tabId?: number
 
   constructor(handler: (value: L1Req) => Promise<L1Res>, port: chrome.runtime.Port, timeout = 30000) {  // 默认超时 30 秒
     this.port = port;
@@ -33,8 +31,6 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
   }
 
   init(type: 'inject' | 'app', tabId?: number) {
-    this.type = type
-    this.tabId = tabId
     this.port.postMessage({
       type,
       tabId,

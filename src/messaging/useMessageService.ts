@@ -77,17 +77,19 @@ const useMessageService = (methods?: {
     if (messageHandler && port) {
       const pmh = new Layer1Protocol<MessageData, MessageResult>(messageHandler, port)
   
+      pmh.startListen()
       //get tabId from url params
-      let tabId = window.location.search.split('tabId=')[1]
-      if (!tabId) {
-        pmh.startListen()
-        pmh.init('app')
-        portMessageHandlerInit = true
-      }else {
-        pmh.startListen()
-        pmh.init('app', parseInt(tabId))
-        portMessageHandlerInit = true
-      }
+      let tabIdStr = window.location.search.split('tabId=')[1]
+      let tabId = tabIdStr ? parseInt(tabIdStr) : undefined
+      // 初始化
+      pmh.sendMessage({
+          method: '_init',
+          params: {
+              type: 'app',
+              tabId,
+          },
+      } as MessageData)
+      portMessageHandlerInit = true
   
       return pmh
     }

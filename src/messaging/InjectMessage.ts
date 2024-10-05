@@ -68,13 +68,18 @@ class InjectMessage {
     init(methods: {
         [key: string]: (params: any, context: MethodContext) => Promise<any>
     }) {
+        this.methods = methods
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
             name: MESSAGE_TARGET_INJECT,
         })
         this.portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(this.messageHandler, this.port)
         this.portMessageHandler!.startListen()
-        this.portMessageHandler!.init('inject')
-        this.methods = methods
+        this.portMessageHandler!.sendMessage({
+            method: '_init',
+            params: {
+                type: 'inject',
+            },
+        } as MessageData)
     }
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {

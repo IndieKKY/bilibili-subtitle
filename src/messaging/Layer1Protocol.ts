@@ -30,12 +30,12 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
     this.handler = handler
   }
 
-  init(type: 'inject' | 'app', tabId?: number) {
-    this.port.postMessage({
-      type,
-      tabId,
-    })
-  }
+  // init(type: 'inject' | 'app', tabId?: number) {
+  //   this.port.postMessage({
+  //     type,
+  //     tabId,
+  //   })
+  // }
 
   startListen() {
     // 持久监听 port.onMessage

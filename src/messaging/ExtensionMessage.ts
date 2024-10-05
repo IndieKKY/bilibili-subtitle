@@ -4,10 +4,12 @@ import Layer1Protocol from './Layer1Protocol'
 export type PortContext = {
   id: string
   name: string
-  tabId: number
-  type: 'inject' | 'app'
   port: chrome.runtime.Port
   portMessageHandler: Layer1Protocol
+  ready: boolean
+
+  tabId?: number
+  type?: 'inject' | 'app'
 }
 
 class ExtensionMessage {
@@ -68,42 +70,43 @@ class ExtensionMessage {
 
       const id = crypto.randomUUID()
       const name = port.name
+      const portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(async (value: MessageData) => {
+        // 初始化
+        if (value.method === '_init') {
+          const type = value.params.type
+          let tabId = value.params.tabId
 
-      const listener = async (firstMessage: any) => {
-        console.log('firstMessage', name, firstMessage)
-
-        let tabId = firstMessage.tabId
-        let type = firstMessage.type
-        if (tabId == null) {
           //get current tabId
-          const tabs = await chrome.tabs.query({
-            active: true,
-            currentWindow: true,
-          })
-          tabId = tabs[0]?.id
-          console.log('current tabId: ', tabId)
-        }
-        if (tabId != null) {
-          // @ts-ignore
-          const portContext: PortContext = {id, name, tabId, port, type}
-          const portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(async (value: MessageData) => {
-            return handler(value, portContext)
-          }, port)
-          portContext.portMessageHandler = portMessageHandler
-          this.portIdToPort.set(id, portContext)
+          if (tabId == null) {
+            const tabs = await chrome.tabs.query({
+              active: true,
+              currentWindow: true,
+            })
+            tabId = tabs[0]?.id
+          }
 
-          // 移除监听
-          port.onMessage.removeListener(listener)
-          // 开始监听
-          portMessageHandler.startListen()
-        } else {
-          console.log('no tabId>>>', name)
-        }
-      }
-      port.onMessage.addListener(listener)
+          portContext.tabId = tabId
+          portContext.type = type
+          portContext.ready = true
 
+          return {
+            success: true,
+            code: 200,
+          } as MessageResult
+        }
+
+        return handler(value, portContext)
+      }, port)
+      const portContext: PortContext = {id, name, port, portMessageHandler, ready: false}
+      this.portIdToPort.set(id, portContext)
+
+      // 开始监听
+      portMessageHandler.startListen()
+
+      // 监听断开连接
       port.onDisconnect.addListener(() => {
         this.portIdToPort.delete(id)
+        this.debug('onDisconnect', id)
       })
     })
   }
@@ -113,7 +116,7 @@ class ExtensionMessage {
     const targetType = target === MESSAGE_TARGET_INJECT ? 'inject' : 'app'
     let resp: MessageResult | undefined
     for (const portContext of this.portIdToPort.values()) {
-      if (tabIds.includes(portContext.tabId)) {
+      if (tabIds.includes(portContext.tabId!)) {
         if (targetType === portContext.type) {
           try {
             const messageData: MessageData = {target, method, params, from: 'extension'}

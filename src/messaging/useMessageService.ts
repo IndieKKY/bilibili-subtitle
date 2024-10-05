@@ -92,65 +92,6 @@ const useMessageService = (methods?: {
       return pmh
     }
   }, [messageHandler, port])
-
-  // connect to inject
-  // useEffect(() => {
-  //   let destroyFunc: (() => void) | undefined
-
-  //   const serverObject = {
-  //     server: window.parent, // openedWindow / window.parent / window.opener;
-  //     origin: '*', // target-window's origin or *
-  //   }
-  //   const options = {}
-  //   callServer(serverObject, options).then(e => {
-  //     const { postMessage, listenMessage, destroy } = e
-  //     postInjectMessage = postMessage
-  //     destroyFunc = destroy
-
-  //     listenMessage((method, params, sendResponse) => {
-  //       debug('inject => ', method, params)
-
-  //       const success = messageHandler(method, params, {
-  //         from: 'inject',
-  //         event: {
-  //           method,
-  //           params,
-  //         },
-  //       })
-  //       sendResponse({
-  //         success,
-  //         code: success ? 200 : 500
-  //       })
-  //     })
-
-  //     debug('message ready')
-  //   }).catch(console.error)
-
-  //   return () => {
-  //     destroyFunc?.()
-  //   }
-  // }, [messageHandler])
-
-  // const extensionMessageCallback = useCallback((event: MessageData, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => {
-  //   debug((sender.tab != null) ? `tab ${sender.tab.url??''} => ` : 'extension => ', JSON.stringify(event))
-
-  //   // check event target
-  //   if (!event || event.target !== MESSAGE_TARGET_APP) return
-
-  //   messageHandler(event.method, event.params, {
-  //     from: 'extension',
-  //     event,
-  //     sender,
-  //   })
-  // }, [messageHandler])
-
-  // // listen for message
-  // useEffect(() => {
-  //   chrome.runtime.onMessage.addListener(extensionMessageCallback)
-  //   return () => {
-  //     chrome.runtime.onMessage.removeListener(extensionMessageCallback)
-  //   }
-  // }, [extensionMessageCallback])
 }
 
 export default useMessageService

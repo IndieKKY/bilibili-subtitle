@@ -108,52 +108,6 @@ class ExtensionMessage {
         this.portIdToPort.delete(id)
       })
     })
-
-    /**
-     * Note: Return true when sending a response asynchronously.
-     */
-    // chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime.MessageSender, sendResponse: (result: any) => void) => {
-    //   this.debug((sender.tab != null) ? `tab ${sender.tab.url ?? ''} => ` : 'extension => ', event)
-
-    //   // check event target
-    //   if (event.target !== MESSAGE_TARGET_EXTENSION) return
-
-    //   const method = this.methods?.[event.method]
-    //   if (method != null) {
-    //     method(event.params, {
-    //       from: event.from,
-    //       event,
-    //       sender,
-    //     }).then(data => sendResponse({
-    //       success: true,
-    //       code: 200,
-    //       data,
-    //     })).catch(err => {
-    //       console.error(err)
-    //       let message
-    //       if (err instanceof Error) {
-    //         message = err.message
-    //       } else if (typeof err === 'string') {
-    //         message = err
-    //       } else {
-    //         message = 'error: ' + JSON.stringify(err)
-    //       }
-    //       sendResponse({
-    //         success: false,
-    //         code: 500,
-    //         message,
-    //       })
-    //     })
-    //     return true
-    //   } else {
-    //     console.error('Unknown method:', event.method)
-    //     sendResponse({
-    //       success: false,
-    //       code: 501,
-    //       message: 'Unknown method: ' + event.method,
-    //     })
-    //   }
-    // })
   }
 
   broadcastMessageExact = async (tabIds: number[], target: string, method: string, params?: any) => {

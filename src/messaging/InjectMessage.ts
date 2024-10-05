@@ -75,25 +75,6 @@ class InjectMessage {
         this.portMessageHandler!.startListen()
         this.portMessageHandler!.init('inject')
         this.methods = methods
-        // listen message from app
-        // startListening({}).then(e => {
-        //     const { postMessage, listenMessage, destroy } = e
-        //     this.postMessageToApp = postMessage
-        //     listenMessage((method, params, sendResponse) => {
-        //         this.messageHandler({
-        //             from: 'app',
-        //             target: MESSAGE_TARGET_INJECT,
-        //             method,
-        //             params,
-        //         }, null, sendResponse)
-        //     })
-        // }).catch(console.error)
-
-        /**
-         * listen message from extension
-         * Attention: return true if you need to sendResponse asynchronously
-         */
-        // chrome.runtime.onMessage.addListener(this.messageHandler)
     }
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {

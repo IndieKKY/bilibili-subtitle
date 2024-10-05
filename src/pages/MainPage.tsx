@@ -22,7 +22,7 @@ function App() {
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
     sendInject(MESSAGE_TO_INJECT_FOLD, {fold: !fold})
-  }, [dispatch, fold])
+  }, [dispatch, fold, sendInject])
 
   // handle event
   eventBus.useSubscription((event: any) => {

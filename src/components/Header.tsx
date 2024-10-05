@@ -16,6 +16,7 @@ const Header = (props: {
   const curInfo = useAppSelector(state => state.env.curInfo)
   const fold = useAppSelector(state => state.env.fold)
   const uploadedTranscript = useAppSelector(state => state.env.uploadedTranscript)
+  const envData = useAppSelector(state => state.env.envData)
 
   const upload = useCallback(() => {
     const input = document.createElement('input')
@@ -76,7 +77,11 @@ const Header = (props: {
     upload()
   }, [upload])
 
-  return <div className='rounded-[6px] bg-[#f1f2f3] dark:bg-base-100 h-[44px] flex justify-between items-center cursor-pointer' onClick={foldCallback}>
+  return <div className='rounded-[6px] bg-[#f1f2f3] dark:bg-base-100 h-[44px] flex justify-between items-center cursor-pointer' onClick={() => {
+    if (!envData.sidePanel) {
+      foldCallback()
+    }
+  }}>
     <div className='shrink-0 flex items-center'>
       <span className='shrink-0 text-[15px] font-medium pl-[16px] pr-[14px]'>字幕列表</span>
       <MoreBtn placement={'right-start'}/>
@@ -91,7 +96,7 @@ const Header = (props: {
           {infos?.map((item: any) => <option key={item.id} value={item.subtitle_url}>{item.lan_doc}</option>)}
           <option key='upload' value='upload'>上传(vtt/srt)</option>
         </select>}
-      <IoIosArrowUp className={classNames('shrink-0 desc transform ease-in duration-300', fold?'rotate-180':'')}/>
+      {!envData.sidePanel && <IoIosArrowUp className={classNames('shrink-0 desc transform ease-in duration-300', fold?'rotate-180':'')}/>}
     </div>
   </div>
 }

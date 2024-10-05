@@ -113,7 +113,6 @@ class ExtensionMessage {
   }
 
   broadcastMessageExact = async (tabIds: number[], target: string, method: string, params?: any) => {
-    //遍历portIdToPort
     const targetType = target === MESSAGE_TARGET_INJECT ? 'inject' : 'app'
     let resp: MessageResult | undefined
     for (const portContext of this.portIdToPort.values()) {

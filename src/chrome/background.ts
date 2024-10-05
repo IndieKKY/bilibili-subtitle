@@ -101,6 +101,9 @@ chrome.action.onClicked.addListener(async (tab) => {
         tabId: tab.id!,
       })
     } else {
+      chrome.sidePanel.setOptions({
+        enabled: false,
+      })
       chrome.sidePanel.setPanelBehavior({
         openPanelOnActionClick: false,
       })

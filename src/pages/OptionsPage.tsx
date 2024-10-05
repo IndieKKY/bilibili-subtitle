@@ -9,6 +9,7 @@ import {
   HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
   LANGUAGES,
+  MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL,
   MODEL_DEFAULT,
   MODEL_MAP,
   MODEL_TIP,
@@ -28,6 +29,7 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
 import {useEventChecked} from '@kky002/kky-hooks'
+import useMessage from '@/messaging/useMessage'
 
 const Section = (props: {
   title: ShowElement
@@ -59,6 +61,7 @@ const FormItem = (props: {
 const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
+  const {sendExtension} = useMessage()
   const {value: sidePanelValue, onChange: setSidePanelValue} = useEventChecked(envData.sidePanel)
   const {value: autoInsertValue, onChange: setAutoInsertValue} = useEventChecked(!envData.manualInsert)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
@@ -140,11 +143,12 @@ const OptionsPage = () => {
       askEnabled: askEnabledValue,
     }))
     toast.success('保存成功')
+    sendExtension(MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL)
     // 3秒后关闭
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, sidePanelValue, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     window.close()

@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/consts/const'
+import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/consts/const'
 import ExtensionMessage from '@/messaging/ExtensionMessage'
 
 const setBadgeOk = async (tabId: number, ok: boolean) => {
@@ -18,9 +18,21 @@ const setBadgeOk = async (tabId: number, ok: boolean) => {
   })
 }
 
+const closeSidePanel = async () => {
+  chrome.sidePanel.setOptions({
+    enabled: false,
+  })
+  chrome.sidePanel.setPanelBehavior({
+    openPanelOnActionClick: false,
+  })
+}
+
 const methods: {
   [key: string]: (params: any, context: MethodContext) => Promise<any>
 } = {
+  [MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL]: async (params, context) => {
+    closeSidePanel()
+  },
   [MESSAGE_TO_EXTENSION_ADD_TASK]: async (params, context) => {
     // 新建任务
     const task: Task = {
@@ -101,12 +113,7 @@ chrome.action.onClicked.addListener(async (tab) => {
         tabId: tab.id!,
       })
     } else {
-      chrome.sidePanel.setOptions({
-        enabled: false,
-      })
-      chrome.sidePanel.setPanelBehavior({
-        openPanelOnActionClick: false,
-      })
+      closeSidePanel()
       extensionMessage.broadcastMessageExact([tab.id!], MESSAGE_TARGET_INJECT, MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
     }
   })

@@ -3,14 +3,14 @@ import {
   MESSAGE_TARGET_APP,
 } from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
-import PortMessageHandler from './PortMessageHandler'
+import Layer1Protocol from './Layer1Protocol'
 
 const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)
 }
 
 let portMessageHandlerInit: boolean = false
-let portMessageHandler: PortMessageHandler<MessageData, MessageResult> | undefined
+let portMessageHandler: Layer1Protocol<MessageData, MessageResult> | undefined
 // let postInjectMessage: (method: string, params: PostMessagePayload) => Promise<PostMessageResponse> | undefined
 
 export const injectWaiter = new Waiter<any>(() => ({
@@ -75,7 +75,7 @@ const useMessageService = (methods?: {
   }, [])
   portMessageHandler = useMemo(() => {
     if (messageHandler && port) {
-      const pmh = new PortMessageHandler<MessageData, MessageResult>(messageHandler, port)
+      const pmh = new Layer1Protocol<MessageData, MessageResult>(messageHandler, port)
   
       //get tabId from url params
       let tabId = window.location.search.split('tabId=')[1]

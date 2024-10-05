@@ -1,9 +1,9 @@
 import { MESSAGE_TARGET_APP, MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
-import PortMessageHandler from './PortMessageHandler'
+import Layer1Protocol from './Layer1Protocol'
 
 class InjectMessage {
     port?: chrome.runtime.Port
-    portMessageHandler?: PortMessageHandler
+    portMessageHandler?: Layer1Protocol
     //类实例
     methods?: {
         [key: string]: (params: any, context: MethodContext) => Promise<any>
@@ -71,7 +71,7 @@ class InjectMessage {
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
             name: MESSAGE_TARGET_INJECT,
         })
-        this.portMessageHandler = new PortMessageHandler<MessageData, MessageResult>(this.messageHandler, this.port)
+        this.portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(this.messageHandler, this.port)
         this.portMessageHandler!.startListen()
         this.portMessageHandler!.init('inject')
         this.methods = methods

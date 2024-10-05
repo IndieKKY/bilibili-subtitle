@@ -1,12 +1,12 @@
 import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
 import { injectWaiter } from './useMessageService'
 import { useCallback } from 'react'
-import PortMessageHandler from './PortMessageHandler'
+import Layer1Protocol from './Layer1Protocol'
 
 const useMessage = () => {
     const sendExtension = useCallback(async <T = any>(method: string, params?: any) => {
         // wait
-        const portMessageHandler = await injectWaiter.wait() as PortMessageHandler<MessageData, MessageResult>
+        const portMessageHandler = await injectWaiter.wait() as Layer1Protocol<MessageData, MessageResult>
         // send message
         const messageResult = await portMessageHandler.sendMessage({
             from: 'app',

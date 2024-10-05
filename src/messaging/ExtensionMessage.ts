@@ -1,5 +1,5 @@
 import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
-import PortMessageHandler from './PortMessageHandler'
+import Layer1Protocol from './Layer1Protocol'
 
 export type PortContext = {
   id: string
@@ -7,7 +7,7 @@ export type PortContext = {
   tabId: number
   type: 'inject' | 'app'
   port: chrome.runtime.Port
-  portMessageHandler: PortMessageHandler
+  portMessageHandler: Layer1Protocol
 }
 
 class ExtensionMessage {
@@ -86,7 +86,7 @@ class ExtensionMessage {
         if (tabId != null) {
           // @ts-ignore
           const portContext: PortContext = {id, name, tabId, port, type}
-          const portMessageHandler = new PortMessageHandler<MessageData, MessageResult>(async (value: MessageData) => {
+          const portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(async (value: MessageData) => {
             return handler(value, portContext)
           }, port)
           portContext.portMessageHandler = portMessageHandler

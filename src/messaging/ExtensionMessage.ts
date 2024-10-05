@@ -1,4 +1,4 @@
-import { MESSAGE_TARGET_EXTENSION, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
+import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
 import PortMessageHandler from './PortMessageHandler'
 
 export type PortContext = {

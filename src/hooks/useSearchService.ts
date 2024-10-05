@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from './redux'
 import {useEffect, useMemo} from 'react'
 import {setSearchResult, setSearchText, } from '../redux/envReducer'
-import {Search} from '../util/search'
+import {Search} from '../utils/search'
 
 interface Document {
   idx: number

@@ -1,4 +1,4 @@
-import {TASK_EXPIRE_TIME} from '../const'
+import {TASK_EXPIRE_TIME} from '../consts/const'
 import {handleChatCompleteTask, handleGeminiChatCompleteTask} from './openaiService'
 
 export const tasksMap = new Map<string, Task>()

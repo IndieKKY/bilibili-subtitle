@@ -30,7 +30,7 @@ import {
   SEARCH_BAR_HEIGHT,
   SUMMARIZE_ALL_THRESHOLD,
   TITLE_HEIGHT
-} from '../const'
+} from '../consts/const'
 import {FaClipboardList} from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
 import {openUrl} from '@kky002/kky-util'

@@ -1,7 +1,7 @@
 import { setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
 import { useMemo } from 'react'
 import { useAppDispatch } from './redux'
-import { MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_APP_SET_VIDEO_INFO } from '@/const'
+import { MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_APP_SET_VIDEO_INFO } from '@/consts/const'
 import useMessageService from '@/messaging/useMessageService'
 
 const useMessagingService = () => {

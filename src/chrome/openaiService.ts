@@ -1,4 +1,4 @@
-import {DEFAULT_SERVER_URL_OPENAI} from '../const'
+import {DEFAULT_SERVER_URL_OPENAI} from '../consts/const'
 
 const getServerUrl = (serverUrl?: string) => {
   if (!serverUrl) {

@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useCallback, useEffect, useMemo, useState} from 'react'
+import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
 import {setEnvData, setTempData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
@@ -22,7 +22,7 @@ import {
   TRANSLATE_FETCH_MIN,
   TRANSLATE_FETCH_STEP,
   WORDS_RATE,
-} from '../const'
+} from '../consts/const'
 import {IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'

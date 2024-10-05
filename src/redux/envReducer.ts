@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {find, findIndex} from 'lodash-es'
-import {DEFAULT_SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../const'
+import {DEFAULT_SERVER_URL_OPENAI, TOTAL_HEIGHT_DEF} from '../consts/const'
 
 interface EnvState {
   envData: EnvData

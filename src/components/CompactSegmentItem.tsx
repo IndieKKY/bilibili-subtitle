@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import {useAppSelector} from '../hooks/redux'
-import {getDisplay, getTransText} from '../util/biz_util'
+import {getDisplay, getTransText} from '../utils/biz_util'
 import classNames from 'classnames'
 
 const CompactSegmentItem = (props: {

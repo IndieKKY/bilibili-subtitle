@@ -1,4 +1,4 @@
-import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/const'
+import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
 import { injectWaiter } from './useMessageService'
 import { useCallback } from 'react'
 import PortMessageHandler from './PortMessageHandler'

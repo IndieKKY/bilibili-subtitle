@@ -8,6 +8,7 @@ export const EventBusContext = React.createContext<any>(null)
 
 const map: { [key: string]: string } = {
   '/options.html': 'options',
+  '/sidepanel.html': 'app',
   // '/close': 'close',
 }
 

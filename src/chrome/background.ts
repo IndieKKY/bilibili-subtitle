@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/const'
+import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/consts/const'
 import ExtensionMessage from '@/messaging/ExtensionMessage'
 
 const setBadgeOk = async (tabId: number, ok: boolean) => {

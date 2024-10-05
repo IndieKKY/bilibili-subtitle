@@ -26,11 +26,11 @@ import {
   SUMMARIZE_TYPES,
   TRANSLATE_COOLDOWN,
   TRANSLATE_FETCH_DEFAULT,
-} from '../const'
+} from '../consts/const'
 import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
-import {extractJsonArray, extractJsonObject, getModel} from '../util/biz_util'
-import {formatTime} from '../util/util'
+import {extractJsonArray, extractJsonObject, getModel} from '../utils/biz_util'
+import {formatTime} from '../utils/util'
 import useMessage from '@/messaging/useMessage'
 const useTranslate = () => {
   const dispatch = useAppDispatch()

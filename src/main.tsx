@@ -4,7 +4,7 @@ import './index.less'
 import store from './store'
 import {Provider} from 'react-redux'
 import Router from './Router'
-import {APP_DOM_ID} from './const'
+import {APP_DOM_ID} from './consts/const'
 
 const body = document.querySelector('body')
 const app = document.createElement('div')

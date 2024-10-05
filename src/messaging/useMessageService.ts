@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
   MESSAGE_TARGET_APP,
-  MESSAGE_TARGET_EXTENSION,
-  MESSAGE_TARGET_INJECT,
-} from '@/const'
-import { callServer, PostMessagePayload, PostMessageResponse } from 'postmessage-promise'
+} from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
 import PortMessageHandler from './PortMessageHandler'
 

@@ -17,10 +17,11 @@ import {
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
 import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_UPDATETRANSRESULT} from '../const'
-import {useInterval} from 'ahooks'
+import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../util/biz_util'
 import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../const'
 import useMessage from '../messaging/useMessage'
+import { injectWaiter } from '@/messaging/useMessageService'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -87,7 +88,9 @@ const useSubtitleService = () => {
     }
   }, [curFetched, curInfo])
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
+    // 等待inject准备好
+    await injectWaiter.wait()
     // 初始获取列表
     sendInject(MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, {})
     // 初始获取设置信息

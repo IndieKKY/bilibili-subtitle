@@ -115,7 +115,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       })
     } else {
       closeSidePanel()
-      extensionMessaging.broadcastMessageExact([tab.id!], [TAG_TARGET_INJECT], MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
+      extensionMessaging.broadcastMessageExact([tab.id!], [TAG_TARGET_INJECT], 'TOGGLE_DISPLAY').catch(console.error)
     }
   })
 })

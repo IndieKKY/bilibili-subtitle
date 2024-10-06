@@ -45,7 +45,7 @@ class ExtensionMessaging<M extends ExtensionMessage> {
         portContext.ready = true
       },
       ROUTE: async (params, context: MethodContext) => {
-        return this.broadcastMessageExact([context.tabId!], params.tags, params.method, params.params)
+        return this.broadcastMessageExact([context.tabId!], params.tags, params.method as any, params.params)
       },
     }
 
@@ -98,7 +98,7 @@ class ExtensionMessaging<M extends ExtensionMessage> {
 
   //tags 如果为null，则不检查tags，如果为空数组，则不会发送消息
   //返回：最后一个响应(因此如果只发送给一个tab，则返回的是该tab的响应)
-  broadcastMessageExact = async (tabIds: number[], tags: string[] | null, method: string, params?: any) => {
+  broadcastMessageExact = async <M extends AllInjectMessages | AllAPPMessages, K extends M['method']>(tabIds: number[], tags: string[] | null, method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
     // 如果tags为空数组，则不会发送消息
     if (tags != null && tags.length === 0) {
       return
@@ -121,13 +121,13 @@ class ExtensionMessaging<M extends ExtensionMessage> {
     return res?.data
   }
 
-  broadcastMessage = async (ignoreTabIds: number[] | undefined | null, tags: string[], method: string, params?: any) => {
+  broadcastMessage = async <M extends AllInjectMessages | AllAPPMessages, K extends M['method']>(ignoreTabIds: number[] | undefined | null, tags: string[], method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
     const tabs = await chrome.tabs.query({
       discarded: false,
     })
     const tabIds: number[] = tabs.map(tab => tab.id).filter(tabId => tabId != null) as number[]
     const filteredTabIds: number[] = tabIds.filter(tabId => !ignoreTabIds?.includes(tabId))
-    await this.broadcastMessageExact(filteredTabIds, tags, method, params)
+    return await this.broadcastMessageExact(filteredTabIds, tags, method, params) 
   }
 }
 

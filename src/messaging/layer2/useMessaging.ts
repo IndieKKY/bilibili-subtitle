@@ -21,7 +21,7 @@ const useMessaging = <AllExtensionMessagesType extends ExtensionMessage, AllInje
     }, [])
 
     const sendInject = useCallback(async <M extends AllInjectMessagesType, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
-        return await sendExtension('ROUTE' as any, {
+        return await sendExtension('_ROUTE' as any, {
             tags: [TAG_TARGET_INJECT],
             method,
             params: params ?? {},

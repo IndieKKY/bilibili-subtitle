@@ -18,11 +18,11 @@ interface AppMessage<T = any> extends Message<T> {
 
 
 interface ExtensionHandshakeMessage extends ExtensionMessage<{ tabId?: number, tags: string[] }> {
-    method: 'HANDSHAKE';
+    method: '_HANDSHAKE';
 }
 
 interface ExtensionRouteMessage extends ExtensionMessage<{ tags: string[], method: string, params: any }> {
-    method: 'ROUTE';
+    method: '_ROUTE';
 }
 
 type MessagingExtensionMessages = ExtensionHandshakeMessage | ExtensionRouteMessage

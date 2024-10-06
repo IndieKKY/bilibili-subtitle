@@ -12,8 +12,5 @@ export type L2ResMsg<L2Res = any> = {
   data?: L2Res
 }
 
-export const MESSAGE_TO_EXTENSION_HANDSHAKE = '_handshake'
-export const MESSAGE_TO_EXTENSION_ROUTE = '_route'
-
 export const TAG_TARGET_INJECT = 'target:inject'
 export const TAG_TARGET_APP = 'target:app'

@@ -27,7 +27,7 @@ class ExtensionMessaging<M extends ExtensionMessage, AllInjectMessagesType exten
 
   init = (methods: L2MethodHandlers<M, L2ReqMsg, L2ResMsg>) => {
     const innerMethods: L2MethodHandlers<MessagingExtensionMessages, L2ReqMsg, L2ResMsg> = {
-      HANDSHAKE: async (params, context: MethodContext, portContext: PortContext<L2ReqMsg, L2ResMsg>) => {
+      _HANDSHAKE: async (params, context: MethodContext, portContext: PortContext<L2ReqMsg, L2ResMsg>) => {
         const tags = params.tags
         let tabId = params.tabId
 
@@ -44,7 +44,7 @@ class ExtensionMessaging<M extends ExtensionMessage, AllInjectMessagesType exten
         portContext.tags = tags
         portContext.ready = true
       },
-      ROUTE: async (params, context: MethodContext) => {
+      _ROUTE: async (params, context: MethodContext) => {
         return this.broadcastMessageExact([context.tabId!], params.tags, params.method as any, params.params)
       },
     }

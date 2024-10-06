@@ -77,7 +77,7 @@ const useMessagingService = <AllAPPMessagesType extends AppMessage>(methods?: {
       // 初始化
       pmh.sendMessage({
           from: 'app',
-          method: 'HANDSHAKE',
+          method: '_HANDSHAKE',
           params: {
               tabId,
               tags: [TAG_TARGET_APP],

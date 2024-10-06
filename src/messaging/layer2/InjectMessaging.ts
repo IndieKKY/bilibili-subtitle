@@ -1,5 +1,5 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
+import { L2ReqMsg, L2ResMsg, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
 
 class InjectMessaging<AllExtensionMessagesType extends ExtensionMessage, AllInjectMessagesType extends InjectMessage, AllAPPMessagesType extends AppMessage> {
     port?: chrome.runtime.Port
@@ -69,7 +69,7 @@ class InjectMessaging<AllExtensionMessagesType extends ExtensionMessage, AllInje
         //握手
         this.l1protocol.sendMessage({
             from: 'inject',
-            method: 'HANDSHAKE',
+            method: '_HANDSHAKE',
             params: {
                 tags: [TAG_TARGET_INJECT],
             },
@@ -91,7 +91,7 @@ class InjectMessaging<AllExtensionMessagesType extends ExtensionMessage, AllInje
     }
 
     sendApp = async <M extends AllAPPMessagesType, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
-        return this.sendExtension('ROUTE' as any, {
+        return this.sendExtension('_ROUTE' as any, {
             tags: [TAG_TARGET_APP],
             method,
             params,

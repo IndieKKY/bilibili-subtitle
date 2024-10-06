@@ -5,7 +5,7 @@ type PortContext<L2ReqMsg, L2ResMsg> = {
   id: string
   name: string //暂时没什么用
   port: chrome.runtime.Port
-  portMessageHandler: Layer1Protocol<L2ReqMsg, L2ResMsg>
+  l1protocol: Layer1Protocol<L2ReqMsg, L2ResMsg>
   ready: boolean
 
   tabId?: number // 所属tab
@@ -57,7 +57,7 @@ class ExtensionMessaging {
       const id = crypto.randomUUID()
       const name = port.name
       // 创建消息处理器
-      const portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(async (req: L2ReqMsg) => {
+      const l1protocol = new Layer1Protocol<L2ReqMsg, L2ResMsg>(async (req: L2ReqMsg) => {
         const { tabId } = portContext
         const method = this.methods?.[req.method]
         if (method != null) {
@@ -84,7 +84,7 @@ class ExtensionMessaging {
         }
       }, port)
       // 创建portContext
-      const portContext: PortContext<L2ReqMsg, L2ResMsg> = { id, name, port, portMessageHandler, ready: false }
+      const portContext: PortContext<L2ReqMsg, L2ResMsg> = { id, name, port, l1protocol, ready: false }
       this.portIdToPort.set(id, portContext)
 
       // 监听断开连接
@@ -110,7 +110,7 @@ class ExtensionMessaging {
         //check tags
         if (tags == null || tags.some(tag => portContext.tags?.includes(tag))) {
           try {
-            res = await portContext.portMessageHandler.sendMessage({ method, params, from: 'extension' })
+            res = await portContext.l1protocol.sendMessage({ method, params, from: 'extension' })
           } catch (e) {
             console.error('send message to port error', portContext.id, e)
           }

@@ -3,7 +3,7 @@ import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSIO
 
 class InjectMessaging {
     port?: chrome.runtime.Port
-    portMessageHandler?: Layer1Protocol<L2ReqMsg, L2ResMsg>
+    l1protocol?: Layer1Protocol<L2ReqMsg, L2ResMsg>
     //类实例
     methods?: {
         [key: string]: (params: any, context: MethodContext) => Promise<L2ResMsg>
@@ -65,9 +65,9 @@ class InjectMessaging {
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
             name: 'bilibili-inject',
         })
-        this.portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)
+        this.l1protocol = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)
         //握手
-        this.portMessageHandler.sendMessage({
+        this.l1protocol.sendMessage({
             from: 'inject',
             method: MESSAGE_TO_EXTENSION_HANDSHAKE,
             params: {
@@ -78,7 +78,7 @@ class InjectMessaging {
     }
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {
-        return await this.portMessageHandler!.sendMessage({
+        return await this.l1protocol!.sendMessage({
             from: 'inject',
             method,
             params: params ?? {},

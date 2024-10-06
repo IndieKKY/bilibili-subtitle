@@ -7,13 +7,13 @@ const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)
 }
 
-let portMessageHandlerInit: boolean = false
-let portMessageHandler: Layer1Protocol<L2ReqMsg, L2ResMsg> | undefined
+let l1protocolInit: boolean = false
+let l1protocol: Layer1Protocol<L2ReqMsg, L2ResMsg> | undefined
 // let postInjectMessage: (method: string, params: PostMessagePayload) => Promise<PostMessageResponse> | undefined
 
 export const msgWaiter = new Waiter<Layer1Protocol<L2ReqMsg, L2ResMsg>>(() => ({
-  finished: portMessageHandlerInit,
-  data: portMessageHandler!,
+  finished: l1protocolInit,
+  data: l1protocol!,
 }), 100, 15000)
 
 const useMessagingService = (methods?: {
@@ -67,7 +67,7 @@ const useMessagingService = (methods?: {
       name: 'bilibili-app',
     })
   }, [])
-  portMessageHandler = useMemo(() => {
+  l1protocol = useMemo(() => {
     if (messageHandler && port) {
       const pmh = new Layer1Protocol<L2ReqMsg, L2ResMsg>(messageHandler, port)
   
@@ -83,7 +83,7 @@ const useMessagingService = (methods?: {
               tags: [TAG_TARGET_APP],
           },
       })
-      portMessageHandlerInit = true
+      l1protocolInit = true
   
       return pmh
     }

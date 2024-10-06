@@ -101,9 +101,6 @@ class ExtensionMessage {
       const portContext: PortContext = {id, name, port, portMessageHandler, ready: false}
       this.portIdToPort.set(id, portContext)
 
-      // 开始监听
-      portMessageHandler.startListen()
-
       // 监听断开连接
       port.onDisconnect.addListener(() => {
         this.portIdToPort.delete(id)

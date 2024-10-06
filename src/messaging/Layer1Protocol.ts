@@ -20,17 +20,24 @@ type RespMsg<T = any> = {
 class Layer1Protocol<L1Req = any, L1Res = any> {
   private port: chrome.runtime.Port
   private timeout: number
-  private messageMap: Map<string, { resolve: (value: L1Res) => void, timer: number }>
+  private requests: Map<string, { resolve: (value: L1Res) => void, timer: number }>
   private handler: (value: L1Req) => Promise<L1Res>
 
   constructor(handler: (value: L1Req) => Promise<L1Res>, port: chrome.runtime.Port, timeout = 30000) {  // 默认超时 30 秒
     this.port = port;
     this.timeout = timeout;
-    this.messageMap = new Map();
+    this.requests = new Map();
     this.handler = handler
+
+    this._startListen()
   }
 
-  startListen() {
+  // 生成唯一 ID（简单示例，可以使用更复杂的生成策略）
+  _generateUniqueId() {
+    return crypto.randomUUID()
+  }
+
+  _startListen() {
     // 持久监听 port.onMessage
     this.port.onMessage.addListener((msg: ReqMsg<L1Req, L1Res>) => {
       const { id, type, req, res } = msg;
@@ -50,12 +57,12 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
           this.port.postMessage({ id, type: 'res', res: response });
         });
       } else if (type === 'res') {
-        if (this.messageMap.has(id)) {
-          const { resolve, timer } = this.messageMap.get(id)!;
+        if (this.requests.has(id)) {
+          const { resolve, timer } = this.requests.get(id)!;
           // 清除超时定时器
           clearTimeout(timer);
           // 移除消息 ID
-          this.messageMap.delete(id);
+          this.requests.delete(id);
           // 通过 ID 找到对应的 Promise 并 resolve
           resolve(res!.data!);
         }else {
@@ -75,21 +82,16 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
       // 设置一个超时定时器
       const timer = setTimeout(() => {
         // 超时后执行 reject 并从 Map 中删除
-        this.messageMap.delete(id);
+        this.requests.delete(id);
         reject(new Error(`Request timed out after ${this.timeout / 1000} seconds`));
       }, this.timeout);
 
       // 将 resolve 和 timer 函数与消息 ID 绑定，存入 Map
-      this.messageMap.set(id, { resolve, timer });
+      this.requests.set(id, { resolve, timer });
 
       // 发送消息，并附带 ID
       this.port.postMessage({ id, type: 'req', req });
     });
-  }
-
-  // 生成唯一 ID（简单示例，可以使用更复杂的生成策略）
-  _generateUniqueId() {
-    return crypto.randomUUID()
   }
 }
 

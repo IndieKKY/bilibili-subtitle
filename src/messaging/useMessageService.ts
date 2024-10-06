@@ -77,7 +77,6 @@ const useMessageService = (methods?: {
     if (messageHandler && port) {
       const pmh = new Layer1Protocol<MessageData, MessageResult>(messageHandler, port)
   
-      pmh.startListen()
       //get tabId from url params
       let tabIdStr = window.location.search.split('tabId=')[1]
       let tabId = tabIdStr ? parseInt(tabIdStr) : undefined

@@ -69,8 +69,7 @@ class InjectMessage {
             name: MESSAGE_TARGET_INJECT,
         })
         this.portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(this.messageHandler, this.port)
-        this.portMessageHandler!.startListen()
-        this.portMessageHandler!.sendMessage({
+        this.portMessageHandler.sendMessage({
             method: '_init',
             params: {
                 type: 'inject',

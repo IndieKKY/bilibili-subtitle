@@ -1,7 +1,7 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '../const'
 
-export type PortContext = {
+type PortContext = {
   id: string
   name: string //暂时没什么用
   port: chrome.runtime.Port
@@ -12,8 +12,8 @@ export type PortContext = {
   tags?: string[] // 标签，用来筛选消息发送目标
 }
 
-export type L2MethodHandler = (params: any, context: MethodContext, portContext: PortContext) => Promise<any>
-export type L2MethodHandlers = {
+type L2MethodHandler = (params: any, context: MethodContext, portContext: PortContext) => Promise<any>
+type L2MethodHandlers = {
   [key: string]: L2MethodHandler
 }
 

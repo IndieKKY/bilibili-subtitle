@@ -6,7 +6,7 @@ class InjectMessaging {
     l1protocol?: Layer1Protocol<L2ReqMsg, L2ResMsg>
     //类实例
     methods?: {
-        [key: string]: (params: any, context: MethodContext) => Promise<L2ResMsg>
+        [K in AllInjectMessages['method']]: (params: Extract<AllInjectMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
     }
 
     debug = (...args: any[]) => {
@@ -23,7 +23,7 @@ class InjectMessaging {
         //     message: 'Target Error: ' + req.target,
         // })
 
-        const method = this.methods?.[req.method]
+        const method = this.methods?.[req.method as keyof typeof this.methods]
         if (method != null) {
             return method(req.params, {
                 from: req.from,

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   addAskInfo,
   mergeAskInfo,
@@ -11,7 +11,7 @@ import {
   setSegmentFold,
   setTempData
 } from '../redux/envReducer'
-import {useAppDispatch, useAppSelector} from '../hooks/redux'
+import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import {
   AiOutlineAim,
   AiOutlineCloseCircle,
@@ -31,13 +31,14 @@ import {
   SUMMARIZE_ALL_THRESHOLD,
   TITLE_HEIGHT
 } from '../consts/const'
-import {FaClipboardList} from 'react-icons/fa'
+import { FaClipboardList } from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
-import {openUrl} from '@kky002/kky-util'
+import { openUrl } from '@kky002/kky-util'
 import useKeyService from '../hooks/useKeyService'
 import Ask from './Ask'
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 import RateExtension from '../components/RateExtension'
+import ApiKeyReminder from './ApiKeyReminder'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -52,7 +53,7 @@ const Body = () => {
   const floatKeyPointsSegIdx = useAppSelector(state => state.env.floatKeyPointsSegIdx)
   const translateEnable = useAppSelector(state => state.env.envData.translateEnable)
   const summarizeEnable = useAppSelector(state => state.env.envData.summarizeEnable)
-  const {addSummarizeTask, addAskTask} = useTranslate()
+  const { addSummarizeTask, addAskTask } = useTranslate()
   // const infos = useAppSelector(state => state.env.infos)
   const bodyRef = useRef<any>()
   const curOffsetTop = useAppSelector(state => state.env.curOffsetTop)
@@ -71,13 +72,13 @@ const Body = () => {
   const searchPlaceholder = useMemo(() => {
     let placeholder = ''
     if (envData.searchEnabled) {
-      if (envData.askEnabled??ASK_ENABLED_DEFAULT) {
+      if (envData.askEnabled ?? ASK_ENABLED_DEFAULT) {
         placeholder = '搜索或提问字幕内容(按Enter提问)'
       } else {
         placeholder = '搜索字幕内容'
       }
     } else {
-      if (envData.askEnabled??ASK_ENABLED_DEFAULT) {
+      if (envData.askEnabled ?? ASK_ENABLED_DEFAULT) {
         placeholder = '提问字幕内容'
       }
     }
@@ -101,7 +102,7 @@ const Body = () => {
   }, [dispatch])
 
   const onSummarizeAll = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
     if (!apiKey) {
       toast.error('请先在选项页面设置ApiKey!')
       return
@@ -142,7 +143,7 @@ const Body = () => {
   }, [asks, dispatch, foldAll, segments])
 
   const toggleAutoTranslateCallback = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
     if (apiKey) {
       dispatch(setAutoTranslate(!autoTranslate))
     } else {
@@ -180,8 +181,8 @@ const Body = () => {
   }, [dispatch])
 
   const onAsk = useCallback(() => {
-    if ((envData.askEnabled??ASK_ENABLED_DEFAULT) && searchText) {
-      const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    if ((envData.askEnabled ?? ASK_ENABLED_DEFAULT) && searchText) {
+      const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
       if (apiKey) {
         if (segments != null && segments.length > 0) {
           const id = v4()
@@ -205,7 +206,7 @@ const Body = () => {
   // 自动滚动
   useEffect(() => {
     if (checkAutoScroll && curOffsetTop && autoScroll && !needScroll) {
-      if (bodyRef.current.scrollTop <= curOffsetTop - bodyRef.current.offsetTop - (totalHeight-160) + (floatKeyPointsSegIdx != null ? 100 : 0) ||
+      if (bodyRef.current.scrollTop <= curOffsetTop - bodyRef.current.offsetTop - (totalHeight - 160) + (floatKeyPointsSegIdx != null ? 100 : 0) ||
         bodyRef.current.scrollTop >= curOffsetTop - bodyRef.current.offsetTop - 40 - 10
       ) {
         dispatch(setNeedScroll(true))
@@ -218,30 +219,30 @@ const Body = () => {
   return <div className='relative'>
     {/* title */}
     <div className='absolute top-1 left-6 flex-center gap-1'>
-      <AiOutlineAim className='cursor-pointer' onClick={posCallback} title='滚动到视频位置'/>
+      <AiOutlineAim className='cursor-pointer' onClick={posCallback} title='滚动到视频位置' />
       {segments != null && segments.length > 0 &&
         <MdExpand className={classNames('cursor-pointer', foldAll ? 'text-accent' : '')} onClick={onFoldAll}
-                  title='展开/折叠全部'/>}
+          title='展开/折叠全部' />}
     </div>
     <div className='flex justify-center'>
       <div className='tabs'>
         <a className={classNames('tab tab-sm tab-bordered', !compact && 'tab-active')}
-           onClick={normalCallback}>列表视图</a>
+          onClick={normalCallback}>列表视图</a>
         <a className={classNames('tab tab-sm tab-bordered', compact && 'tab-active')}
-           onClick={compactCallback}>文章视图</a>
+          onClick={compactCallback}>文章视图</a>
       </div>
     </div>
     <div className='absolute top-1 right-6'>
       {translateEnable && <div className='tooltip tooltip-left cursor-pointer' data-tip='点击切换自动翻译'
-                               onClick={toggleAutoTranslateCallback}>
-        <RiTranslate className={autoTranslate ? 'text-accent' : ''}/>
+        onClick={toggleAutoTranslateCallback}>
+        <RiTranslate className={autoTranslate ? 'text-accent' : ''} />
       </div>}
       {summarizeEnable &&
         <div className='tooltip tooltip-left cursor-pointer z-[100] ml-2' data-tip='总结全部' onClick={onSummarizeAll}>
-          <FaClipboardList/>
+          <FaClipboardList />
         </div>}
       {noVideo && <div className='tooltip tooltip-left ml-2' data-tip='当前浏览器不支持视频跳转'>
-        <IoWarning className='text-warning'/>
+        <IoWarning className='text-warning' />
       </div>}
     </div>
 
@@ -257,8 +258,8 @@ const Body = () => {
             dispatch(setSearchText(''))
           }
         }
-      }}/>
-      {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle/></button>}
+      }} />
+      {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle /></button>}
     </div>}
 
     {/* auto scroll btn */}
@@ -266,22 +267,22 @@ const Body = () => {
       className='absolute z-[999] top-[96px] right-6 tooltip tooltip-left cursor-pointer rounded-full bg-primary/25 hover:bg-primary/75 text-primary-content p-1.5 text-xl'
       data-tip='开启自动滚动'
       onClick={onEnableAutoScroll}>
-      <FaRegArrowAltCircleDown className={autoScroll ? 'text-accent' : ''}/>
+      <FaRegArrowAltCircleDown className={autoScroll ? 'text-accent' : ''} />
     </div>}
 
     {/* body */}
     <div ref={bodyRef} onWheel={onWheel}
-         className={classNames('flex flex-col gap-1.5 overflow-y-auto select-text scroll-smooth', floatKeyPointsSegIdx != null && 'pb-[100px]')}
-         style={{
-           height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (showSearchInput ? SEARCH_BAR_HEIGHT : 0)}px`
-         }}
+      className={classNames('flex flex-col gap-1.5 overflow-y-auto select-text scroll-smooth', floatKeyPointsSegIdx != null && 'pb-[100px]')}
+      style={{
+        height: `${totalHeight - HEADER_HEIGHT - TITLE_HEIGHT - (showSearchInput ? SEARCH_BAR_HEIGHT : 0)}px`
+      }}
     >
       {/* asks */}
-      {asks.map(ask => <Ask key={ask.id} ask={ask}/>)}
+      {asks.map(ask => <Ask key={ask.id} ask={ask} />)}
 
       {/* segments */}
       {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment}
-                                                           segmentIdx={segmentIdx} bodyRef={bodyRef}/>)}
+        segmentIdx={segmentIdx} bodyRef={bodyRef} />)}
 
       {/* tip */}
       <div className='text-sm font-semibold text-center'>快捷键提示</div>
@@ -290,6 +291,8 @@ const Body = () => {
         <li>alt+单击字幕复制单条字幕。</li>
         <li>上下方向键来移动当前字幕(可先点击字幕使焦点在字幕列表内)。</li>
       </ul>
+
+      <ApiKeyReminder />
 
       {/* <div className='flex flex-col items-center text-center pt-1 pb-2'> */}
       {/*  <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div> */}
@@ -319,29 +322,29 @@ const Body = () => {
         {/* </div> */}
         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
           <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
-                                                                                  alt='youtube caption logo'
-                                                                                  className='w-8 h-8'/>YouTube Caption
+            alt='youtube caption logo'
+            className='w-8 h-8' />YouTube Caption
           </div>
           <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
           </div>
           <div className='flex gap-2'>
             <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
-               onClick={(e) => {
-                 e.preventDefault()
-                 openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-               }} className='link text-sm text-accent'>Chrome商店</a>
+              onClick={(e) => {
+                e.preventDefault()
+                openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+              }} className='link text-sm text-accent'>Chrome商店</a>
             <a title='Edge商店'
-               href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
-               onClick={e => {
-                 e.preventDefault()
-                 openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
-               }} className='link text-sm text-accent'>Edge商店</a>
+              href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
+              onClick={e => {
+                e.preventDefault()
+                openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
+              }} className='link text-sm text-accent'>Edge商店</a>
             <a title='Crx搜搜(国内可访问)'
-               href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
-               onClick={(e) => {
-                 e.preventDefault()
-                 openUrl('https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-               }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
+              href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
+              onClick={(e) => {
+                e.preventDefault()
+                openUrl('https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
+              }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
           </div>
         </div>
         {/* <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'> */}
@@ -365,7 +368,7 @@ const Body = () => {
         {/*  </div> */}
         {/* </div> */}
       </div>
-      <div className='p-2'><RateExtension/></div>
+      <div className='p-2'><RateExtension /></div>
     </div>
     {/* recommend */}
     {/* <div className='p-0.5' style={{ */}

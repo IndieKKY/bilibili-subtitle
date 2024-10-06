@@ -69,9 +69,8 @@ class InjectMessaging {
         //握手
         this.l1protocol.sendMessage({
             from: 'inject',
-            method: MESSAGE_TO_EXTENSION_HANDSHAKE,
+            method: 'HANDSHAKE',
             params: {
-                type: 'inject',
                 tags: [TAG_TARGET_INJECT],
             },
         })
@@ -95,7 +94,7 @@ class InjectMessaging {
         if (method === 'setVideoInfo') {
             console.log('sendApp>>>', method, params)
         }
-        return this.sendExtension(MESSAGE_TO_EXTENSION_ROUTE, {
+        return this.sendExtension('ROUTE', {
             tags: [TAG_TARGET_APP],
             method,
             params,

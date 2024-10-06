@@ -1,3 +1,62 @@
+interface Message<T = any> {
+  method: string;
+  params: T;
+}
+
+interface ExtensionMessage<T = any> extends Message<T> {
+}
+
+interface InjectMessage<T = any> extends Message<T> {
+}
+
+interface AppMessage<T = any> extends Message<T> {
+}
+
+
+
+
+
+interface ExtensionHandshakeMessage extends ExtensionMessage<{ tabId?: number, tags: string[] }> {
+  method: 'HANDSHAKE';
+}
+
+interface ExtensionRouteMessage extends ExtensionMessage<{ tags: string[], method: string, params: any }> {
+  method: 'ROUTE';
+}
+
+type MessagingExtensionMessages = ExtensionHandshakeMessage | ExtensionRouteMessage
+
+
+
+
+
+
+interface ExtensionCloseSidePanelMessage extends ExtensionMessage<{}> {
+  method: 'CLOSE_SIDE_PANEL';
+}
+
+interface ExtensionAddTaskMessage extends ExtensionMessage<{ taskDef: TaskDef }> {
+  method: 'ADD_TASK';
+}
+
+interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }> {
+  method: 'GET_TASK';
+}
+
+interface ExtensionShowFlagMessage extends ExtensionMessage<{ show: boolean }> {
+  method: 'SHOW_FLAG';
+}
+
+type AllExtensionMessages = ExtensionCloseSidePanelMessage | ExtensionAddTaskMessage | ExtensionGetTaskMessage | ExtensionShowFlagMessage
+
+interface MessageResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+
+
 type MessageFrom = 'extension' | 'inject' | 'app'
 
 interface MessageData {

@@ -21,7 +21,7 @@ const useMessaging = () => {
     }, [])
 
     const sendInject = useCallback(async <T = any>(method: string, params?: any): Promise<T> => {
-        return await sendExtension(MESSAGE_TO_EXTENSION_ROUTE, {
+        return await sendExtension('ROUTE', {
             tags: [TAG_TARGET_INJECT],
             method,
             params: params ?? {},

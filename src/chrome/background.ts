@@ -29,12 +29,12 @@ const closeSidePanel = async () => {
 }
 
 const methods: {
-  [key: string]: (params: any, context: MethodContext) => Promise<any>
+  [K in AllExtensionMessages['method']]: (params: Extract<AllExtensionMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
 } = {
-  [MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL]: async (params, context) => {
+  CLOSE_SIDE_PANEL: async (params, context) => {
     closeSidePanel()
   },
-  [MESSAGE_TO_EXTENSION_ADD_TASK]: async (params, context) => {
+  ADD_TASK: async (params, context) => {
     // 新建任务
     const task: Task = {
       id: v4(),
@@ -49,7 +49,7 @@ const methods: {
 
     return task
   },
-  [MESSAGE_TO_EXTENSION_GET_TASK]: async (params, context) => {
+  GET_TASK: async (params, context) => {
     // 返回任务信息
     const taskId = params.taskId
     const task = tasksMap.get(taskId)
@@ -70,7 +70,7 @@ const methods: {
       task,
     }
   },
-  [MESSAGE_TO_EXTENSION_SHOW_FLAG]: async (params, context) => {
+  SHOW_FLAG: async (params, context) => {
     await setBadgeOk(context.tabId!, params.show)
   },
 }

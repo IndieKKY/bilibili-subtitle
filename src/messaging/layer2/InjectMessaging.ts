@@ -66,6 +66,7 @@ class InjectMessaging {
             name: 'bilibili-inject',
         })
         this.portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)
+        //握手
         this.portMessageHandler.sendMessage({
             from: 'inject',
             method: MESSAGE_TO_EXTENSION_HANDSHAKE,

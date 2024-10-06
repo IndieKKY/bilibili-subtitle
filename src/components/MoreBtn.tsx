@@ -18,7 +18,7 @@ import {formatSrtTime, formatTime, formatVttTime} from '../utils/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
-import useMessage from '../messaging/layer2/useMessaging'
+import useMessaging from '../messaging/layer2/useMessaging'
 interface Props {
   placement: Placement
 }
@@ -70,7 +70,7 @@ const MoreBtn = (props: Props) => {
   const title = useAppSelector(state => state.env.title)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
-  const {sendInject} = useMessage()
+  const {sendInject} = useMessaging()
 
   const downloadCallback = useCallback((download: boolean) => {
     if (data == null) {
@@ -162,7 +162,7 @@ const MoreBtn = (props: Props) => {
   }, [curSummaryType, data, downloadType, segments, title, url])
 
   const downloadAudioCallback = useCallback(() => {
-    sendInject(MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, {})
+    sendInject('DOWNLOAD_AUDIO', {})
   }, [])
 
   const selectCallback = useCallback((e: any) => {

@@ -3,12 +3,12 @@ import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import Header from '../components/Header'
 import Body from '../components/Body'
 import useSubtitleService from '../hooks/useSubtitleService'
-import {EVENT_EXPAND, MESSAGE_TO_INJECT_FOLD} from '../consts/const'
+import {EVENT_EXPAND} from '../consts/const'
 import {EventBusContext} from '../Router'
 import useTranslateService from '../hooks/useTranslateService'
 import {setTheme} from '../utils/bizUtil'
 import useSearchService from '../hooks/useSearchService'
-import useMessage from '../messaging/layer2/useMessaging'
+import useMessaging from '../messaging/layer2/useMessaging'
 import {setFold} from '../redux/envReducer'
 
 function App() {
@@ -16,12 +16,12 @@ function App() {
   const fold = useAppSelector(state => state.env.fold)
   const eventBus = useContext(EventBusContext)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
-  const {sendInject} = useMessage()
+  const {sendInject} = useMessaging()
   const envData = useAppSelector(state => state.env.envData)
   
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
-    sendInject(MESSAGE_TO_INJECT_FOLD, {fold: !fold})
+    sendInject('FOLD', {fold: !fold})
   }, [dispatch, fold, sendInject])
 
   // handle event

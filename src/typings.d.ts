@@ -1,46 +1,21 @@
-interface Message<T = any> {
-  method: string;
-  params: T;
-}
-
-interface ExtensionMessage<T = any> extends Message<T> {
-}
-
-interface InjectMessage<T = any> extends Message<T> {
-}
-
-interface AppMessage<T = any> extends Message<T> {
-}
-
-
-
-
-
-interface ExtensionHandshakeMessage extends ExtensionMessage<{ tabId?: number, tags: string[] }> {
-  method: 'HANDSHAKE';
-}
-
-interface ExtensionRouteMessage extends ExtensionMessage<{ tags: string[], method: string, params: any }> {
-  method: 'ROUTE';
-}
-
-type MessagingExtensionMessages = ExtensionHandshakeMessage | ExtensionRouteMessage
-
-
-
-
-
-
+//extension
 interface ExtensionCloseSidePanelMessage extends ExtensionMessage<{}> {
   method: 'CLOSE_SIDE_PANEL';
 }
 
 interface ExtensionAddTaskMessage extends ExtensionMessage<{ taskDef: TaskDef }> {
   method: 'ADD_TASK';
+  return: Task
 }
 
 interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }> {
   method: 'GET_TASK';
+  return: {
+    code: 'ok'
+    task: Task
+  } | {
+    code: 'not_found'
+  }
 }
 
 interface ExtensionShowFlagMessage extends ExtensionMessage<{ show: boolean }> {
@@ -48,6 +23,53 @@ interface ExtensionShowFlagMessage extends ExtensionMessage<{ show: boolean }> {
 }
 
 type AllExtensionMessages = ExtensionCloseSidePanelMessage | ExtensionAddTaskMessage | ExtensionGetTaskMessage | ExtensionShowFlagMessage
+
+//inject
+interface InjectToggleDisplayMessage extends InjectMessage<{}> {
+  method: 'TOGGLE_DISPLAY';
+}
+
+interface InjectFoldMessage extends InjectMessage<{ fold: boolean }> {
+  method: 'FOLD';
+}
+
+interface InjectMoveMessage extends InjectMessage<{ time: number, togglePause: boolean }> {
+  method: 'MOVE';
+}
+
+interface InjectGetSubtitleMessage extends InjectMessage<{ info: any }> {
+  method: 'GET_SUBTITLE';
+}
+
+interface InjectGetVideoStatusMessage extends InjectMessage<{}> {
+  method: 'GET_VIDEO_STATUS';
+}
+
+interface InjectGetVideoElementInfoMessage extends InjectMessage<{}> {
+  method: 'GET_VIDEO_ELEMENT_INFO';
+}
+
+interface InjectRefreshVideoInfoMessage extends InjectMessage<{ force: boolean }> {
+  method: 'REFRESH_VIDEO_INFO';
+}
+
+interface InjectUpdateTransResultMessage extends InjectMessage<{ result: string }> {
+  method: 'UPDATE_TRANS_RESULT';
+}
+
+interface InjectHideTransMessage extends InjectMessage<{}> {
+  method: 'HIDE_TRANS';
+}
+
+interface InjectPlayMessage extends InjectMessage<{ play: boolean }> {
+  method: 'PLAY';
+}
+
+interface InjectDownloadAudioMessage extends InjectMessage<{}> {
+  method: 'DOWNLOAD_AUDIO';
+}
+
+type AllInjectMessages = InjectToggleDisplayMessage | InjectFoldMessage | InjectMoveMessage | InjectGetSubtitleMessage | InjectGetVideoStatusMessage | InjectGetVideoElementInfoMessage | InjectRefreshVideoInfoMessage | InjectUpdateTransResultMessage | InjectHideTransMessage | InjectPlayMessage | InjectDownloadAudioMessage
 
 interface MessageResponse<T = any> {
   success: boolean;

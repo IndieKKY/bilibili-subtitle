@@ -137,7 +137,7 @@ const useTranslate = () => {
           }
         })
         dispatch(addTransResults(result))
-        const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
+        const task = await sendExtension('ADD_TASK', {taskDef})
         dispatch(addTaskId(task.id))
       }
     }
@@ -207,7 +207,7 @@ const useTranslate = () => {
       console.debug('addSummarizeTask', taskDef)
       dispatch(setSummaryStatus({segmentStartIdx: segment.startIdx, type, status: 'pending'}))
       dispatch(setLastSummarizeTime(Date.now()))
-      const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
+      const task = await sendExtension('ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -264,7 +264,7 @@ const useTranslate = () => {
         id,
         status: 'pending'
       }))
-      const task = await sendExtension(MESSAGE_TO_EXTENSION_ADD_TASK, {taskDef})
+      const task = await sendExtension('ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -332,7 +332,7 @@ const useTranslate = () => {
   })
 
   const getTask = useCallback(async (taskId: string) => {
-    const taskResp = await sendExtension(MESSAGE_TO_EXTENSION_GET_TASK, {taskId})
+    const taskResp = await sendExtension('GET_TASK', {taskId})
     if (taskResp.code === 'ok') {
       console.debug('getTask', taskResp.task)
       const task: Task = taskResp.task

@@ -143,7 +143,7 @@ const OptionsPage = () => {
       askEnabled: askEnabledValue,
     }))
     toast.success('保存成功')
-    sendExtension(MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL)
+    sendExtension('CLOSE_SIDE_PANEL')
     // 3秒后关闭
     setTimeout(() => {
       window.close()

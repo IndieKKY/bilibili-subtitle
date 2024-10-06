@@ -17,7 +17,7 @@ type L2MethodHandlers<L2ReqMsg, L2ResMsg> = {
   [key: string]: L2MethodHandler<L2ReqMsg, L2ResMsg>
 }
 
-class ExtensionMessage {
+class ExtensionMessaging {
   portIdToPort: Map<string, PortContext<L2ReqMsg, L2ResMsg>> = new Map()
   methods?: L2MethodHandlers<L2ReqMsg, L2ResMsg>
 
@@ -130,4 +130,4 @@ class ExtensionMessage {
   }
 }
 
-export default ExtensionMessage
+export default ExtensionMessaging

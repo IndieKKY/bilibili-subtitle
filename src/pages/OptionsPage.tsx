@@ -29,7 +29,7 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
 import {useEventChecked} from '@kky002/kky-hooks'
-import useMessage from '@/messaging/layer2/useMessage'
+import useMessaging from '@/messaging/layer2/useMessaging'
 
 const Section = (props: {
   title: ShowElement
@@ -61,7 +61,7 @@ const FormItem = (props: {
 const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
-  const {sendExtension} = useMessage()
+  const {sendExtension} = useMessaging()
   const {value: sidePanelValue, onChange: setSidePanelValue} = useEventChecked(envData.sidePanel)
   const {value: autoInsertValue, onChange: setAutoInsertValue} = useEventChecked(!envData.manualInsert)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)

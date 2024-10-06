@@ -1,9 +1,9 @@
-import { msgWaiter } from './useMessageService'
+import { msgWaiter } from './useMessagingService'
 import { useCallback } from 'react'
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE, TAG_TARGET_INJECT } from '../const'
 
-const useMessage = () => {
+const useMessaging = () => {
     const sendExtension = useCallback(async <T = any>(method: string, params?: any) => {
         // wait
         const pmh = await msgWaiter.wait() as Layer1Protocol<L2ReqMsg, L2ResMsg>
@@ -34,4 +34,4 @@ const useMessage = () => {
     }
 }
 
-export default useMessage
+export default useMessaging

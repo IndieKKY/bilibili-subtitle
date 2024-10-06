@@ -16,7 +16,7 @@ export const msgWaiter = new Waiter<Layer1Protocol<L2ReqMsg, L2ResMsg>>(() => ({
   data: portMessageHandler!,
 }), 100, 15000)
 
-const useMessageService = (methods?: {
+const useMessagingService = (methods?: {
   [key: string]: (params: any, context: MethodContext) => Promise<any>
 }) => {
   const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
@@ -90,4 +90,4 @@ const useMessageService = (methods?: {
   }, [messageHandler, port])
 }
 
-export default useMessageService
+export default useMessagingService

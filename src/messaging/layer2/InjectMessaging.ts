@@ -1,7 +1,7 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
 
-class InjectMessage {
+class InjectMessaging {
     port?: chrome.runtime.Port
     portMessageHandler?: Layer1Protocol<L2ReqMsg, L2ResMsg>
     //类实例
@@ -103,4 +103,4 @@ class InjectMessage {
 
 }
 
-export default InjectMessage
+export default InjectMessaging

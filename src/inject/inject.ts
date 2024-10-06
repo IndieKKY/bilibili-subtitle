@@ -1,6 +1,6 @@
 import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TARGET_INJECT, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV, MESSAGE_TO_EXTENSION_SHOW_FLAG } from '@/consts/const'
 import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_APP_SET_VIDEO_INFO, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO } from '@/consts/const'
-import InjectMessage from '@/messaging/layer2/InjectMessage'
+import InjectMessaging from '@/messaging/layer2/InjectMessaging'
 
 const debug = (...args: any[]) => {
   console.debug('[Inject]', ...args)
@@ -30,7 +30,7 @@ const debug = (...args: any[]) => {
   }
 
   const runtime: {
-    injectMessage: InjectMessage
+    injectMessaging: InjectMessaging
     // lastV?: string | null
     // lastVideoInfo?: VideoInfo
 
@@ -42,7 +42,7 @@ const debug = (...args: any[]) => {
     showTrans: boolean
     curTrans?: string
   } = {
-    injectMessage: new InjectMessage(),
+    injectMessaging: new InjectMessaging(),
     fold: true,
     videoElementHeight: TOTAL_HEIGHT_DEF,
     showTrans: false,
@@ -98,7 +98,7 @@ const debug = (...args: any[]) => {
       danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
 
       // show badge
-      runtime.injectMessage.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
+      runtime.injectMessaging.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
         show: true
       })
 
@@ -188,7 +188,7 @@ const debug = (...args: any[]) => {
         debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
 
         //send setVideoInfo
-        runtime.injectMessage.sendApp(MESSAGE_TO_APP_SET_VIDEO_INFO, {
+        runtime.injectMessaging.sendApp(MESSAGE_TO_APP_SET_VIDEO_INFO, {
           url: location.origin + location.pathname,
           title,
           aid,
@@ -225,7 +225,7 @@ const debug = (...args: any[]) => {
           .then(res => res.json())
           .then(res => {
             // console.log('refreshSubtitles: ', aid, cid, res)
-            runtime.injectMessage.sendApp(MESSAGE_TO_APP_SET_INFOS, {
+            runtime.injectMessaging.sendApp(MESSAGE_TO_APP_SET_INFOS, {
               infos: res.data.subtitle.subtitles
             })
           })
@@ -247,7 +247,7 @@ const debug = (...args: any[]) => {
       const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
       if (iframe != null) {
         iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none'
-        runtime.injectMessage.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
+        runtime.injectMessaging.sendExtension(MESSAGE_TO_EXTENSION_SHOW_FLAG, {
           show: iframe.style.display !== 'none'
         })
       } else {
@@ -356,7 +356,7 @@ const debug = (...args: any[]) => {
   }
 
   // 初始化injectMessage
-  runtime.injectMessage.init(methods)
+  runtime.injectMessaging.init(methods)
 
   setInterval(() => {
     if (!sidePanel) {

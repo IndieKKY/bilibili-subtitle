@@ -8,7 +8,7 @@ import OptionsPage from './pages/OptionsPage'
 import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
-import useMessagingService from './hooks/useMessagingService'
+import useMessagingService from './hooks/useMessageService'
 import MainPage from './pages/MainPage'
 
 function App() {

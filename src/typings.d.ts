@@ -71,6 +71,17 @@ interface InjectDownloadAudioMessage extends InjectMessage<{}> {
 
 type AllInjectMessages = InjectToggleDisplayMessage | InjectFoldMessage | InjectMoveMessage | InjectGetSubtitleMessage | InjectGetVideoStatusMessage | InjectGetVideoElementInfoMessage | InjectRefreshVideoInfoMessage | InjectUpdateTransResultMessage | InjectHideTransMessage | InjectPlayMessage | InjectDownloadAudioMessage
 
+//app
+interface AppSetInfosMessage extends AppMessage<{ infos: any }> {
+  method: 'SET_INFOS';
+}
+
+interface AppSetVideoInfoMessage extends AppMessage<{ url: string, title: string, aid: number | null, pages: any, infos: any }> {
+  method: 'SET_VIDEO_INFO';
+}
+
+type AllAPPMessages = AppSetInfosMessage | AppSetVideoInfoMessage
+
 interface MessageResponse<T = any> {
   success: boolean;
   data?: T;

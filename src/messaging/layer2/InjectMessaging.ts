@@ -76,24 +76,21 @@ class InjectMessaging {
         })
     }
 
-    sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {
+    sendExtension = async <M extends AllExtensionMessages | MessagingExtensionMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
         return await this.l1protocol!.sendMessage({
             from: 'inject',
             method,
             params: params ?? {},
         }).then((res) => {
             if (res.code === 200) {
-                return res.data as T
+                return res.data
             } else {
                 throw new Error(res.msg)
             }
         })
     }
 
-    sendApp = async <T>(method: string, params: any): Promise<T> => {
-        if (method === 'setVideoInfo') {
-            console.log('sendApp>>>', method, params)
-        }
+    sendApp = async <M extends AllAPPMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
         return this.sendExtension('ROUTE', {
             tags: [TAG_TARGET_APP],
             method,

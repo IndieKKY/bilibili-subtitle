@@ -1,6 +1,6 @@
 import * as JsSearch from 'js-search'
 import {uniq} from 'lodash-es'
-import {getWords, getWordsPinyin} from './pinyin_util'
+import {getWords, getWordsPinyin} from './pinyinUtil'
 
 const tokenize = (maxLength: number, content: string, options?: SearchOptions) => {
   const result: string[] = []

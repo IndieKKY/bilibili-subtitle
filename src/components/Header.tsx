@@ -5,7 +5,7 @@ import {find, remove} from 'lodash-es'
 import {setCurFetched, setCurInfo, setData, setInfos, setUploadedTranscript} from '../redux/envReducer'
 import MoreBtn from './MoreBtn'
 import classNames from 'classnames'
-import {parseTranscript} from '../utils/biz_util'
+import {parseTranscript} from '../utils/bizUtil'
 
 const Header = (props: {
   foldCallback: () => void

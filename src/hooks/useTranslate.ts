@@ -29,7 +29,7 @@ import {
 } from '../consts/const'
 import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
-import {extractJsonArray, extractJsonObject, getModel} from '../utils/biz_util'
+import {extractJsonArray, extractJsonObject, getModel} from '../utils/bizUtil'
 import {formatTime} from '../utils/util'
 import useMessaging from '@/messaging/layer2/useMessaging'
 const useTranslate = () => {

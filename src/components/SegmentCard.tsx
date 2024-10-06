@@ -7,7 +7,7 @@ import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '..
 import useTranslate from '../hooks/useTranslate'
 import {BsDashSquare, BsPlusSquare, CgFileDocument, FaQuestion, GrOverview, RiFileCopy2Line} from 'react-icons/all'
 import toast from 'react-hot-toast'
-import {getLastTime, getSummaryStr, isSummaryEmpty, parseStrTimeToSeconds} from '../utils/biz_util'
+import {getLastTime, getSummaryStr, isSummaryEmpty, parseStrTimeToSeconds} from '../utils/bizUtil'
 import {useInViewport} from 'ahooks'
 import SegmentItem from './SegmentItem'
 import {stopPopFunc} from '../utils/util'

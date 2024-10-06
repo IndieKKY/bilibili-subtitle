@@ -17,7 +17,7 @@ import {EVENT_EXPAND, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO} from '../consts/const'
 import {formatSrtTime, formatTime, formatVttTime} from '../utils/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
-import {getSummarize} from '../utils/biz_util'
+import {getSummarize} from '../utils/bizUtil'
 import useMessage from '../messaging/layer2/useMessaging'
 interface Props {
   placement: Placement

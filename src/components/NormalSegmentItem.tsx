@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import {formatTime} from '../utils/util'
 import {useAppSelector} from '../hooks/redux'
-import {getDisplay, getTransText} from '../utils/biz_util'
+import {getDisplay, getTransText} from '../utils/bizUtil'
 import classNames from 'classnames'
 
 const NormalSegmentItem = (props: {

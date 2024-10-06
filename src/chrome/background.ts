@@ -78,7 +78,7 @@ const methods: {
 const extensionMessaging = new ExtensionMessaging()
 extensionMessaging.init(methods)
 
-chrome.runtime.onMessage.addListener((event: MessageData, sender: chrome.runtime.MessageSender, sendResponse: (result: any) => void) => {
+chrome.runtime.onMessage.addListener((event: any, sender: chrome.runtime.MessageSender, sendResponse: (result: any) => void) => {
   // debug((sender.tab != null) ? `tab ${sender.tab.url ?? ''} => ` : 'extension => ', event)
 
   // legacy

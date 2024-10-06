@@ -3,7 +3,7 @@ import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSIO
 
 export type PortContext = {
   id: string
-  name: string
+  name: string //暂时没什么用
   port: chrome.runtime.Port
   portMessageHandler: Layer1Protocol
   ready: boolean

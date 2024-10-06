@@ -1,7 +1,4 @@
 import { useCallback, useMemo } from 'react'
-import {
-  MESSAGE_TARGET_APP,
-} from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, TAG_TARGET_APP } from '../const'
@@ -67,7 +64,7 @@ const useMessageService = (methods?: {
 
   const port = useMemo(() => {
     return chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
-      name: MESSAGE_TARGET_APP,
+      name: 'bilibili-app',
     })
   }, [])
   portMessageHandler = useMemo(() => {

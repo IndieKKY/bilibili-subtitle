@@ -94,7 +94,10 @@ const useSubtitleService = () => {
   useAsyncEffect(async () => {
     // 初始获取列表
     sendInject('REFRESH_VIDEO_INFO', {force: true})
-    // 初始获取设置信息
+  }, [])
+
+  useAsyncEffect(async () => {
+    // 更新设置信息
     sendInject('GET_VIDEO_ELEMENT_INFO', {}).then(info => {
       dispatch(setNoVideo(info.noVideo))
       if (envData.sidePanel) {
@@ -104,7 +107,7 @@ const useSubtitleService = () => {
         dispatch(setTotalHeight(Math.min(Math.max(info.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
       }
     })
-  }, [envData.sidePanel])
+  }, [envData.sidePanel, infos])
 
   // 更新当前位置
   useEffect(() => {

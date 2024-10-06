@@ -2,7 +2,6 @@ export const MESSAGE_TARGET_EXTENSION = 'BilibiliExtension'
 export const MESSAGE_TARGET_INJECT = 'BilibiliInject'
 export const MESSAGE_TARGET_APP = 'BilibiliAPP'
 
-export const MESSAGE_TO_EXTENSION_ROUTE_MSG = 'routeMsg'
 export const MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL = 'closeSidePanel'
 export const MESSAGE_TO_EXTENSION_ADD_TASK = 'addTask'
 export const MESSAGE_TO_EXTENSION_GET_TASK = 'getTask'

@@ -1,38 +1,38 @@
-import { MESSAGE_TARGET_APP, MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
+import { MESSAGE_TARGET_APP, MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT } from '@/consts/const'
 import Layer1Protocol from './Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE_MSG } from './const'
 
 class InjectMessage {
     port?: chrome.runtime.Port
-    portMessageHandler?: Layer1Protocol
+    portMessageHandler?: Layer1Protocol<L2ReqMsg, L2ResMsg>
     //类实例
     methods?: {
-        [key: string]: (params: any, context: MethodContext) => Promise<any>
+        [key: string]: (params: any, context: MethodContext) => Promise<L2ResMsg>
     }
 
     debug = (...args: any[]) => {
         console.debug('[Inject Messaging]', ...args)
     }
 
-    messageHandler = async (event: MessageData): Promise<MessageResult> => {
-        this.debug(`${event.from} => `, JSON.stringify(event))
+    messageHandler = async (req: L2ReqMsg): Promise<L2ResMsg> => {
+        this.debug(`${req.from} => `, JSON.stringify(req))
 
         // check event target
-        if (event.target !== MESSAGE_TARGET_INJECT) return Promise.resolve({
+        if (req.target !== MESSAGE_TARGET_INJECT) return Promise.resolve({
             success: false,
             code: 501,
-            message: 'Target Error: ' + event.target,
+            message: 'Target Error: ' + req.target,
         })
 
-        const method = this.methods?.[event.method]
+        const method = this.methods?.[req.method]
         if (method != null) {
-            return method(event.params, {
-                from: event.from,
-                event,
+            return method(req.params, {
+                from: req.from,
+                event: req,
                 // sender,
             }).then(data => {
                 // debug(`${source} <= `, event.method, JSON.stringify(data))
                 return {
-                    success: true,
                     code: 200,
                     data,
                 }
@@ -47,16 +47,14 @@ class InjectMessage {
                     message = 'error: ' + JSON.stringify(err)
                 }
                 return {
-                    success: false,
                     code: 500,
                     message,
                 }
             })
         } else {
             return {
-                success: false,
                 code: 501,
-                message: 'Unknown method: ' + event.method,
+                message: 'Unknown method: ' + req.method,
             }
         }
     }
@@ -68,27 +66,29 @@ class InjectMessage {
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
             name: MESSAGE_TARGET_INJECT,
         })
-        this.portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(this.messageHandler, this.port)
+        this.portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)
         this.portMessageHandler.sendMessage({
+            from: 'inject',
+            target: MESSAGE_TARGET_EXTENSION,
             method: '_init',
             params: {
                 type: 'inject',
             },
-        } as MessageData)
+        })
     }
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {
-        const messageData: MessageData = {
+        const req: L2ReqMsg = {
             from: 'inject',
             target: MESSAGE_TARGET_EXTENSION,
             method,
             params: params ?? {},
         }
-        return await this.portMessageHandler!.sendMessage(messageData).then((messageResult) => {
-            if (messageResult.success) {
-                return messageResult.data as T
+        return await this.portMessageHandler!.sendMessage(req).then((res) => {
+            if (res.code === 200) {
+                return res.data as T
             } else {
-                throw new Error(messageResult.message)
+                throw new Error(res.message)
             }
         })
     }

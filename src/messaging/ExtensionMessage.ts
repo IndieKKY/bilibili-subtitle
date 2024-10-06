@@ -1,5 +1,7 @@
-import { MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '@/consts/const'
+import { MESSAGE_TARGET_INJECT } from '@/consts/const'
 import Layer1Protocol from './Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE_MSG } from './const'
+
 
 export type PortContext = {
   id: string
@@ -17,9 +19,6 @@ class ExtensionMessage {
   methods?: {
     [key: string]: (params: any, context: MethodContext) => Promise<any>
   }
-  innerMethods?: {
-    [key: string]: (params: any, context: MethodContext) => Promise<any>
-  }
 
   debug = (...args: any[]) => {
     console.debug('[Extension Messaging]', ...args)
@@ -28,39 +27,37 @@ class ExtensionMessage {
   init = (methods: {
     [key: string]: (params: any, context: MethodContext) => Promise<any>
   }) => {
-    this.innerMethods = {
+    const innerMethods = {
       [MESSAGE_TO_EXTENSION_ROUTE_MSG]: (params: any, context: MethodContext) => {
         return this.broadcastMessageExact([context.tabId!], params.target, params.method, params.params)
       }
     }
-    this.methods = {...this.innerMethods, ...methods}
 
-    const handler = async (event: MessageData, portContext: PortContext): Promise<MessageResult> => {
+    this.methods = {...innerMethods, ...methods}
+
+    const handler = async (req: L2ReqMsg, portContext: PortContext): Promise<L2ResMsg> => {
       const { tabId } = portContext
-      const method = this.methods?.[event.method]
+      const method = this.methods?.[req.method]
       if (method != null) {
-        return method(event.params, {
-          from: event.from,
-          event,
+        return method(req.params, {
+          from: req.from,
+          event: req,
           tabId,
           // sender: portContext.port.sender,
         }).then(data => ({
-          success: true,
           code: 200,
           data,
         })).catch(err => {
           console.error(err)
           return {
-            success: false,
             code: 500,
             message: err.message,
           }
         })
       } else {
         return {
-          success: false,
           code: 501,
-          message: 'Unknown method: ' + event.method,
+          message: 'Unknown method: ' + req.method,
         }
       }
     }
@@ -70,11 +67,11 @@ class ExtensionMessage {
 
       const id = crypto.randomUUID()
       const name = port.name
-      const portMessageHandler = new Layer1Protocol<MessageData, MessageResult>(async (value: MessageData) => {
+      const portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(async (req: L2ReqMsg) => {
         // 初始化消息
-        if (value.method === '_init') {
-          const type = value.params.type
-          let tabId = value.params.tabId
+        if (req.method === '_init') {
+          const type = req.params.type
+          let tabId = req.params.tabId
 
           //get current tabId
           if (tabId == null) {
@@ -90,13 +87,12 @@ class ExtensionMessage {
           portContext.ready = true
 
           return {
-            success: true,
             code: 200,
-          } as MessageResult
+          } as L2ResMsg
         }
 
         // 处理消息
-        return handler(value, portContext)
+        return handler(req, portContext)
       }, port)
       const portContext: PortContext = {id, name, port, portMessageHandler, ready: false}
       this.portIdToPort.set(id, portContext)
@@ -109,22 +105,23 @@ class ExtensionMessage {
     })
   }
 
+  //返回：最后一个响应(因此如果只发送给一个tab，则返回的是该tab的响应)
   broadcastMessageExact = async (tabIds: number[], target: string, method: string, params?: any) => {
     const targetType = target === MESSAGE_TARGET_INJECT ? 'inject' : 'app'
-    let resp: MessageResult | undefined
+    let res: L2ResMsg | undefined
     for (const portContext of this.portIdToPort.values()) {
       if (tabIds.includes(portContext.tabId!)) {
         if (targetType === portContext.type) {
           try {
-            const messageData: MessageData = {target, method, params, from: 'extension'}
-            resp = await portContext.portMessageHandler.sendMessage(messageData)
+            const req: L2ReqMsg = {target, method, params, from: 'extension'}
+            res = await portContext.portMessageHandler.sendMessage(req)
           } catch (e) {
             console.error('send message to port error', portContext.id, e)
           }
         }
       }
     }
-    return resp?.data
+    return res?.data
   }
 
   broadcastMessage = async (ignoreTabIds: number[] | undefined | null, target: string, method: string, params?: any) => {

@@ -4,13 +4,14 @@ import {
 } from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
 import Layer1Protocol from './Layer1Protocol'
+import { L2ReqMsg, L2ResMsg } from './const'
 
 const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)
 }
 
 let portMessageHandlerInit: boolean = false
-let portMessageHandler: Layer1Protocol<MessageData, MessageResult> | undefined
+let portMessageHandler: Layer1Protocol<L2ReqMsg, L2ResMsg> | undefined
 // let postInjectMessage: (method: string, params: PostMessagePayload) => Promise<PostMessageResponse> | undefined
 
 export const injectWaiter = new Waiter<any>(() => ({
@@ -21,25 +22,23 @@ export const injectWaiter = new Waiter<any>(() => ({
 const useMessageService = (methods?: {
   [key: string]: (params: any, context: MethodContext) => Promise<any>
 }) => {
-  const messageHandler = useCallback(async (event: MessageData): Promise<MessageResult> => {
-    debug(`${event.from} => `, JSON.stringify(event))
+  const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
+    debug(`${req.from} => `, JSON.stringify(req))
 
     // check event target
-    if (event.target !== MESSAGE_TARGET_APP) return {
-      success: false,
+    if (req.target !== MESSAGE_TARGET_APP) return {
       code: 501,
-      message: 'Target Error: ' + event.target,
+      message: 'Target Error: ' + req.target,
     }
 
-    const method = methods?.[event.method]
+    const method = methods?.[req.method]
     if (method != null) {
-      return method(event.params, {
-        from: event.from,
-        event,
+      return method(req.params, {
+        from: req.from,
+        event: req,
       }).then(data => {
         // debug(`${source} <= `, event.method, JSON.stringify(data))
         return {
-          success: true,
           code: 200,
           data,
         }
@@ -54,16 +53,14 @@ const useMessageService = (methods?: {
           message = 'error: ' + JSON.stringify(err)
         }
         return {
-          success: false,
           code: 500,
           message,
         }
       })
     } else {
       return {
-        success: false,
         code: 501,
-        message: 'Unknown method: ' + event.method,
+        message: 'Unknown method: ' + req.method,
       }
     }
   }, [methods])
@@ -75,7 +72,7 @@ const useMessageService = (methods?: {
   }, [])
   portMessageHandler = useMemo(() => {
     if (messageHandler && port) {
-      const pmh = new Layer1Protocol<MessageData, MessageResult>(messageHandler, port)
+      const pmh = new Layer1Protocol<L2ReqMsg, L2ResMsg>(messageHandler, port)
   
       //get tabId from url params
       let tabIdStr = window.location.search.split('tabId=')[1]
@@ -87,7 +84,7 @@ const useMessageService = (methods?: {
               type: 'app',
               tabId,
           },
-      } as MessageData)
+      } as L2ReqMsg)
       portMessageHandlerInit = true
   
       return pmh

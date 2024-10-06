@@ -29,7 +29,6 @@ import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
 import {extractJsonArray, extractJsonObject, getModel} from '../utils/bizUtil'
 import {formatTime} from '../utils/util'
-import useMessaging from '@/messaging/layer2/useMessaging'
 import { useMessage } from './message'
 const useTranslate = () => {
   const dispatch = useAppDispatch()

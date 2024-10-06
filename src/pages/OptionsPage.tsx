@@ -26,7 +26,6 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
 import {useEventChecked} from '@kky002/kky-hooks'
-import useMessaging from '@/messaging/layer2/useMessaging'
 import { useMessage } from '@/hooks/message'
 
 const Section = (props: {

@@ -19,7 +19,6 @@ import {EventBusContext} from '../Router'
 import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../consts/const'
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
-import useMessaging from '../messaging/layer2/useMessaging'
 import { useMessage } from './message'
 
 /**

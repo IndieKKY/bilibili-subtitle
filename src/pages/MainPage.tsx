@@ -8,15 +8,15 @@ import {EventBusContext} from '../Router'
 import useTranslateService from '../hooks/useTranslateService'
 import {setTheme} from '../utils/bizUtil'
 import useSearchService from '../hooks/useSearchService'
-import useMessaging from '../messaging/layer2/useMessaging'
 import {setFold} from '../redux/envReducer'
+import { useMessage } from '@/hooks/message'
 
 function App() {
   const dispatch = useAppDispatch()
   const fold = useAppSelector(state => state.env.fold)
   const eventBus = useContext(EventBusContext)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
-  const {sendInject} = useMessaging()
+  const {sendInject} = useMessage()
   const envData = useAppSelector(state => state.env.envData)
   
   const foldCallback = useCallback(() => {

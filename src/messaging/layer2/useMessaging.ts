@@ -3,8 +3,8 @@ import { useCallback } from 'react'
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, TAG_TARGET_INJECT } from '../const'
 
-const useMessaging = () => {
-    const sendExtension = useCallback(async <M extends AllExtensionMessages | MessagingExtensionMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+const useMessaging = <AllExtensionMessagesType extends ExtensionMessage, AllInjectMessagesType extends InjectMessage>() => {
+    const sendExtension = useCallback(async <M extends AllExtensionMessagesType | MessagingExtensionMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
         // wait
         const pmh = await msgWaiter.wait() as Layer1Protocol<L2ReqMsg, L2ResMsg>
         // send message
@@ -20,8 +20,8 @@ const useMessaging = () => {
         }
     }, [])
 
-    const sendInject = useCallback(async <M extends AllInjectMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
-        return await sendExtension('ROUTE', {
+    const sendInject = useCallback(async <M extends AllInjectMessagesType, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+        return await sendExtension('ROUTE' as any, {
             tags: [TAG_TARGET_INJECT],
             method,
             params: params ?? {},

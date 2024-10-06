@@ -20,6 +20,7 @@ import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_M
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
 import useMessaging from '../messaging/layer2/useMessaging'
+import { useMessage } from './message'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -43,7 +44,7 @@ const useSubtitleService = () => {
   const autoTranslate = useAppSelector(state => state.env.autoTranslate)
   const reviewed = useAppSelector(state => state.env.tempData.reviewed)
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
-  const {sendInject} = useMessaging()
+  const {sendInject} = useMessage()
 
   //如果reviewActions达到15次，则设置reviewed为false
   useEffect(() => {

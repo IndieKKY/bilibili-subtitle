@@ -1,12 +1,12 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
 import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
 
-class InjectMessaging {
+class InjectMessaging<AllExtensionMessagesType extends ExtensionMessage, AllInjectMessagesType extends InjectMessage, AllAPPMessagesType extends AppMessage> {
     port?: chrome.runtime.Port
     l1protocol?: Layer1Protocol<L2ReqMsg, L2ResMsg>
     //类实例
     methods?: {
-        [K in AllInjectMessages['method']]: (params: Extract<AllInjectMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
+        [K in AllInjectMessagesType['method']]: (params: Extract<AllInjectMessagesType, { method: K }>['params'], context: MethodContext) => Promise<any>
     }
 
     debug = (...args: any[]) => {
@@ -59,7 +59,7 @@ class InjectMessaging {
     }
 
     init(methods: {
-        [K in AllInjectMessages['method']]: (params: Extract<AllInjectMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
+        [K in AllInjectMessagesType['method']]: (params: Extract<AllInjectMessagesType, { method: K }>['params'], context: MethodContext) => Promise<any>
     }) {
         this.methods = methods
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
@@ -76,7 +76,7 @@ class InjectMessaging {
         })
     }
 
-    sendExtension = async <M extends AllExtensionMessages | MessagingExtensionMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+    sendExtension = async <M extends AllExtensionMessagesType | MessagingExtensionMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
         return await this.l1protocol!.sendMessage({
             from: 'inject',
             method,
@@ -90,8 +90,8 @@ class InjectMessaging {
         })
     }
 
-    sendApp = async <M extends AllAPPMessages, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
-        return this.sendExtension('ROUTE', {
+    sendApp = async <M extends AllAPPMessagesType, K extends M['method']>(method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+        return this.sendExtension('ROUTE' as any, {
             tags: [TAG_TARGET_APP],
             method,
             params,

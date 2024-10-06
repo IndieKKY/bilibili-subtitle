@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { Waiter } from '@kky002/kky-util'
 import Layer1Protocol from '../layer1/Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, TAG_TARGET_APP } from '../const'
+import { L2ReqMsg, L2ResMsg, TAG_TARGET_APP } from '../const'
 
 const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)
@@ -16,8 +16,8 @@ export const msgWaiter = new Waiter<Layer1Protocol<L2ReqMsg, L2ResMsg>>(() => ({
   data: l1protocol!,
 }), 100, 15000)
 
-const useMessagingService = (methods?: {
-  [K in AllAPPMessages['method']]: (params: Extract<AllAPPMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
+const useMessagingService = <AllAPPMessagesType extends AppMessage>(methods?: {
+  [K in AllAPPMessagesType['method']]: (params: Extract<AllAPPMessagesType, { method: K }>['params'], context: MethodContext) => Promise<any>
 }) => {
   const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
     debug(`[${req.from}] ${req.method}`, JSON.stringify(req))

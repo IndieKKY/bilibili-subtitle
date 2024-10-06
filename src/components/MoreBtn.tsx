@@ -19,6 +19,7 @@ import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
 import useMessaging from '../messaging/layer2/useMessaging'
+import { useMessage } from '@/hooks/message'
 interface Props {
   placement: Placement
 }
@@ -70,7 +71,7 @@ const MoreBtn = (props: Props) => {
   const title = useAppSelector(state => state.env.title)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
-  const {sendInject} = useMessaging()
+  const {sendInject} = useMessage()
 
   const downloadCallback = useCallback((download: boolean) => {
     if (data == null) {

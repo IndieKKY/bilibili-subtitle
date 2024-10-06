@@ -29,7 +29,7 @@ const debug = (...args: any[]) => {
   }
 
   const runtime: {
-    injectMessaging: InjectMessaging
+    injectMessaging: InjectMessaging<AllExtensionMessages, AllInjectMessages, AllAPPMessages>
     // lastV?: string | null
     // lastVideoInfo?: VideoInfo
 

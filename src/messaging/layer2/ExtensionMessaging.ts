@@ -17,7 +17,7 @@ type L2MethodHandlers<M extends ExtensionMessage, L2ReqMsg, L2ResMsg> = {
   [K in M['method']]: L2MethodHandler<M, K, L2ReqMsg, L2ResMsg>
 }
 
-class ExtensionMessaging<M extends ExtensionMessage> {
+class ExtensionMessaging<M extends ExtensionMessage, AllInjectMessagesType extends InjectMessage, AllAPPMessagesType extends AppMessage> {
   portIdToPort: Map<string, PortContext<L2ReqMsg, L2ResMsg>> = new Map()
   methods?: L2MethodHandlers<M, L2ReqMsg, L2ResMsg>
 
@@ -98,7 +98,7 @@ class ExtensionMessaging<M extends ExtensionMessage> {
 
   //tags 如果为null，则不检查tags，如果为空数组，则不会发送消息
   //返回：最后一个响应(因此如果只发送给一个tab，则返回的是该tab的响应)
-  broadcastMessageExact = async <M extends AllInjectMessages | AllAPPMessages, K extends M['method']>(tabIds: number[], tags: string[] | null, method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+  broadcastMessageExact = async <M extends AllInjectMessagesType | AllAPPMessagesType, K extends M['method']>(tabIds: number[], tags: string[] | null, method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
     // 如果tags为空数组，则不会发送消息
     if (tags != null && tags.length === 0) {
       return
@@ -121,7 +121,7 @@ class ExtensionMessaging<M extends ExtensionMessage> {
     return res?.data
   }
 
-  broadcastMessage = async <M extends AllInjectMessages | AllAPPMessages, K extends M['method']>(ignoreTabIds: number[] | undefined | null, tags: string[], method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
+  broadcastMessage = async <M extends AllInjectMessagesType | AllAPPMessagesType, K extends M['method']>(ignoreTabIds: number[] | undefined | null, tags: string[], method: K, params?: Extract<M, { method: K }>['params']): Promise<Extract<M, { method: K }>['return']> => {
     const tabs = await chrome.tabs.query({
       discarded: false,
     })

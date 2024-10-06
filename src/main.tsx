@@ -4,7 +4,8 @@ import './index.less'
 import store from './store'
 import {Provider} from 'react-redux'
 import Router from './Router'
-import {APP_DOM_ID} from './consts/const'
+
+export const APP_DOM_ID = 'bilibili-subtitle'
 
 const body = document.querySelector('body')
 const app = document.createElement('div')

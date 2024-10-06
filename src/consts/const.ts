@@ -1,7 +1,3 @@
-export const MESSAGE_TARGET_EXTENSION = 'BilibiliExtension'
-export const MESSAGE_TARGET_INJECT = 'BilibiliInject'
-export const MESSAGE_TARGET_APP = 'BilibiliAPP'
-
 export const MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL = 'closeSidePanel'
 export const MESSAGE_TO_EXTENSION_ADD_TASK = 'addTask'
 export const MESSAGE_TO_EXTENSION_GET_TASK = 'getTask'
@@ -23,8 +19,6 @@ export const MESSAGE_TO_APP_SET_INFOS = 'setInfos'
 export const MESSAGE_TO_APP_SET_VIDEO_INFO = 'setVideoInfo'
 
 export const EVENT_EXPAND = 'expand'
-
-export const APP_DOM_ID = 'bilibili-subtitle'
 
 export const IFRAME_ID = 'bilibili-subtitle-iframe'
 

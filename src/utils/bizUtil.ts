@@ -1,8 +1,8 @@
-import {APP_DOM_ID, CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYPES} from '../consts/const'
+import {CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYPES} from '../consts/const'
 import {isDarkMode} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {findIndex} from 'lodash-es'
-
+import {APP_DOM_ID} from '../Main'
 export const debug = (...args: any[]) => {
   console.debug('[APP]', ...args)
 }

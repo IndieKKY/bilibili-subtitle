@@ -1,33 +1,33 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '../const'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE } from '../const'
 
-type PortContext = {
+type PortContext<L2ReqMsg, L2ResMsg> = {
   id: string
   name: string //暂时没什么用
   port: chrome.runtime.Port
-  portMessageHandler: Layer1Protocol
+  portMessageHandler: Layer1Protocol<L2ReqMsg, L2ResMsg>
   ready: boolean
 
   tabId?: number // 所属tab
   tags?: string[] // 标签，用来筛选消息发送目标
 }
 
-type L2MethodHandler = (params: any, context: MethodContext, portContext: PortContext) => Promise<any>
-type L2MethodHandlers = {
-  [key: string]: L2MethodHandler
+type L2MethodHandler<L2ReqMsg, L2ResMsg> = (params: any, context: MethodContext, portContext: PortContext<L2ReqMsg, L2ResMsg>) => Promise<any>
+type L2MethodHandlers<L2ReqMsg, L2ResMsg> = {
+  [key: string]: L2MethodHandler<L2ReqMsg, L2ResMsg>
 }
 
 class ExtensionMessage {
-  portIdToPort: Map<string, PortContext> = new Map()
-  methods?: L2MethodHandlers
+  portIdToPort: Map<string, PortContext<L2ReqMsg, L2ResMsg>> = new Map()
+  methods?: L2MethodHandlers<L2ReqMsg, L2ResMsg>
 
   debug = (...args: any[]) => {
     console.debug('[Extension Messaging]', ...args)
   }
 
-  init = (methods: L2MethodHandlers) => {
-    const innerMethods: L2MethodHandlers = {
-      [MESSAGE_TO_EXTENSION_HANDSHAKE]: async (params: any, context: MethodContext, portContext: PortContext) => {
+  init = (methods: L2MethodHandlers<L2ReqMsg, L2ResMsg>) => {
+    const innerMethods: L2MethodHandlers<L2ReqMsg, L2ResMsg> = {
+      [MESSAGE_TO_EXTENSION_HANDSHAKE]: async (params: any, context: MethodContext, portContext: PortContext<L2ReqMsg, L2ResMsg>) => {
         const tags = params.tags
         let tabId = params.tabId
 
@@ -44,7 +44,7 @@ class ExtensionMessage {
         portContext.tags = tags
         portContext.ready = true
       },
-      [MESSAGE_TO_EXTENSION_ROUTE_MSG]: async (params: any, context: MethodContext) => {
+      [MESSAGE_TO_EXTENSION_ROUTE]: async (params: any, context: MethodContext) => {
         return this.broadcastMessageExact([context.tabId!], params.tags, params.method, params.params)
       },
     }
@@ -84,7 +84,7 @@ class ExtensionMessage {
         }
       }, port)
       // 创建portContext
-      const portContext: PortContext = { id, name, port, portMessageHandler, ready: false }
+      const portContext: PortContext<L2ReqMsg, L2ResMsg> = { id, name, port, portMessageHandler, ready: false }
       this.portIdToPort.set(id, portContext)
 
       // 监听断开连接
@@ -110,8 +110,7 @@ class ExtensionMessage {
         //check tags
         if (tags == null || tags.some(tag => portContext.tags?.includes(tag))) {
           try {
-            const req: L2ReqMsg = { method, params, from: 'extension' }
-            res = await portContext.portMessageHandler.sendMessage(req)
+            res = await portContext.portMessageHandler.sendMessage({ method, params, from: 'extension' })
           } catch (e) {
             console.error('send message to port error', portContext.id, e)
           }

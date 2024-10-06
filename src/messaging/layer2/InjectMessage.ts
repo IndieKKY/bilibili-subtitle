@@ -1,5 +1,5 @@
 import Layer1Protocol from '../layer1/Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
 
 class InjectMessage {
     port?: chrome.runtime.Port
@@ -94,7 +94,7 @@ class InjectMessage {
         if (method === 'setVideoInfo') {
             console.log('sendApp>>>', method, params)
         }
-        return this.sendExtension(MESSAGE_TO_EXTENSION_ROUTE_MSG, {
+        return this.sendExtension(MESSAGE_TO_EXTENSION_ROUTE, {
             tags: [TAG_TARGET_APP],
             method,
             params,

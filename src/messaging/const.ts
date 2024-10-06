@@ -13,7 +13,7 @@ export type L2ResMsg<L2Res = any> = {
 }
 
 export const MESSAGE_TO_EXTENSION_HANDSHAKE = '_handshake'
-export const MESSAGE_TO_EXTENSION_ROUTE_MSG = '_routeMsg'
+export const MESSAGE_TO_EXTENSION_ROUTE = '_route'
 
 export const TAG_TARGET_INJECT = 'target:inject'
 export const TAG_TARGET_APP = 'target:app'

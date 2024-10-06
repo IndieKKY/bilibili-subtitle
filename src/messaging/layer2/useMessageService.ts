@@ -11,9 +11,9 @@ let portMessageHandlerInit: boolean = false
 let portMessageHandler: Layer1Protocol<L2ReqMsg, L2ResMsg> | undefined
 // let postInjectMessage: (method: string, params: PostMessagePayload) => Promise<PostMessageResponse> | undefined
 
-export const injectWaiter = new Waiter<any>(() => ({
+export const msgWaiter = new Waiter<Layer1Protocol<L2ReqMsg, L2ResMsg>>(() => ({
   finished: portMessageHandlerInit,
-  data: portMessageHandler
+  data: portMessageHandler!,
 }), 100, 15000)
 
 const useMessageService = (methods?: {

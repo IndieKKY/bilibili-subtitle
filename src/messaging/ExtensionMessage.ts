@@ -103,8 +103,8 @@ class ExtensionMessage {
 
       // 监听断开连接
       port.onDisconnect.addListener(() => {
-        this.portIdToPort.delete(id)
         this.debug('onDisconnect', id)
+        this.portIdToPort.delete(id)
       })
     })
   }

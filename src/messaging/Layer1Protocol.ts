@@ -26,7 +26,7 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
   private requests: Map<string, { resolve: (value: L1Res) => void, reject: (reason?: any) => void, timer: number }>
   private handler: Handler<L1Req, L1Res>
 
-  constructor(handler: Handler<L1Req, L1Res>, port: chrome.runtime.Port, timeout = 30000) {  // 默认超时 30 秒
+  constructor(handler: Handler<L1Req, L1Res>, port: chrome.runtime.Port, autoDispose = true, timeout = 30000) {  // 默认超时 30 秒
     this.port = port;
     this.timeout = timeout;
     this.requests = new Map();
@@ -34,6 +34,9 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
 
     // 开始监听
     this.port.onMessage.addListener(this._messageListener);
+    if (autoDispose) {
+      this.port.onDisconnect.addListener(this.dispose);
+    }
   }
 
   // 生成唯一 ID（简单示例，可以使用更复杂的生成策略）
@@ -80,6 +83,9 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
 
   dispose() {
     this.port.onMessage.removeListener(this._messageListener);
+    if (this.port.onDisconnect) {
+      this.port.onDisconnect.removeListener(this.dispose);
+    }
     this.requests.forEach(({ timer }) => clearTimeout(timer));
     this.requests.clear();
   }

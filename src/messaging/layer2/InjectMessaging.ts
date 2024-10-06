@@ -59,7 +59,7 @@ class InjectMessaging {
     }
 
     init(methods: {
-        [key: string]: (params: any, context: MethodContext) => Promise<any>
+        [K in AllInjectMessages['method']]: (params: Extract<AllInjectMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
     }) {
         this.methods = methods
         this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {

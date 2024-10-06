@@ -16,10 +16,9 @@ import {
   setTempData,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_UPDATETRANSRESULT, TOTAL_HEIGHT_DEF} from '../consts/const'
+import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../consts/const'
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
-import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../consts/const'
 import useMessaging from '../messaging/layer2/useMessaging'
 
 /**

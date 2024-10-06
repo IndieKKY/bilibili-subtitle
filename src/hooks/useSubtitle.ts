@@ -1,7 +1,6 @@
 import {useAppDispatch, useAppSelector} from './redux'
 import React, {useCallback} from 'react'
 import {setNeedScroll, setReviewAction, setTempData} from '../redux/envReducer'
-import {MESSAGE_TO_INJECT_MOVE} from '../consts/const'
 import useMessaging from '../messaging/layer2/useMessaging'
 const useSubtitle = () => {
   const dispatch = useAppDispatch()

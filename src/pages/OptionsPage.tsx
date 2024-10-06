@@ -1,20 +1,17 @@
 import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react'
-import {setEnvData, setTempData} from '../redux/envReducer'
+import {setEnvData} from '../redux/envReducer'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
   CUSTOM_MODEL_TOKENS,
   DEFAULT_SERVER_URL_OPENAI,
   GEMINI_TOKENS,
-  HEADER_HEIGHT,
   LANGUAGE_DEFAULT,
   LANGUAGES,
-  MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL,
   MODEL_DEFAULT,
   MODEL_MAP,
   MODEL_TIP,
   MODELS,
-  PAGE_MAIN,
   PROMPT_DEFAULTS,
   PROMPT_TYPES,
   SUMMARIZE_LANGUAGE_DEFAULT,

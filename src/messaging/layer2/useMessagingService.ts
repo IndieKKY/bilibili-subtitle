@@ -17,7 +17,7 @@ export const msgWaiter = new Waiter<Layer1Protocol<L2ReqMsg, L2ResMsg>>(() => ({
 }), 100, 15000)
 
 const useMessagingService = (methods?: {
-  [key: string]: (params: any, context: MethodContext) => Promise<any>
+  [K in AllAPPMessages['method']]: (params: Extract<AllAPPMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
 }) => {
   const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
     debug(`[${req.from}] ${req.method}`, JSON.stringify(req))
@@ -28,7 +28,7 @@ const useMessagingService = (methods?: {
     //   msg: 'Target Error: ' + req.target,
     // }
 
-    const method = methods?.[req.method]
+    const method = methods?.[req.method as keyof typeof methods]
     if (method != null) {
       return method(req.params, {
         from: req.from,

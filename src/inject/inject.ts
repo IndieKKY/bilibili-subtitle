@@ -1,5 +1,4 @@
-import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, MESSAGE_TO_INJECT_DOWNLOAD_AUDIO, MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV, MESSAGE_TO_EXTENSION_SHOW_FLAG } from '@/consts/const'
-import { MESSAGE_TO_INJECT_FOLD, MESSAGE_TO_INJECT_MOVE, MESSAGE_TO_INJECT_GET_SUBTITLE, MESSAGE_TO_INJECT_GET_VIDEO_STATUS, MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO, MESSAGE_TO_INJECT_UPDATETRANSRESULT, MESSAGE_TO_INJECT_PLAY, MESSAGE_TO_INJECT_HIDE_TRANS, MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO } from '@/consts/const'
+import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, STORAGE_ENV } from '@/consts/const'
 import InjectMessaging from '@/messaging/layer2/InjectMessaging'
 
 const debug = (...args: any[]) => {
@@ -241,9 +240,9 @@ const debug = (...args: any[]) => {
   }
 
   const methods: {
-    [key: string]: (params: any, context: MethodContext) => Promise<any>
+    [K in AllInjectMessages['method']]: (params: Extract<AllInjectMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
   } = {
-    [MESSAGE_TO_INJECT_TOGGLE_DISPLAY]: async (params) => {
+    TOGGLE_DISPLAY: async (params) => {
       const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement | undefined
       if (iframe != null) {
         iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none'
@@ -254,11 +253,11 @@ const debug = (...args: any[]) => {
         createIframe()
       }
     },
-    [MESSAGE_TO_INJECT_FOLD]: async (params) => {
+    FOLD: async (params) => {
       runtime.fold = params.fold
       updateIframeHeight()
     },
-    [MESSAGE_TO_INJECT_MOVE]: async (params) => {
+    MOVE: async (params) => {
       const video = getVideoElement()
       if (video != null) {
         video.currentTime = params.time
@@ -267,14 +266,14 @@ const debug = (...args: any[]) => {
         }
       }
     },
-    [MESSAGE_TO_INJECT_GET_SUBTITLE]: async (params) => {
+    GET_SUBTITLE: async (params) => {
       let url = params.info.subtitle_url
       if (url.startsWith('http://')) {
         url = url.replace('http://', 'https://')
       }
       return await fetch(url).then(res => res.json())
     },
-    [MESSAGE_TO_INJECT_GET_VIDEO_STATUS]: async (params) => {
+    GET_VIDEO_STATUS: async (params) => {
       const video = getVideoElement()
       if (video != null) {
         return {
@@ -283,17 +282,17 @@ const debug = (...args: any[]) => {
         }
       }
     },
-    [MESSAGE_TO_INJECT_GET_VIDEO_ELEMENT_INFO]: async (params) => {
+    GET_VIDEO_ELEMENT_INFO: async (params) => {
       refreshVideoElement()
       return {
         noVideo: runtime.videoElement == null,
         totalHeight: runtime.videoElementHeight,
       }
     },
-    [MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO]: async (params) => {
+    REFRESH_VIDEO_INFO: async (params) => {
       refreshVideoInfo(params.force)
     },
-    [MESSAGE_TO_INJECT_UPDATETRANSRESULT]: async (params) => {
+    UPDATE_TRANS_RESULT: async (params) => {
       runtime.showTrans = true
       runtime.curTrans = params?.result
 
@@ -321,7 +320,7 @@ const debug = (...args: any[]) => {
       }
       text && (text.style.display = runtime.curTrans ? 'block' : 'none')
     },
-    [MESSAGE_TO_INJECT_HIDE_TRANS]: async (params) => {
+    HIDE_TRANS: async (params) => {
       runtime.showTrans = false
       runtime.curTrans = undefined
 
@@ -330,7 +329,7 @@ const debug = (...args: any[]) => {
         text.style.display = 'none'
       }
     },
-    [MESSAGE_TO_INJECT_PLAY]: async (params) => {
+    PLAY: async (params) => {
       const { play } = params
       const video = getVideoElement()
       if (video != null) {
@@ -341,7 +340,7 @@ const debug = (...args: any[]) => {
         }
       }
     },
-    [MESSAGE_TO_INJECT_DOWNLOAD_AUDIO]: async (params) => {
+    DOWNLOAD_AUDIO: async (params) => {
       const html = document.getElementsByTagName('html')[0].innerHTML
       const playInfo = JSON.parse(html.match(/window.__playinfo__=(.+?)<\/script/)?.[1] ?? '{}')
       const audioUrl = playInfo.data.dash.audio[0].baseUrl

@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import { MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/consts/const'
+import { STORAGE_ENV} from '@/consts/const'
 import ExtensionMessaging from '@/messaging/layer2/ExtensionMessaging'
 import { TAG_TARGET_INJECT } from '@/messaging/const'
 

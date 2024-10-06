@@ -1,7 +1,6 @@
 import { setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
 import { useMemo } from 'react'
 import { useAppDispatch } from './redux'
-import { MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_APP_SET_VIDEO_INFO } from '@/consts/const'
 import useMessagingService from '@/messaging/layer2/useMessagingService'
 
 const useMessageService = () => {
@@ -9,15 +8,15 @@ const useMessageService = () => {
   
   //methods
   const methods: {
-    [key: string]: (params: any, context: MethodContext) => Promise<any>
+    [K in AllAPPMessages['method']]: (params: Extract<AllAPPMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
   } = useMemo(() => ({
-    [MESSAGE_TO_APP_SET_INFOS]: async (params: any, context: MethodContext) => {
+    SET_INFOS: async (params, context: MethodContext) => {
       dispatch(setInfos(params.infos))
       dispatch(setCurInfo(undefined))
       dispatch(setCurFetched(false))
       dispatch(setData(undefined))
     },
-    [MESSAGE_TO_APP_SET_VIDEO_INFO]: async (params: any, context: MethodContext) => {
+    SET_VIDEO_INFO: async (params, context: MethodContext) => {
       dispatch(setInfos(params.infos))
       dispatch(setUrl(params.url))
       dispatch(setTitle(params.title))

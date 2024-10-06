@@ -2,6 +2,7 @@ import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
 import {MESSAGE_TARGET_INJECT, MESSAGE_TO_EXTENSION_ADD_TASK, MESSAGE_TO_EXTENSION_CLOSE_SIDE_PANEL, MESSAGE_TO_EXTENSION_GET_TASK, MESSAGE_TO_EXTENSION_SHOW_FLAG, MESSAGE_TO_INJECT_TOGGLE_DISPLAY, STORAGE_ENV} from '@/consts/const'
 import ExtensionMessage from '@/messaging/ExtensionMessage'
+import { TAG_TARGET_INJECT } from '@/messaging/const'
 
 const setBadgeOk = async (tabId: number, ok: boolean) => {
   await chrome.action.setBadgeText({
@@ -114,7 +115,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       })
     } else {
       closeSidePanel()
-      extensionMessage.broadcastMessageExact([tab.id!], MESSAGE_TARGET_INJECT, MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
+      extensionMessage.broadcastMessageExact([tab.id!], [TAG_TARGET_INJECT], MESSAGE_TO_INJECT_TOGGLE_DISPLAY).catch(console.error)
     }
   })
 })

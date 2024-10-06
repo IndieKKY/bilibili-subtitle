@@ -1,6 +1,6 @@
 import { MESSAGE_TARGET_APP, MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT } from '@/consts/const'
 import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE_MSG } from './const'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_APP, TAG_TARGET_INJECT } from './const'
 
 class InjectMessage {
     port?: chrome.runtime.Port
@@ -18,11 +18,11 @@ class InjectMessage {
         this.debug(`${req.from} => `, JSON.stringify(req))
 
         // check event target
-        if (req.target !== MESSAGE_TARGET_INJECT) return Promise.resolve({
-            success: false,
-            code: 501,
-            message: 'Target Error: ' + req.target,
-        })
+        // if (req.target !== MESSAGE_TARGET_INJECT) return Promise.resolve({
+        //     success: false,
+        //     code: 501,
+        //     message: 'Target Error: ' + req.target,
+        // })
 
         const method = this.methods?.[req.method]
         if (method != null) {
@@ -38,23 +38,23 @@ class InjectMessage {
                 }
             }).catch(err => {
                 console.error(err)
-                let message
+                let msg
                 if (err instanceof Error) {
-                    message = err.message
+                    msg = err.message
                 } else if (typeof err === 'string') {
-                    message = err
+                    msg = err
                 } else {
-                    message = 'error: ' + JSON.stringify(err)
+                    msg = 'error: ' + JSON.stringify(err)
                 }
                 return {
                     code: 500,
-                    message,
+                    msg,
                 }
             })
         } else {
             return {
                 code: 501,
-                message: 'Unknown method: ' + req.method,
+                msg: 'Unknown method: ' + req.method,
             }
         }
     }
@@ -69,26 +69,24 @@ class InjectMessage {
         this.portMessageHandler = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)
         this.portMessageHandler.sendMessage({
             from: 'inject',
-            target: MESSAGE_TARGET_EXTENSION,
-            method: '_init',
+            method: MESSAGE_TO_EXTENSION_HANDSHAKE,
             params: {
                 type: 'inject',
+                tags: [TAG_TARGET_INJECT],
             },
         })
     }
 
     sendExtension = async <T = any>(method: string, params?: any): Promise<T> => {
-        const req: L2ReqMsg = {
+        return await this.portMessageHandler!.sendMessage({
             from: 'inject',
-            target: MESSAGE_TARGET_EXTENSION,
             method,
             params: params ?? {},
-        }
-        return await this.portMessageHandler!.sendMessage(req).then((res) => {
+        }).then((res) => {
             if (res.code === 200) {
                 return res.data as T
             } else {
-                throw new Error(res.message)
+                throw new Error(res.msg)
             }
         })
     }
@@ -98,7 +96,7 @@ class InjectMessage {
             console.log('sendApp>>>', method, params)
         }
         return this.sendExtension(MESSAGE_TO_EXTENSION_ROUTE_MSG, {
-            target: MESSAGE_TARGET_APP,
+            tags: [TAG_TARGET_APP],
             method,
             params,
         })

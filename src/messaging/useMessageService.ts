@@ -4,7 +4,7 @@ import {
 } from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
 import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg } from './const'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, TAG_TARGET_APP } from './const'
 
 const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)
@@ -25,11 +25,11 @@ const useMessageService = (methods?: {
   const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
     debug(`${req.from} => `, JSON.stringify(req))
 
-    // check event target
-    if (req.target !== MESSAGE_TARGET_APP) return {
-      code: 501,
-      message: 'Target Error: ' + req.target,
-    }
+    // // check event target
+    // if (req.target !== MESSAGE_TARGET_APP) return {
+    //   code: 501,
+    //   msg: 'Target Error: ' + req.target,
+    // }
 
     const method = methods?.[req.method]
     if (method != null) {
@@ -44,23 +44,23 @@ const useMessageService = (methods?: {
         }
       }).catch(err => {
         console.error(err)
-        let message
+        let msg
         if (err instanceof Error) {
-          message = err.message
+          msg = err.message
         } else if (typeof err === 'string') {
-          message = err
+          msg = err
         } else {
-          message = 'error: ' + JSON.stringify(err)
+          msg = 'error: ' + JSON.stringify(err)
         }
         return {
           code: 500,
-          message,
+          msg,
         }
       })
     } else {
       return {
         code: 501,
-        message: 'Unknown method: ' + req.method,
+        msg: 'Unknown method: ' + req.method,
       }
     }
   }, [methods])
@@ -79,12 +79,13 @@ const useMessageService = (methods?: {
       let tabId = tabIdStr ? parseInt(tabIdStr) : undefined
       // 初始化
       pmh.sendMessage({
-          method: '_init',
+          from: 'app',
+          method: MESSAGE_TO_EXTENSION_HANDSHAKE,
           params: {
-              type: 'app',
               tabId,
+              tags: [TAG_TARGET_APP],
           },
-      } as L2ReqMsg)
+      })
       portMessageHandlerInit = true
   
       return pmh

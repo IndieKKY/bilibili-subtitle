@@ -60,7 +60,7 @@ class ExtensionMessaging<M extends ExtensionMessage> {
       const l1protocol = new Layer1Protocol<L2ReqMsg, L2ResMsg>(async (req: L2ReqMsg) => {
         const { tabId } = portContext
         const method = this.methods?.[req.method as keyof typeof this.methods]
-        console.log('msg>>>', tabId, req, method != null)
+        // console.log('msg>>>', tabId, req, method != null)
         if (method != null) {
           return method(req.params, {
             from: req.from,

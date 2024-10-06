@@ -20,7 +20,7 @@ const useMessagingService = (methods?: {
   [key: string]: (params: any, context: MethodContext) => Promise<any>
 }) => {
   const messageHandler = useCallback(async (req: L2ReqMsg): Promise<L2ResMsg> => {
-    debug(`${req.from} => `, JSON.stringify(req))
+    debug(`[${req.from}] ${req.method}`, JSON.stringify(req))
 
     // // check event target
     // if (req.target !== MESSAGE_TARGET_APP) return {

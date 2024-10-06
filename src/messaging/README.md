@@ -15,9 +15,9 @@
 
 1. （底层）一层协议为`Layer1Protocol`，内部封装了port，支持双向通信（发送与接收）
 2. （高层）二层协议分3个部分，基于一层协议：
-    1. `ExtensionMessage`：扩展端的
-    2. `InjectMessage`：注入端端
-    3. `useMessageService`与`useMessage`：应用端的
+    1. `ExtensionMessaging`：扩展端的
+    2. `InjectMessaging`：注入端端
+    3. `useMessagingService`与`useMessaging`：应用端的
 
 ### 通信方向
 

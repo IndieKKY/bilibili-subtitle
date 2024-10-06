@@ -21,7 +21,6 @@ import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/biz_util'
 import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../consts/const'
 import useMessage from '../messaging/layer2/useMessaging'
-import { msgWaiter } from '@/messaging/layer2/useMessagingService'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -94,8 +93,6 @@ const useSubtitleService = () => {
   }, [curFetched, curInfo])
 
   useAsyncEffect(async () => {
-    // 等待inject准备好
-    await msgWaiter.wait()
     // 初始获取列表
     sendInject(MESSAGE_TO_INJECT_REFRESH_VIDEO_INFO, {force: true})
     // 初始获取设置信息

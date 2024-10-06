@@ -14,7 +14,7 @@ class InjectMessaging {
     }
 
     messageHandler = async (req: L2ReqMsg): Promise<L2ResMsg> => {
-        this.debug(`${req.from} => `, JSON.stringify(req))
+        this.debug(`[${req.from}] ${req.method}`, JSON.stringify(req))
 
         // check event target
         // if (req.target !== MESSAGE_TARGET_INJECT) return Promise.resolve({

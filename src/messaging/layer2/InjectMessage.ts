@@ -1,6 +1,6 @@
-import { MESSAGE_TARGET_APP, MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT } from '@/consts/const'
-import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_APP, TAG_TARGET_INJECT } from './const'
+import { MESSAGE_TARGET_INJECT } from '@/consts/const'
+import Layer1Protocol from '../layer1/Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_APP, TAG_TARGET_INJECT } from '../const'
 
 class InjectMessage {
     port?: chrome.runtime.Port

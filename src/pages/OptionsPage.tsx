@@ -29,7 +29,7 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
 import {useEventChecked} from '@kky002/kky-hooks'
-import useMessage from '@/messaging/useMessage'
+import useMessage from '@/messaging/layer2/useMessage'
 
 const Section = (props: {
   title: ShowElement

@@ -20,8 +20,8 @@ import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_M
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/biz_util'
 import {MESSAGE_TO_INJECT_GET_SUBTITLE} from '../consts/const'
-import useMessage from '../messaging/useMessage'
-import { injectWaiter } from '@/messaging/useMessageService'
+import useMessage from '../messaging/layer2/useMessage'
+import { injectWaiter } from '@/messaging/layer2/useMessageService'
 
 /**
  * Service是单例，类似后端的服务概念

@@ -2,7 +2,7 @@ import { setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '
 import { useMemo } from 'react'
 import { useAppDispatch } from './redux'
 import { MESSAGE_TO_APP_SET_INFOS, MESSAGE_TO_APP_SET_VIDEO_INFO } from '@/consts/const'
-import useMessageService from '@/messaging/useMessageService'
+import useMessageService from '@/messaging/layer2/useMessageService'
 
 const useMessagingService = () => {
   const dispatch = useAppDispatch()

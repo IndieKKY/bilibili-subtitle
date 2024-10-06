@@ -1,6 +1,5 @@
-import { MESSAGE_TARGET_INJECT } from '@/consts/const'
-import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG } from './const'
+import Layer1Protocol from '../layer1/Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, MESSAGE_TO_EXTENSION_ROUTE_MSG } from '../const'
 
 export type PortContext = {
   id: string

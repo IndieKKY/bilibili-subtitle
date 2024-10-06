@@ -8,7 +8,7 @@ import {EventBusContext} from '../Router'
 import useTranslateService from '../hooks/useTranslateService'
 import {setTheme} from '../utils/biz_util'
 import useSearchService from '../hooks/useSearchService'
-import useMessage from '../messaging/useMessage'
+import useMessage from '../messaging/layer2/useMessage'
 import {setFold} from '../redux/envReducer'
 
 function App() {

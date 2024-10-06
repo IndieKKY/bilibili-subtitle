@@ -3,8 +3,8 @@ import {
   MESSAGE_TARGET_APP,
 } from '@/consts/const'
 import { Waiter } from '@kky002/kky-util'
-import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, TAG_TARGET_APP } from './const'
+import Layer1Protocol from '../layer1/Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_HANDSHAKE, TAG_TARGET_APP } from '../const'
 
 const debug = (...args: any[]) => {
   console.debug('[App Messaging]', ...args)

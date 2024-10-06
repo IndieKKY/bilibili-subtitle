@@ -18,7 +18,7 @@ import {formatSrtTime, formatTime, formatVttTime} from '../utils/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/biz_util'
-import useMessage from '../messaging/useMessage'
+import useMessage from '../messaging/layer2/useMessage'
 interface Props {
   placement: Placement
 }

@@ -1,8 +1,7 @@
-import { MESSAGE_TARGET_EXTENSION, MESSAGE_TARGET_INJECT } from '@/consts/const'
 import { injectWaiter } from './useMessageService'
 import { useCallback } from 'react'
-import Layer1Protocol from './Layer1Protocol'
-import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_INJECT } from './const'
+import Layer1Protocol from '../layer1/Layer1Protocol'
+import { L2ReqMsg, L2ResMsg, MESSAGE_TO_EXTENSION_ROUTE_MSG, TAG_TARGET_INJECT } from '../const'
 
 const useMessage = () => {
     const sendExtension = useCallback(async <T = any>(method: string, params?: any) => {

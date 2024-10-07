@@ -62,7 +62,7 @@ class InjectMessaging<AllExtensionMessagesType extends ExtensionMessage, AllInje
         [K in AllInjectMessagesType['method']]: (params: Extract<AllInjectMessagesType, { method: K }>['params'], context: MethodContext) => Promise<any>
     }) {
         this.methods = methods
-        this.port = chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
+        this.port = chrome.runtime.connect({
             name: 'bilibili-inject',
         })
         this.l1protocol = new Layer1Protocol<L2ReqMsg, L2ResMsg>(this.messageHandler, this.port)

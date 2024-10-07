@@ -63,7 +63,7 @@ const useMessagingService = <AllAPPMessagesType extends AppMessage>(methods?: {
   }, [methods])
 
   const port = useMemo(() => {
-    return chrome.runtime.connect(import.meta.env.VITE_EXTENSION_ID, {
+    return chrome.runtime.connect({
       name: 'bilibili-app',
     })
   }, [])

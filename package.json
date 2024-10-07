@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "bilibili-subtitle",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "type": "module",
   "description": "哔哩哔哩字幕列表",
   "main": "index.js",

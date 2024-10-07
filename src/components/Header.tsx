@@ -83,7 +83,8 @@ const Header = (props: {
     }
   }}>
     <div className='shrink-0 flex items-center'>
-      <span className='shrink-0 text-[15px] font-medium pl-[16px] pr-[14px]'>字幕列表</span>
+      <img src="bibijun.png" alt="Logo" className="w-auto h-6 ml-2 mr-1" />
+      {/* <span className='shrink-0 text-[15px] font-medium pl-1 pr-[14px]'>字幕列表</span> */}
       <MoreBtn placement={'right-start'}/>
     </div>
     <div className='flex gap-0.5 items-center mr-[16px]'>

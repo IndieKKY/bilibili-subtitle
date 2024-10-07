@@ -1,21 +1,19 @@
 //extension
-interface ExtensionCloseSidePanelMessage extends ExtensionMessage<{}> {
+interface ExtensionCloseSidePanelMessage extends ExtensionMessage {
     method: 'CLOSE_SIDE_PANEL';
   }
   
-  interface ExtensionAddTaskMessage extends ExtensionMessage<{ taskDef: TaskDef }> {
+  interface ExtensionAddTaskMessage extends ExtensionMessage<{ taskDef: TaskDef }, Task> {
     method: 'ADD_TASK';
-    return: Task
   }
   
-  interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }> {
+  interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }, {
+    code: 'ok'
+    task: Task
+  } | {
+    code: 'not_found'
+  }> {
     method: 'GET_TASK';
-    return: {
-      code: 'ok'
-      task: Task
-    } | {
-      code: 'not_found'
-    }
   }
   
   interface ExtensionShowFlagMessage extends ExtensionMessage<{ show: boolean }> {

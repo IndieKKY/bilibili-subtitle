@@ -4,13 +4,13 @@ interface Message<T = any, R = any> {
     return: R
 }
 
-interface ExtensionMessage<T = any> extends Message<T> {
+interface ExtensionMessage<T = any, R = any> extends Message<T, R> {
 }
 
-interface InjectMessage<T = any> extends Message<T> {
+interface InjectMessage<T = any, R = any> extends Message<T, R> {
 }
 
-interface AppMessage<T = any> extends Message<T> {
+interface AppMessage<T = any, R = any> extends Message<T, R> {
 }
 
 

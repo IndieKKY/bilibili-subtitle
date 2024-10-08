@@ -245,7 +245,7 @@ const MoreBtn = (props: Props) => {
             下载音频(m4s)
           </a>
         </li>
-        <li className='hover:bg-accent'>
+        {/* <li className='hover:bg-accent'>
           <a className='flex items-center' onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -264,7 +264,7 @@ const MoreBtn = (props: Props) => {
             <AiFillWechat className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
             微信公众号(IndieKKY)
           </a>
-        </li>
+        </li> */}
         {/* <li className='hover:bg-accent'> */}
         {/*  <a className='flex items-center' onClick={(e) => { */}
         {/*    e.preventDefault() */}
@@ -295,6 +295,17 @@ const MoreBtn = (props: Props) => {
           }}>
             <IoMdSettings className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
             选项
+          </a>
+        </li>
+        {/* 官网 */}
+        <li className='hover:bg-accent'>
+          <a className='flex items-center' onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            openUrl('https://www.bibijun.cc')
+          }}>
+            <img alt='哔哔君' src='/favicon-128x128.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
+            🏠 哔哔君官网
           </a>
         </li>
       </ul>

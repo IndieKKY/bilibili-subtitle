@@ -2,7 +2,7 @@ import React, {MutableRefObject, useCallback, useEffect, useMemo, useRef} from '
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {setFloatKeyPointsSegIdx, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
-import {FaClipboardList} from 'react-icons/fa'
+import {FaClipboardList, FaComments} from 'react-icons/fa'
 import {PAGE_MAIN, PAGE_SETTINGS, SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../consts/const'
 import useTranslate from '../hooks/useTranslate'
 import {BsDashSquare, BsPlusSquare, CgFileDocument, FaQuestion, GrOverview, RiFileCopy2Line} from 'react-icons/all'
@@ -12,6 +12,7 @@ import {useInViewport} from 'ahooks'
 import SegmentItem from './SegmentItem'
 import {stopPopFunc} from '../utils/util'
 import useSubtitle from '../hooks/useSubtitle'
+import DebateChat from './DebateChat'
 
 const SummarizeItemOverview = (props: {
   segment: Segment
@@ -113,6 +114,8 @@ const Summarize = (props: {
             <div className={classNames('font-normal', fontSize === 'large' ? 'text-sm' : 'text-xs')}>{question.a}</div>
           </div>)}
         </div>}
+      {summary?.type === 'debate' && (summary.content != null) &&
+        <DebateChat messages={summary.content} />}
     </div>
     <div className='flex flex-col justify-center items-center'>
       {segment.text.length < SUMMARIZE_THRESHOLD && <div className='desc-lighter text-xs'>文字过短，无法总结.</div>}
@@ -200,6 +203,12 @@ const SegmentCard = (props: {
     }))
   }, [dispatch])
 
+  const onSelDebate = useCallback(() => {
+    dispatch(setTempData({
+      curSummaryType: 'debate'
+    }))
+  }, [dispatch])
+
   return <div
     className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1 shadow', showCurrent && 'shadow-primary')}>
     <div className='relative flex justify-center min-h-[20px]'>
@@ -215,6 +224,7 @@ const SegmentCard = (props: {
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'overview' && 'tab-active')} onClick={onSelOverview}><GrOverview/>概览</a>
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'keypoint' && 'tab-active')} onClick={onSelKeypoint}><FaClipboardList/>要点</a>
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'question' && 'tab-active')} onClick={onSelQuestion}><FaQuestion/>问题</a>
+        <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'debate' && 'tab-active')} onClick={onSelDebate}><FaComments/>辩论</a>
         <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
       </div>}
       <div

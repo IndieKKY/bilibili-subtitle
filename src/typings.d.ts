@@ -151,4 +151,13 @@ interface BriefSummary extends Summary {
 }
 
 type SummaryStatus = 'init' | 'pending' | 'done'
-type SummaryType = 'overview' | 'keypoint' | 'brief' | 'question'
+type SummaryType = 'overview' | 'keypoint' | 'brief' | 'question' | 'debate'
+
+interface DebateMessage {
+  side: 'pro' | 'con';
+  content: string;
+}
+
+interface DebateProps {
+  messages: DebateMessage[];
+}

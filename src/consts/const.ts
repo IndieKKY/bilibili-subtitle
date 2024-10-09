@@ -11,6 +11,7 @@ export const PROMPT_TYPE_TRANSLATE = 'translate'
 export const PROMPT_TYPE_SUMMARIZE_OVERVIEW = 'summarize_overview'
 export const PROMPT_TYPE_SUMMARIZE_KEYPOINT = 'summarize_keypoint'
 export const PROMPT_TYPE_SUMMARIZE_QUESTION = 'summarize_question'
+export const PROMPT_TYPE_SUMMARIZE_DEBATE = 'summarize_debate'
 export const PROMPT_TYPE_SUMMARIZE_BRIEF = 'summarize_brief'
 export const PROMPT_TYPE_ASK = 'ask'
 export const PROMPT_TYPES = [{
@@ -28,6 +29,9 @@ export const PROMPT_TYPES = [{
 }, {
   name: '问题',
   type: PROMPT_TYPE_SUMMARIZE_QUESTION,
+}, {
+  name: '辩论',
+  type: PROMPT_TYPE_SUMMARIZE_DEBATE,
 }, {
   name: '提问',
   type: PROMPT_TYPE_ASK,
@@ -57,6 +61,12 @@ export const SUMMARIZE_TYPES = {
     desc: '常见问题',
     downloadName: '💡常见问题💡',
     promptType: PROMPT_TYPE_SUMMARIZE_QUESTION,
+  },
+  debate: {
+    name: '辩论',
+    desc: '辩论',
+    downloadName: '💡辩论💡',
+    promptType: PROMPT_TYPE_SUMMARIZE_DEBATE,
   },
 }
 
@@ -172,6 +182,42 @@ Provide an example to illustrate the expected output:
     {
         "q": "How is the topic developed?",
         "a": "The topic is developed through various examples, including..."
+    }
+]
+\`\`\`
+`,
+[PROMPT_TYPE_SUMMARIZE_DEBATE]: `You are a helpful assistant skilled at generating debates based on video subtitles.
+
+## Context
+
+The video's title: '''{{title}}'''.
+The video's subtitles:
+
+'''
+{{segment}}
+'''
+
+## Command
+
+Please play the roles of both the affirmative and negative sides to discuss the author's viewpoint.
+The conversation should consist of 10 rounds(5 sentences from the affirmative side, 5 sentences from the negative side.).
+The tone should be straightforward.
+
+Answer in language '{{language}}'.
+
+## Output format
+
+Provide an example to illustrate the expected output:
+
+\`\`\`json
+[
+    {
+        "side": "pro",
+        "content": "xxx"
+    },
+    {
+        "side": "con",
+        "content": "xxx"
     }
 ]
 \`\`\`

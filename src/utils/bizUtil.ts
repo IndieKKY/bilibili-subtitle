@@ -81,6 +81,9 @@ export const isSummaryEmpty = (summary: Summary) => {
   } else if (summary.type === 'question') {
     const content: any[] = summary.content??[]
     return content.length === 0
+  } else if (summary.type === 'debate') {
+    const content: Array<{ side: string, content: string }> = summary.content ?? []
+    return content.length === 0
   }
   return true
 }
@@ -107,7 +110,12 @@ export const getSummaryStr = (summary: Summary) => {
     s += content.map(item => {
       return item.q + '\n' + item.a + '\n'
     }).join('\n')
-  }
+  } else if (summary.type === 'debate') {
+    const content: Array<{ side: string, content: string }> = summary.content ?? []
+    s += content.map(item => {
+      return (item.side === 'pro'?'正方：':'反方：') + item.content + '\n'
+    }).join('\n')
+  } 
   return s
 }
 

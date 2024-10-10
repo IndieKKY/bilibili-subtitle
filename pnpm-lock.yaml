@@ -41,6 +41,9 @@ importers:
       daisyui:
         specifier: ^2.42.1
         version: 2.42.1(autoprefixer@10.4.13(postcss@8.4.19))(postcss@8.4.19)
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       js-search:
         specifier: ^2.0.0
         version: 2.0.0
@@ -856,8 +859,8 @@ packages:
       autoprefixer: ^10.0.2
       postcss: ^8.1.6
 
-  dayjs@1.11.5:
-    resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -3114,7 +3117,7 @@ snapshots:
     dependencies:
       '@types/js-cookie': 2.2.7
       ahooks-v3-count: 1.0.0
-      dayjs: 1.11.5
+      dayjs: 1.11.13
       intersection-observer: 0.12.2
       js-cookie: 2.2.1
       lodash: 4.17.21
@@ -3126,7 +3129,7 @@ snapshots:
     dependencies:
       '@types/js-cookie': 2.2.7
       ahooks-v3-count: 1.0.0
-      dayjs: 1.11.5
+      dayjs: 1.11.13
       intersection-observer: 0.12.2
       js-cookie: 2.2.1
       lodash: 4.17.21
@@ -3385,7 +3388,7 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
-  dayjs@1.11.5: {}
+  dayjs@1.11.13: {}
 
   debug@2.6.9:
     dependencies:

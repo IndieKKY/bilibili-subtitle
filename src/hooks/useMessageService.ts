@@ -1,4 +1,4 @@
-import { setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
+import { setAuthor, setCtime, setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
 import { useMemo } from 'react'
 import { useAppDispatch } from './redux'
 import useMessagingService from '@/messaging/layer2/useMessagingService'
@@ -20,6 +20,8 @@ const useMessageService = () => {
       dispatch(setInfos(params.infos))
       dispatch(setUrl(params.url))
       dispatch(setTitle(params.title))
+      dispatch(setCtime(params.ctime))
+      dispatch(setAuthor(params.author))
       console.debug('video title: ', params.title)
     },
   }), [dispatch])

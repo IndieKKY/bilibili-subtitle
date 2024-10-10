@@ -292,6 +292,9 @@ export const LANGUAGES = [{
   code: 'en',
   name: 'English',
 }, {
+  code: 'ja',
+  name: '日本語',
+}, {
   code: 'ena',
   name: 'American English',
 }, {
@@ -324,6 +327,39 @@ export const LANGUAGES = [{
 }, {
   code: 'Italian',
   name: 'Italiano',
+}, {
+  code: 'ko',
+  name: '한국어',
+}, {
+  code: 'hi',
+  name: 'हिन्दी',
+}, {
+  code: 'tr',
+  name: 'Türkçe',
+}, {
+  code: 'nl',
+  name: 'Nederlands',
+}, {
+  code: 'pl',
+  name: 'Polski',
+}, {
+  code: 'sv',
+  name: 'Svenska',
+}, {
+  code: 'vi',
+  name: 'Tiếng Việt',
+}, {
+  code: 'th',
+  name: 'ไทย',
+}, {
+  code: 'id',
+  name: 'Bahasa Indonesia',
+}, {
+  code: 'el',
+  name: 'Ελληνικά',
+}, {
+  code: 'he',
+  name: 'עברית',
 }]
 export const LANGUAGES_MAP: {[key: string]: typeof LANGUAGES[number]} = {}
 for (const language of LANGUAGES) {

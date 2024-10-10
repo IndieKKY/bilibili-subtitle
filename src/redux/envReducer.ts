@@ -32,7 +32,8 @@ interface EnvState {
   segments?: Segment[]
   url?: string
   title?: string
-
+  ctime?: number | null
+  author?: string
   taskIds?: string[]
   transResults: { [key: number]: TransResult }
   lastTransTime?: number
@@ -271,6 +272,12 @@ export const slice = createSlice({
     setTitle: (state, action: PayloadAction<string | undefined>) => {
       state.title = action.payload
     },
+    setCtime: (state, action: PayloadAction<number | null | undefined>) => {
+      state.ctime = action.payload
+    },
+    setAuthor: (state, action: PayloadAction<string | undefined>) => {
+      state.author = action.payload
+    },
     setInfos: (state, action: PayloadAction<any[]>) => {
       state.infos = action.payload
     },
@@ -342,6 +349,8 @@ export const {
   addAskInfo,
   delAskInfo,
   mergeAskInfo,
+  setCtime,
+  setAuthor,
 } = slice.actions
 
 export default slice.reducer

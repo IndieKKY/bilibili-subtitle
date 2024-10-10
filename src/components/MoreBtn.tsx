@@ -19,6 +19,8 @@ import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
 import { useMessage } from '@/hooks/message'
+import dayjs from 'dayjs';
+
 interface Props {
   placement: Placement
 }
@@ -68,6 +70,8 @@ const MoreBtn = (props: Props) => {
   const segments = useAppSelector(state => state.env.segments)
   const url = useAppSelector(state => state.env.url)
   const title = useAppSelector(state => state.env.title)
+  const ctime = useAppSelector(state => state.env.ctime) //时间戳，单位s
+  const author = useAppSelector(state => state.env.author)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
   const {sendInject} = useMessage()
@@ -79,20 +83,21 @@ const MoreBtn = (props: Props) => {
 
     let fileName = title
     let s, suffix
+    let time = ctime ? dayjs(ctime * 1000).format('YYYY-MM-DD HH:mm:ss') : '' // 2024-05-01 12:00:00
     if (!downloadType || downloadType === 'text') {
-      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
+      s = `${title??'无标题'}\n${url??'无链接'}\n${author??'无作者'} ${time}\n\n`
       for (const item of data.body) {
         s += item.content + '\n'
       }
       suffix = 'txt'
     } else if (downloadType === 'textWithTime') {
-      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
+      s = `${title??'无标题'}\n${url??'无链接'}\n${author??'无作者'} ${time}\n\n`
       for (const item of data.body) {
         s += formatTime(item.from) + ' ' + item.content + '\n'
       }
       suffix = 'txt'
     } else if (downloadType === 'article') {
-      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
+      s = `${title??'无标题'}\n${url??'无链接'}\n${author??'无作者'} ${time}\n\n`
       for (const item of data.body) {
         s += item.content + ', '
       }
@@ -142,7 +147,7 @@ const MoreBtn = (props: Props) => {
       s = JSON.stringify(data)
       suffix = 'json'
     } else if (downloadType === 'summarize') {
-      s = `${title??'无标题'}\n${url??'无链接'}\n\n`
+      s = `${title??'无标题'}\n${url??'无链接'}\n${author??'无作者'} ${time}\n\n`
       const [success, content] = getSummarize(title, segments, curSummaryType)
       if (!success) return
       s += content

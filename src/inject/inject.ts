@@ -120,6 +120,8 @@ const debug = (...args: any[]) => {
   }
 
   let aid: number | null = null
+  let ctime: number | null = null
+  let author: string | undefined
   let title = ''
   let pages: any[] = []
   let pagesMap: Record<string, any> = {}
@@ -162,6 +164,8 @@ const debug = (...args: any[]) => {
           aid = parseInt(aidOrBvid.slice(2))
           pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, { credentials: 'include' }).then(res => res.json()).then(res => res.data)
           cid = pages[0].cid
+          ctime = pages[0].ctime
+          author = pages[0].owner?.name
           title = pages[0].part
           await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
             subtitles = res.data.subtitle.subtitles
@@ -171,6 +175,8 @@ const debug = (...args: any[]) => {
             title = res.data.title
             aid = res.data.aid
             cid = res.data.cid
+            ctime = res.data.ctime
+            author = res.data.owner?.name
             pages = res.data.pages
           })
           await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
@@ -191,6 +197,8 @@ const debug = (...args: any[]) => {
           url: location.origin + location.pathname,
           title,
           aid,
+          ctime,
+          author,
           pages,
           infos: subtitles,
         })

@@ -304,22 +304,22 @@ const Body = () => {
       {/*  </button>} */}
       {/* </div> */}
       <div className='flex flex-col'>
-        {/* <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'> */}
-        {/*  <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png' */}
-        {/*                                                                          alt='BibiGPT logo' */}
-        {/*                                                                          className='w-8 h-8'/>BibiGPT */}
-        {/*  </div> */}
-        {/*  <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span */}
-        {/*    className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频） */}
-        {/*  </div> */}
-        {/*  <div className='flex gap-2'> */}
-        {/*    <a title='BibiGPT' href='https://bibigpt.co/r/bilibili' */}
-        {/*       onClick={(e) => { */}
-        {/*         e.preventDefault() */}
-        {/*         openUrl('https://bibigpt.co/r/bilibili') */}
-        {/*       }} className='link text-sm text-accent'>✨ BibiGPT ✨</a> */}
-        {/*  </div> */}
-        {/* </div> */}
+         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
+          <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
+                                                                                  alt='BibiGPT logo'
+                                                                                  className='w-8 h-8'/>BibiGPT
+          </div>
+          <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span
+            className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频）
+          </div>
+          <div className='flex gap-2'>
+            <a title='BibiGPT' href='https://bibigpt.co/r/bilibili'
+               onClick={(e) => {
+                 e.preventDefault()
+                 openUrl('https://bibigpt.co/r/bilibili')
+               }} className='link text-sm text-accent'>✨ BibiGPT ✨</a>
+          </div>
+         </div>
         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
           <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
             alt='youtube caption logo'

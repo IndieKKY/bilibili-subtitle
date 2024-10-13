@@ -12,9 +12,10 @@ const [major, minor, patch, label = '0'] = version
   .split(/[.-]/)
 
 export default defineManifest(async (env) => ({
-  "name": "哔哔君 - bilibili哔哩哔哩字幕列表",
-  "description": "显示B站视频的字幕列表,可点击跳转与下载字幕,并支持翻译和总结字幕!",
+  "name": '__MSG_appName__',
+  "description": '__MSG_appDescription__',
   "version": `${major}.${minor}.${patch}`,
+  "default_locale": "zh_CN",
   "manifest_version": 3,
   "permissions": [
     "sidePanel",

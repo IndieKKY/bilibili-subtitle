@@ -25,6 +25,7 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
   private timeout: number
   private requests: Map<string, { resolve: (value: L1Res) => void, reject: (reason?: any) => void, timer: number }>
   private handler: Handler<L1Req, L1Res>
+  public disconnected: boolean = false
 
   constructor(handler: Handler<L1Req, L1Res>, port: chrome.runtime.Port, autoDispose = true, timeout = 30000) {  // 默认超时 30 秒
     this.port = port;
@@ -82,6 +83,7 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
   }
 
   dispose() {
+    this.disconnected = true
     this.port.onMessage.removeListener(this._messageListener);
     if (this.port.onDisconnect) {
       this.port.onDisconnect.removeListener(this.dispose);

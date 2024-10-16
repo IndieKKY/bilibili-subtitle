@@ -39,6 +39,7 @@ import Ask from './Ask'
 import { v4 } from 'uuid'
 import RateExtension from '../components/RateExtension'
 import ApiKeyReminder from './ApiKeyReminder'
+import useMessaging from '@/messaging/layer2/useMessaging'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -65,6 +66,7 @@ const Body = () => {
   // const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
   const asks = useAppSelector(state => state.env.asks)
+  const {disconnected} = useMessaging()
   // const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
@@ -261,6 +263,10 @@ const Body = () => {
       }} />
       {searchText && <button className='absolute top-1 right-2 btn btn-ghost btn-xs btn-circle text-base-content/75' onClick={onClearSearchText}><AiOutlineCloseCircle /></button>}
     </div>}
+
+    {disconnected && <div className='flex flex-col justify-center items-center gap-2 text-sm bg-red-400 rounded mx-2'>
+        <span className='flex items-center gap-1 text-white'><AiOutlineCloseCircle className='text-white' />已断开连接</span>
+      </div>}
 
     {/* auto scroll btn */}
     {!autoScroll && <div

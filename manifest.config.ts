@@ -57,7 +57,7 @@ export default defineManifest(async (env) => ({
       "resources": [
         "index.html",
       ],
-      "use_dynamic_url": true
+      "use_dynamic_url": false
     }
   ]
 }))

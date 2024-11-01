@@ -167,7 +167,7 @@ const debug = (...args: any[]) => {
           ctime = pages[0].ctime
           author = pages[0].owner?.name
           title = pages[0].part
-          await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
+          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
             subtitles = res.data.subtitle.subtitles
           })
         } else {//bvxxx
@@ -179,7 +179,7 @@ const debug = (...args: any[]) => {
             author = res.data.owner?.name
             pages = res.data.pages
           })
-          await fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
+          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
             subtitles = res.data.subtitle.subtitles
           })
         }
@@ -226,7 +226,7 @@ const debug = (...args: any[]) => {
       lastAid = aid
       lastCid = cid
       if (aid && cid) {
-        fetch(`https://api.bilibili.com/x/player/v2?aid=${aid}&cid=${cid}`, {
+        fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, {
           credentials: 'include',
         })
           .then(res => res.json())

@@ -231,10 +231,13 @@ const debug = (...args: any[]) => {
         })
           .then(res => res.json())
           .then(res => {
-            // console.log('refreshSubtitles: ', aid, cid, res)
-            runtime.injectMessaging.sendApp('SET_INFOS', {
-              infos: res.data.subtitle.subtitles
-            })
+            //remove elements with empty subtitle_url
+            res.data.subtitle.subtitles = res.data.subtitle.subtitles.filter((item: any) => item.subtitle_url)
+            if (res.data.subtitle.subtitles.length > 0) {
+              runtime.injectMessaging.sendApp('SET_INFOS', {
+                infos: res.data.subtitle.subtitles
+              })
+            }
           })
       }
     }

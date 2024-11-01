@@ -210,7 +210,7 @@ const SegmentCard = (props: {
   }, [dispatch])
 
   return <div
-    className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1 shadow', showCurrent && 'shadow-primary')}>
+    className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1', showCurrent && 'shadow shadow-md')}>
     <div className='relative flex justify-center min-h-[20px]'>
       {segments != null && segments.length > 0 &&
         <div className='absolute left-0 top-0 bottom-0 text-xs select-none flex-center desc'>

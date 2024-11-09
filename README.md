@@ -51,8 +51,9 @@ node版本：18.15.0
 
 注：`./push.sh`是作者自用脚本，可以忽略。
 
-提示：本地edge开发调试可能有问题，会报csp错误！本地开发调试推荐用chrome。
-构建后应该正常，关键是fix.cjs里将use_dynamic_url设置为false的这个操作。
+提示：最新版浏览器安全方面有更新，开发调试可能有问题，会报csp错误！
+暂时的解决办法是`pnpm run dev`运行起来后，手动将`dist/manifest.json`文件里的web_accessible_resources里的use_dynamic_url都修改为true，然后浏览器扩展管理页面点击重载一下，就能正常（是@crxjs/vite-plugin依赖的问题，这个依赖很长时间没更新了，这个bug也没修复，暂时没发现更好的解决办法）。
+构建后正常，关键是fix.cjs里将use_dynamic_url设置为false的这个操作。
 
 ## 贡献指南
 

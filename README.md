@@ -21,7 +21,6 @@
 
 - [chrome商店](https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp)
 - [edge商店](https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan)
-- [firefox商店](https://addons.mozilla.org/zh-CN/firefox/addon/bilibili-subtitle)
 
 ## 使用说明
 
@@ -46,8 +45,8 @@ github: [IndieKKY](https://github.com/IndieKKY)
 node版本：18.15.0
 包管理器：pnpm
 
-- 本地调试：`pnpm run dev`，然后加载`dist`目录。
-- 打生产包：`pnpm run build`，然后加载`dist`目录。
+- 本地调试：`pnpm run dev`，然后浏览器扩展管理页面，开启开发者模式，再加载已解压的扩展程序，选择`dist`目录。
+- 打生产包：`pnpm run build`，然后浏览器扩展管理页面，开启开发者模式，再加载已解压的扩展程序，选择`dist`目录。
 
 注：`./push.sh`是作者自用脚本，可以忽略。
 

@@ -107,8 +107,14 @@ class Layer1Protocol<L1Req = any, L1Res = any> {
       // 将 resolve 和 timer 函数与消息 ID 绑定，存入 Map
       this.requests.set(id, { resolve, reject, timer });
 
-      // 发送消息，并附带 ID
-      this.port.postMessage({ id, type: 'req', req });
+      try {
+        this.port.postMessage({ id, type: 'req', req });
+      } catch (error) {
+        clearTimeout(timer);
+        this.requests.delete(id);
+        this.dispose();
+        reject(error);
+      }
     });
   }
 }

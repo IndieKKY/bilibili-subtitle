@@ -29,7 +29,7 @@ import toast from 'react-hot-toast'
 import {useMemoizedFn} from 'ahooks/es'
 import {extractJsonArray, extractJsonObject, getModel} from '../utils/bizUtil'
 import {formatTime} from '../utils/util'
-import { useMessage } from './message'
+import { useMessage } from './useMessageService'
 const useTranslate = () => {
   const dispatch = useAppDispatch()
   const data = useAppSelector(state => state.env.data)
@@ -43,7 +43,7 @@ const useTranslate = () => {
   const reviewed = useAppSelector(state => state.env.tempData.reviewed)
   const reviewAction = useAppSelector(state => state.env.reviewAction)
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
-  const {sendExtension} = useMessage()
+  const {sendExtension} = useMessage(!!envData.sidePanel)
   /**
    * 获取下一个需要翻译的行
    * 会检测冷却
@@ -135,7 +135,7 @@ const useTranslate = () => {
           }
         })
         dispatch(addTransResults(result))
-        const task = await sendExtension('ADD_TASK', {taskDef})
+        const task = await sendExtension(null, 'ADD_TASK', {taskDef})
         dispatch(addTaskId(task.id))
       }
     }
@@ -205,7 +205,7 @@ const useTranslate = () => {
       console.debug('addSummarizeTask', taskDef)
       dispatch(setSummaryStatus({segmentStartIdx: segment.startIdx, type, status: 'pending'}))
       dispatch(setLastSummarizeTime(Date.now()))
-      const task = await sendExtension('ADD_TASK', {taskDef})
+      const task = await sendExtension(null, 'ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -262,7 +262,7 @@ const useTranslate = () => {
         id,
         status: 'pending'
       }))
-      const task = await sendExtension('ADD_TASK', {taskDef})
+      const task = await sendExtension(null, 'ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
   }, [dispatch, envData, summarizeLanguage.name, title])
@@ -330,7 +330,7 @@ const useTranslate = () => {
   })
 
   const getTask = useCallback(async (taskId: string) => {
-    const taskResp = await sendExtension('GET_TASK', {taskId})
+    const taskResp = await sendExtension(null, 'GET_TASK', {taskId})
     if (taskResp.code === 'ok') {
       console.debug('getTask', taskResp.task)
       const task: Task = taskResp.task

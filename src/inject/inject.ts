@@ -1,5 +1,6 @@
-import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, STORAGE_ENV } from '@/consts/const'
-import InjectMessaging from '@/messaging/layer2/InjectMessaging'
+import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, STORAGE_ENV, DEFAULT_USE_PORT } from '@/consts/const'
+import { AllExtensionMessages, AllInjectMessages, AllAPPMessages } from '@/message-typings'
+import { InjectMessaging } from '@kky002/kky-message'
 
 const debug = (...args: any[]) => {
   console.debug('[Inject]', ...args)
@@ -41,7 +42,7 @@ const debug = (...args: any[]) => {
     showTrans: boolean
     curTrans?: string
   } = {
-    injectMessaging: new InjectMessaging(),
+    injectMessaging: new InjectMessaging(DEFAULT_USE_PORT),
     fold: true,
     videoElementHeight: TOTAL_HEIGHT_DEF,
     showTrans: false,
@@ -193,7 +194,7 @@ const debug = (...args: any[]) => {
         debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
 
         //send setVideoInfo
-        runtime.injectMessaging.sendApp('SET_VIDEO_INFO', {
+        runtime.injectMessaging.sendApp(!!sidePanel, 'SET_VIDEO_INFO', {
           url: location.origin + location.pathname,
           title,
           aid,
@@ -234,7 +235,7 @@ const debug = (...args: any[]) => {
             //remove elements with empty subtitle_url
             res.data.subtitle.subtitles = res.data.subtitle.subtitles.filter((item: any) => item.subtitle_url)
             if (res.data.subtitle.subtitles.length > 0) {
-              runtime.injectMessaging.sendApp('SET_INFOS', {
+              runtime.injectMessaging.sendApp(!!sidePanel, 'SET_INFOS', {
                 infos: res.data.subtitle.subtitles
               })
             }

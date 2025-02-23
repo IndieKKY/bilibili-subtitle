@@ -25,6 +25,7 @@ import toast from 'react-hot-toast'
 import SegmentCard from './SegmentCard'
 import {
   ASK_ENABLED_DEFAULT,
+  DEFAULT_USE_PORT,
   HEADER_HEIGHT,
   PAGE_SETTINGS,
   SEARCH_BAR_HEIGHT,
@@ -39,7 +40,7 @@ import Ask from './Ask'
 import { v4 } from 'uuid'
 import RateExtension from '../components/RateExtension'
 import ApiKeyReminder from './ApiKeyReminder'
-import useMessaging from '@/messaging/layer2/useMessaging'
+import { useMessaging } from '@kky002/kky-message'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -66,7 +67,7 @@ const Body = () => {
   // const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
   const asks = useAppSelector(state => state.env.asks)
-  const {disconnected} = useMessaging()
+  const {disconnected} = useMessaging(DEFAULT_USE_PORT)
   // const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))

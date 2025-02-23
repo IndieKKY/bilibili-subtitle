@@ -1,8 +1,6 @@
-import React, {MouseEvent, useCallback, useContext, useRef, useState} from 'react'
+import {MouseEvent, useCallback, useContext, useRef, useState} from 'react'
 import {useClickAway} from 'ahooks'
 import {
-  AiFillWechat,
-  BsFillChatDotsFill,
   FiMoreVertical,
   ImDownload3,
   IoMdSettings,
@@ -13,13 +11,13 @@ import {Placement} from '@popperjs/core/lib/enums'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {setEnvData, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND} from '../consts/const'
+import {DEFAULT_USE_PORT, EVENT_EXPAND} from '../consts/const'
 import {formatSrtTime, formatTime, formatVttTime} from '../utils/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
-import { useMessage } from '@/hooks/message'
 import dayjs from 'dayjs';
+import { useMessage } from '@/hooks/useMessageService'
 
 interface Props {
   placement: Placement
@@ -74,7 +72,7 @@ const MoreBtn = (props: Props) => {
   const author = useAppSelector(state => state.env.author)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
-  const {sendInject} = useMessage()
+  const {sendInject} = useMessage(!!envData.sidePanel)
 
   const downloadCallback = useCallback((download: boolean) => {
     if (data == null) {
@@ -167,7 +165,7 @@ const MoreBtn = (props: Props) => {
   }, [curSummaryType, data, downloadType, segments, title, url])
 
   const downloadAudioCallback = useCallback(() => {
-    sendInject('DOWNLOAD_AUDIO', {})
+    sendInject(null, 'DOWNLOAD_AUDIO', {})
   }, [])
 
   const selectCallback = useCallback((e: any) => {

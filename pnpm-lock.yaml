@@ -14,6 +14,9 @@ importers:
       '@kky002/kky-hooks':
         specifier: ^1.2.1
         version: 1.2.1
+      '@kky002/kky-message':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@kky002/kky-ui':
         specifier: ^1.0.9
         version: 1.0.9
@@ -310,6 +313,10 @@ packages:
     resolution: {integrity: sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/runtime@7.26.9':
+    resolution: {integrity: sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/template@7.25.7':
     resolution: {integrity: sha512-wRwtAgI3bAS+JGU2upWNL9lSlDcRCqD05BZ1n3X2ONLH1WilFP6O1otQjeMK/1g0pvYcXC7b/qVUB1keofjtZA==}
     engines: {node: '>=6.9.0'}
@@ -389,6 +396,9 @@ packages:
 
   '@kky002/kky-hooks@1.2.1':
     resolution: {integrity: sha512-AJM2gm75TtkZqOPd/WX0+4h/dfjSb8HlDQLwAJsYIHRNw8MQUKu32Ih6OxhKL2l9pdPsuj+S9/lBc4Cwu4tP+Q==}
+
+  '@kky002/kky-message@0.0.7':
+    resolution: {integrity: sha512-0qyamYhR+TT79TMbTL4frKTdOZZIObdvbDbmIT1Wu2GafxsIg249FxnW65ERqPNCZ+w5eNCK121EB11+txNFHQ==}
 
   '@kky002/kky-ui@1.0.9':
     resolution: {integrity: sha512-pepfRcLfC1eIQ1lsSJLWNr4PgdLqFLuvQMlitJy7W668yZ7qu8yAHSjg8A20R7HB4mFkJ+B96WETalOar1e/kA==}
@@ -650,6 +660,12 @@ packages:
 
   ahooks@3.7.5:
     resolution: {integrity: sha512-RWkJYK5xj9ZXROj9jABRDqdpTBimkY1tlyeJQ8Ci7MAl1sC5xzSzwO20ydk6BjtdbWt56DPCYZhq4lGu3O2Zwg==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  ahooks@3.8.4:
+    resolution: {integrity: sha512-39wDEw2ZHvypaT14EpMMk4AzosHWt0z9bulY0BeDsvc9PqJEV+Kjh/4TZfftSsotBMq52iYIOFPd3PR56e0ZJg==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -1560,6 +1576,10 @@ packages:
   js-cookie@2.2.1:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
 
+  js-cookie@3.0.5:
+    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
+    engines: {node: '>=14'}
+
   js-search@2.0.0:
     resolution: {integrity: sha512-lJ8KzjlwcelIWuAdKyzsXv45W6OIwRpayzc7XmU8mzgWadg5UVOKVmnq/tXudddEB9Ceic3tVaGu6QOK/eebhg==}
 
@@ -2048,6 +2068,9 @@ packages:
   react-fast-compare@3.2.0:
     resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
 
+  react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+
   react-hot-toast@2.4.0:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
     engines: {node: '>=10'}
@@ -2134,6 +2157,9 @@ packages:
 
   regenerator-runtime@0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+
+  regenerator-runtime@0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
   regexp.prototype.flags@1.4.3:
     resolution: {integrity: sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==}
@@ -2696,6 +2722,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.13.9
 
+  '@babel/runtime@7.26.9':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/template@7.25.7':
     dependencies:
       '@babel/code-frame': 7.25.7
@@ -2814,6 +2844,14 @@ snapshots:
       '@kky002/kky-util': 1.13.13
       ahooks: 3.7.5(react@18.2.0)
       lodash-es: 4.17.21
+      react: 18.2.0
+
+  '@kky002/kky-message@0.0.7':
+    dependencies:
+      '@kky002/kky-util': 1.13.13
+      ahooks: 3.8.4(react@18.2.0)
+      lodash-es: 4.17.21
+      qs: 6.11.0
       react: 18.2.0
 
   '@kky002/kky-ui@1.0.9':
@@ -3134,6 +3172,19 @@ snapshots:
       js-cookie: 2.2.1
       lodash: 4.17.21
       react: 18.2.0
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.5.0
+
+  ahooks@3.8.4(react@18.2.0):
+    dependencies:
+      '@babel/runtime': 7.26.9
+      dayjs: 1.11.13
+      intersection-observer: 0.12.2
+      js-cookie: 3.0.5
+      lodash: 4.17.21
+      react: 18.2.0
+      react-fast-compare: 3.2.2
       resize-observer-polyfill: 1.5.1
       screenfull: 5.2.0
       tslib: 2.5.0
@@ -4076,6 +4127,8 @@ snapshots:
 
   js-cookie@2.2.1: {}
 
+  js-cookie@3.0.5: {}
+
   js-search@2.0.0: {}
 
   js-tokens@4.0.0: {}
@@ -4698,6 +4751,8 @@ snapshots:
 
   react-fast-compare@3.2.0: {}
 
+  react-fast-compare@3.2.2: {}
+
   react-hot-toast@2.4.0(csstype@3.1.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       goober: 2.1.12(csstype@3.1.2)
@@ -4789,6 +4844,8 @@ snapshots:
       '@babel/runtime': 7.19.0
 
   regenerator-runtime@0.13.9: {}
+
+  regenerator-runtime@0.14.1: {}
 
   regexp.prototype.flags@1.4.3:
     dependencies:

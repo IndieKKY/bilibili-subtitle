@@ -1,8 +1,8 @@
 import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
-import { STORAGE_ENV} from '@/consts/const'
-import ExtensionMessaging from '@/messaging/layer2/ExtensionMessaging'
-import { TAG_TARGET_INJECT } from '@/messaging/const'
+import { DEFAULT_USE_PORT, STORAGE_ENV} from '@/consts/const'
+import { AllExtensionMessages } from '@/message-typings'
+import { ExtensionMessaging, TAG_TARGET_INJECT } from '@kky002/kky-message'
 
 const setBadgeOk = async (tabId: number, ok: boolean) => {
   await chrome.action.setBadgeText({
@@ -75,7 +75,7 @@ const methods: {
   },
 }
 // 初始化backgroundMessage
-const extensionMessaging = new ExtensionMessaging()
+const extensionMessaging = new ExtensionMessaging(DEFAULT_USE_PORT)
 extensionMessaging.init(methods)
 
 chrome.runtime.onMessage.addListener((event: any, sender: chrome.runtime.MessageSender, sendResponse: (result: any) => void) => {
@@ -115,7 +115,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       })
     } else {
       closeSidePanel()
-      extensionMessaging.broadcastMessageExact([tab.id!], [TAG_TARGET_INJECT], 'TOGGLE_DISPLAY').catch(console.error)
+      extensionMessaging.sendMessage(null, tab.id!, TAG_TARGET_INJECT, 'TOGGLE_DISPLAY').catch(console.error)
     }
   })
 })

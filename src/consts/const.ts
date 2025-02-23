@@ -1,3 +1,5 @@
+export const DEFAULT_USE_PORT = false
+
 export const EVENT_EXPAND = 'expand'
 
 export const APP_DOM_ID = 'bilibili-subtitle'

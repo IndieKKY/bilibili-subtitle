@@ -19,7 +19,7 @@ import {EventBusContext} from '../Router'
 import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../consts/const'
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
-import { useMessage } from './message'
+import { useMessage } from './useMessageService'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -43,7 +43,7 @@ const useSubtitleService = () => {
   const autoTranslate = useAppSelector(state => state.env.autoTranslate)
   const reviewed = useAppSelector(state => state.env.tempData.reviewed)
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
-  const {sendInject} = useMessage()
+  const {sendInject} = useMessage(!!envData.sidePanel)
 
   //如果reviewActions达到15次，则设置reviewed为false
   useEffect(() => {
@@ -78,7 +78,7 @@ const useSubtitleService = () => {
   // 获取
   useEffect(() => {
     if (curInfo && !curFetched) {
-      sendInject('GET_SUBTITLE', {info: curInfo}).then(data => {
+      sendInject(null, 'GET_SUBTITLE', {info: curInfo}).then(data => {
         data?.body?.forEach((item: TranscriptItem, idx: number) => {
           item.idx = idx
         })
@@ -93,12 +93,12 @@ const useSubtitleService = () => {
 
   useAsyncEffect(async () => {
     // 初始获取列表
-    sendInject('REFRESH_VIDEO_INFO', {force: true})
+    sendInject(null, 'REFRESH_VIDEO_INFO', {force: true})
   }, [])
 
   useAsyncEffect(async () => {
     // 更新设置信息
-    sendInject('GET_VIDEO_ELEMENT_INFO', {}).then(info => {
+    sendInject(null, 'GET_VIDEO_ELEMENT_INFO', {}).then(info => {
       dispatch(setNoVideo(info.noVideo))
       if (envData.sidePanel) {
         // get screen height
@@ -194,7 +194,7 @@ const useSubtitleService = () => {
 
   // 每0.5秒更新当前视频时间
   useInterval(() => {
-    sendInject('GET_VIDEO_STATUS', {}).then(status => {
+    sendInject(null, 'GET_VIDEO_STATUS', {}).then(status => {
       dispatch(setCurrentTime(status.currentTime))
     })
   }, 500)
@@ -202,15 +202,15 @@ const useSubtitleService = () => {
   // show translated text in the video
   useEffect(() => {
     if (hideOnDisableAutoTranslate && !autoTranslate) {
-      sendInject('HIDE_TRANS', {})
+      sendInject(null, 'HIDE_TRANS', {})
       return
     }
 
     const transResult = curIdx?transResults[curIdx]:undefined
     if (transResult?.code === '200' && transResult.data) {
-      sendInject('UPDATE_TRANS_RESULT', {result: transResult.data})
+      sendInject(null, 'UPDATE_TRANS_RESULT', {result: transResult.data})
     } else {
-      sendInject('HIDE_TRANS', {})
+      sendInject(null, 'HIDE_TRANS', {})
     }
   }, [autoTranslate, curIdx, hideOnDisableAutoTranslate, transResults])
 }

@@ -9,19 +9,19 @@ import useTranslateService from '../hooks/useTranslateService'
 import {setTheme} from '../utils/bizUtil'
 import useSearchService from '../hooks/useSearchService'
 import {setFold} from '../redux/envReducer'
-import { useMessage } from '@/hooks/message'
+import { useMessage } from '@/hooks/useMessageService'
 
 function App() {
   const dispatch = useAppDispatch()
   const fold = useAppSelector(state => state.env.fold)
+  const envData = useAppSelector(state => state.env.envData)
   const eventBus = useContext(EventBusContext)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
-  const {sendInject} = useMessage()
-  const envData = useAppSelector(state => state.env.envData)
+  const {sendInject} = useMessage(!!envData.sidePanel)
   
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
-    sendInject('FOLD', {fold: !fold})
+    sendInject(null, 'FOLD', {fold: !fold})
   }, [dispatch, fold, sendInject])
 
   // handle event

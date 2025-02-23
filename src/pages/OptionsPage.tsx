@@ -26,8 +26,8 @@ import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
 import {useEventChecked} from '@kky002/kky-hooks'
-import { useMessage } from '@/hooks/message'
 import { FaChevronDown, FaChevronUp, FaGripfire } from 'react-icons/fa'
+import { useMessage } from '@/hooks/useMessageService'
 
 const OptionCard = ({ title, children, defaultExpanded = true }: { title: React.ReactNode; children: React.ReactNode; defaultExpanded?: boolean }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -66,7 +66,7 @@ const FormItem = (props: {
 const OptionsPage = () => {
   const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
-  const {sendExtension} = useMessage()
+  const {sendExtension} = useMessage(false)
   const {value: sidePanelValue, onChange: setSidePanelValue} = useEventChecked(envData.sidePanel)
   const {value: autoInsertValue, onChange: setAutoInsertValue} = useEventChecked(!envData.manualInsert)
   const {value: autoExpandValue, onChange: setAutoExpandValue} = useEventChecked(envData.autoExpand)
@@ -148,7 +148,7 @@ const OptionsPage = () => {
       askEnabled: askEnabledValue,
     }))
     toast.success('保存成功')
-    sendExtension('CLOSE_SIDE_PANEL')
+    sendExtension(null, 'CLOSE_SIDE_PANEL')
     // 3秒后关闭
     setTimeout(() => {
       window.close()

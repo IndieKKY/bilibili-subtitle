@@ -15,7 +15,7 @@
   "dependencies": {
     "@crxjs/vite-plugin": "^1.0.14",
     "@kky002/kky-hooks": "^1.2.1",
-    "@kky002/kky-message": "^0.1.8",
+    "@kky002/kky-message": "^0.2.0",
     "@kky002/kky-ui": "^1.0.9",
     "@kky002/kky-util": "^1.13.13",
     "@logto/react": "1.0.0-beta.13",

@@ -8,7 +8,7 @@ import OptionsPage from './pages/OptionsPage'
 import {handleJson} from '@kky002/kky-util'
 import {useLocalStorage} from '@kky002/kky-hooks'
 import {Toaster} from 'react-hot-toast'
-import useMessagingService from './hooks/useMessageService'
+import useMessageService from './hooks/useMessageService'
 import MainPage from './pages/MainPage'
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
   useLocalStorage<TempData>('chrome_client', STORAGE_TEMP, savedTempData, onLoadTemp)
 
   // services
-  useMessagingService()
+  useMessageService()
 
   return <div>
     <Toaster position={path === 'app'?'bottom-center':'top-center'}/>

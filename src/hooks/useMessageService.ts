@@ -1,14 +1,14 @@
 import { setAuthor, setCtime, setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
-import { useAppDispatch } from './redux'
+import { useAppDispatch, useAppSelector } from './redux'
 import { AllAPPMessages, AllExtensionMessages, AllInjectMessages } from '@/message-typings'
-import { DEFAULT_USE_PORT } from '@/consts/const'
 import { useMessaging, useMessagingService } from '@kky002/kky-message'
 import { useMemoizedFn } from 'ahooks'
 
 const useMessageService = () => {
   const dispatch = useAppDispatch()
-  
-  //methods
+  const envData = useAppSelector((state) => state.env.envData)
+
+  // methods
   const methodsFunc: () => {
     [K in AllAPPMessages['method']]: (params: Extract<AllAPPMessages, { method: K }>['params'], context: MethodContext) => Promise<any>
   } = useMemoizedFn(() => ({
@@ -28,7 +28,7 @@ const useMessageService = () => {
     },
   }))
 
-  useMessagingService(DEFAULT_USE_PORT, methodsFunc)
+  useMessagingService(!!envData.sidePanel, methodsFunc)
 }
 
 export default useMessageService

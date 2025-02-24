@@ -1,8 +1,8 @@
-import { useAppSelector } from '@/hooks/redux';
-import React from 'react';
+import { useAppSelector } from '@/hooks/redux'
+import React from 'react'
 
 const DebateChat: React.FC<DebateProps> = ({ messages }) => {
-    const fontSize = useAppSelector(state => state.env.envData.fontSize)
+  const fontSize = useAppSelector(state => state.env.envData.fontSize)
 
   return (
     <div className="flex flex-col h-full">
@@ -37,7 +37,7 @@ const DebateChat: React.FC<DebateProps> = ({ messages }) => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DebateChat;
+export default DebateChat

@@ -18,7 +18,7 @@ function App() {
   const eventBus = useContext(EventBusContext)
   const totalHeight = useAppSelector(state => state.env.totalHeight)
   const {sendInject} = useMessage(!!envData.sidePanel)
-  
+
   const foldCallback = useCallback(() => {
     dispatch(setFold(!fold))
     sendInject(null, 'FOLD', {fold: !fold})

@@ -127,7 +127,7 @@ const Body = () => {
       }
       toast.success(`已添加${segments_.length}个总结任务!`)
     }
-  }, [addSummarizeTask, curSummaryType, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])
+  }, [addSummarizeTask, curSummaryType, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])
 
   const onFoldAll = useCallback(() => {
     dispatch(setFoldAll(!foldAll))

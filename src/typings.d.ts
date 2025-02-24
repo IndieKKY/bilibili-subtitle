@@ -7,7 +7,7 @@ interface MethodContext {
 
 interface EnvData {
   sidePanel?: boolean
-  manualInsert?: boolean //是否手动插入字幕列表
+  manualInsert?: boolean // 是否手动插入字幕列表
   autoExpand?: boolean
   flagDot?: boolean
 
@@ -154,10 +154,10 @@ type SummaryStatus = 'init' | 'pending' | 'done'
 type SummaryType = 'overview' | 'keypoint' | 'brief' | 'question' | 'debate'
 
 interface DebateMessage {
-  side: 'pro' | 'con';
-  content: string;
+  side: 'pro' | 'con'
+  content: string
 }
 
 interface DebateProps {
-  messages: DebateMessage[];
+  messages: DebateMessage[]
 }

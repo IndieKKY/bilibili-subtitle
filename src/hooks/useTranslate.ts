@@ -139,10 +139,10 @@ const useTranslate = () => {
         dispatch(addTaskId(task.id))
       }
     }
-  }, [data?.body, envData, language.name, title, dispatch])
+  }, [data?.body, envData, language.name, title, dispatch, sendExtension])
 
   const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
-    //review action
+    // review action
     if (reviewed === undefined && !reviewAction) {
       dispatch(setReviewAction(true))
       dispatch(setTempData({
@@ -208,7 +208,7 @@ const useTranslate = () => {
       const task = await sendExtension(null, 'ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData, summarizeLanguage.name, title])
+  }, [dispatch, envData, reviewAction, reviewActions, reviewed, sendExtension, summarizeLanguage.name, title])
 
   const addAskTask = useCallback(async (id: string, segment: Segment, question: string) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
@@ -265,7 +265,7 @@ const useTranslate = () => {
       const task = await sendExtension(null, 'ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData, summarizeLanguage.name, title])
+  }, [dispatch, envData, sendExtension, summarizeLanguage.name, title])
 
   const handleTranslate = useMemoizedFn((task: Task, content: string) => {
     let map: {[key: string]: string} = {}
@@ -355,7 +355,7 @@ const useTranslate = () => {
     } else {
       dispatch(delTaskId(taskId))
     }
-  }, [dispatch, envData.aiType, handleAsk, handleSummarize, handleTranslate])
+  }, [dispatch, envData.aiType, handleAsk, handleSummarize, handleTranslate, sendExtension])
 
   return {getFetch, getTask, addTask, addSummarizeTask, addAskTask}
 }

@@ -15,8 +15,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       '@kky002/kky-message':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.1.8
+        version: 0.1.8
       '@kky002/kky-ui':
         specifier: ^1.0.9
         version: 1.0.9
@@ -397,8 +397,8 @@ packages:
   '@kky002/kky-hooks@1.2.1':
     resolution: {integrity: sha512-AJM2gm75TtkZqOPd/WX0+4h/dfjSb8HlDQLwAJsYIHRNw8MQUKu32Ih6OxhKL2l9pdPsuj+S9/lBc4Cwu4tP+Q==}
 
-  '@kky002/kky-message@0.0.7':
-    resolution: {integrity: sha512-0qyamYhR+TT79TMbTL4frKTdOZZIObdvbDbmIT1Wu2GafxsIg249FxnW65ERqPNCZ+w5eNCK121EB11+txNFHQ==}
+  '@kky002/kky-message@0.1.8':
+    resolution: {integrity: sha512-NgGrM7pxxlENPAOTnN+2POAJ7YTRLppC5s++Jkox7sh7f1P+imz+HpeFXjqQmgW1NivHJTHt3ZUVXvRMJ3mELw==}
 
   '@kky002/kky-ui@1.0.9':
     resolution: {integrity: sha512-pepfRcLfC1eIQ1lsSJLWNr4PgdLqFLuvQMlitJy7W668yZ7qu8yAHSjg8A20R7HB4mFkJ+B96WETalOar1e/kA==}
@@ -2846,7 +2846,7 @@ snapshots:
       lodash-es: 4.17.21
       react: 18.2.0
 
-  '@kky002/kky-message@0.0.7':
+  '@kky002/kky-message@0.1.8':
     dependencies:
       '@kky002/kky-util': 1.13.13
       ahooks: 3.8.4(react@18.2.0)

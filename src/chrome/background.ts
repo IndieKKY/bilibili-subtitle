@@ -34,6 +34,9 @@ const methods: {
   CLOSE_SIDE_PANEL: async (params, context) => {
     closeSidePanel()
   },
+  GET_TAB_ID: async (params, context) => {
+    return context.tabId
+  },
   ADD_TASK: async (params, context) => {
     // 新建任务
     const task: Task = {
@@ -89,14 +92,12 @@ chrome.runtime.onMessage.addListener((event: any, sender: chrome.runtime.Message
     return true
   } else if (event.type === 'syncSet') { // sync.set
     chrome.storage.sync.set(event.items).catch(console.error)
-    return
   } else if (event.type === 'syncRemove') { // sync.remove
     chrome.storage.sync.remove(event.keys).catch(console.error)
-    return
   }
 })
 
-//点击扩展图标
+// 点击扩展图标
 chrome.action.onClicked.addListener(async (tab) => {
   chrome.storage.sync.get(STORAGE_ENV, (envDatas) => {
     const envDataStr = envDatas[STORAGE_ENV]
@@ -115,7 +116,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       })
     } else {
       closeSidePanel()
-      extensionMessaging.sendMessage(null, tab.id!, TAG_TARGET_INJECT, 'TOGGLE_DISPLAY').catch(console.error)
+      extensionMessaging.sendMessage(false, tab.id!, TAG_TARGET_INJECT, 'TOGGLE_DISPLAY').catch(console.error)
     }
   })
 })

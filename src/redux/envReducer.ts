@@ -50,7 +50,7 @@ interface EnvState {
   searchText: string
   searchResult: Record<string, boolean>
 
-  //当前视频是否计算过操作
+  // 当前视频是否计算过操作
   reviewAction: boolean
 }
 

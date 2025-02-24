@@ -4,3 +4,4 @@ node_modules/
 postcss.config.cjs
 vite.config.ts
 vite-env.d.ts
+manifest.config.ts

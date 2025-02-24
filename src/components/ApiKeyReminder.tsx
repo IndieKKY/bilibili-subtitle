@@ -1,14 +1,14 @@
-import React from 'react';
-import { useAppSelector } from '../hooks/redux';
-import { openOptionsPage } from '../utils/chromeUtils';
+import React from 'react'
+import { useAppSelector } from '../hooks/redux'
+import { openOptionsPage } from '../utils/chromeUtils'
 
 const ApiKeyReminder: React.FC = () => {
-  const apiKey = useAppSelector(state => state.env.envData.apiKey);
-  const geminiApiKey = useAppSelector(state => state.env.envData.geminiApiKey);
-  const aiType = useAppSelector(state => state.env.envData.aiType);
+  const apiKey = useAppSelector(state => state.env.envData.apiKey)
+  const geminiApiKey = useAppSelector(state => state.env.envData.geminiApiKey)
+  const aiType = useAppSelector(state => state.env.envData.aiType)
 
   if ((aiType === 'gemini' && geminiApiKey) || (aiType !== 'gemini' && apiKey)) {
-    return null;
+    return null
   }
 
   return (
@@ -21,7 +21,7 @@ const ApiKeyReminder: React.FC = () => {
         设置 →
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ApiKeyReminder;
+export default ApiKeyReminder

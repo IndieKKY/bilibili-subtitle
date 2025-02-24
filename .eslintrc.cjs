@@ -25,9 +25,12 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/strict-boolean-expressions": "warn",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/object-curly-spacing": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/space-infix-ops": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "operator-linebreak": "off",
     "@typescript-eslint/space-before-function-paren": "off",
     "@typescript-eslint/comma-dangle": "off"

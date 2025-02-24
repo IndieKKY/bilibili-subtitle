@@ -13,7 +13,7 @@ const debug = (...args: any[]) => {
     return
   }
 
-  //读取envData
+  // 读取envData
   const envDataStr = (await chrome.storage.sync.get(STORAGE_ENV))[STORAGE_ENV]
   let sidePanel: boolean | null = null
   let manualInsert: boolean | null = null
@@ -94,7 +94,7 @@ const debug = (...args: any[]) => {
         iframe.dataset[vKey] = danmukuBox?.dataset[vKey]
       }
 
-      //insert before first child
+      // insert before first child
       danmukuBox?.insertBefore(iframe, danmukuBox?.firstChild)
 
       // show badge
@@ -114,7 +114,7 @@ const debug = (...args: any[]) => {
       if (danmukuBox) {
         clearInterval(timerIframe)
 
-        //延迟插入iframe（插入太快，网络较差时容易出现b站网页刷新，原因暂时未知，可能b站的某种机制？）
+        // 延迟插入iframe（插入太快，网络较差时容易出现b站网页刷新，原因暂时未知，可能b站的某种机制？）
         setTimeout(createIframe, 1500)
       }
     }, 1000)
@@ -140,6 +140,7 @@ const debug = (...args: any[]) => {
     // fix: https://github.com/IndieKKY/bilibili-subtitle/issues/5
     // 处理稍后再看的url( https://www.bilibili.com/list/watchlater?bvid=xxx&oid=xxx )
     const pathSearchs: Record<string, string> = {}
+    // eslint-disable-next-line no-return-assign
     location.search.slice(1).replace(/([^=&]*)=([^=&]*)/g, (matchs, a, b, c) => pathSearchs[a] = b)
 
     // bvid
@@ -158,21 +159,21 @@ const debug = (...args: any[]) => {
 
       lastAidOrBvid = aidOrBvid
       if (aidOrBvid) {
-        //aid,pages
-        let cid
+        // aid,pages
+        let cid: string | undefined
         let subtitles
-        if (aidOrBvid.toLowerCase().startsWith('av')) {//avxxx
+        if (aidOrBvid.toLowerCase().startsWith('av')) { // avxxx
           aid = parseInt(aidOrBvid.slice(2))
-          pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, { credentials: 'include' }).then(res => res.json()).then(res => res.data)
+          pages = await fetch(`https://api.bilibili.com/x/player/pagelist?aid=${aid}`, { credentials: 'include' }).then(async res => await res.json()).then(res => res.data)
           cid = pages[0].cid
           ctime = pages[0].ctime
           author = pages[0].owner?.name
           title = pages[0].part
-          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
+          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid!}`, { credentials: 'include' }).then(async res => await res.json()).then(res => {
             subtitles = res.data.subtitle.subtitles
           })
-        } else {//bvxxx
-          await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${aidOrBvid}`, { credentials: 'include' }).then(res => res.json()).then(async res => {
+        } else { // bvxxx
+          await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${aidOrBvid}`, { credentials: 'include' }).then(async res => await res.json()).then(async res => {
             title = res.data.title
             aid = res.data.aid
             cid = res.data.cid
@@ -180,12 +181,12 @@ const debug = (...args: any[]) => {
             author = res.data.owner?.name
             pages = res.data.pages
           })
-          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, { credentials: 'include' }).then(res => res.json()).then(res => {
+          await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid!}&cid=${cid!}`, { credentials: 'include' }).then(async res => await res.json()).then(res => {
             subtitles = res.data.subtitle.subtitles
           })
         }
 
-        //pagesMap
+        // pagesMap
         pagesMap = {}
         pages.forEach(page => {
           pagesMap[page.page + ''] = page
@@ -193,7 +194,7 @@ const debug = (...args: any[]) => {
 
         debug('refreshVideoInfo: ', aid, cid, pages, subtitles)
 
-        //send setVideoInfo
+        // send setVideoInfo
         runtime.injectMessaging.sendApp(!!sidePanel, 'SET_VIDEO_INFO', {
           url: location.origin + location.pathname,
           title,
@@ -219,7 +220,7 @@ const debug = (...args: any[]) => {
     const p = urlSearchParams.get('p') || 1
     const page = pagesMap[p]
     if (!page) return
-    const cid = page.cid
+    const cid: number | null = page.cid
 
     if (aid !== lastAid || cid !== lastCid) {
       debug('refreshSubtitles', aid, cid)
@@ -230,9 +231,9 @@ const debug = (...args: any[]) => {
         fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid}`, {
           credentials: 'include',
         })
-          .then(res => res.json())
+          .then(async res => await res.json())
           .then(res => {
-            //remove elements with empty subtitle_url
+            // remove elements with empty subtitle_url
             res.data.subtitle.subtitles = res.data.subtitle.subtitles.filter((item: any) => item.subtitle_url)
             if (res.data.subtitle.subtitles.length > 0) {
               runtime.injectMessaging.sendApp(!!sidePanel, 'SET_INFOS', {
@@ -283,7 +284,7 @@ const debug = (...args: any[]) => {
       if (url.startsWith('http://')) {
         url = url.replace('http://', 'https://')
       }
-      return await fetch(url).then(res => res.json())
+      return await fetch(url).then(async res => await res.json())
     },
     GET_VIDEO_STATUS: async (params) => {
       const video = getVideoElement()
@@ -336,7 +337,7 @@ const debug = (...args: any[]) => {
       runtime.showTrans = false
       runtime.curTrans = undefined
 
-      let text = document.getElementById('trans-result-text')
+      const text = document.getElementById('trans-result-text')
       if (text) {
         text.style.display = 'none'
       }
@@ -357,7 +358,7 @@ const debug = (...args: any[]) => {
       const playInfo = JSON.parse(html.match(/window.__playinfo__=(.+?)<\/script/)?.[1] ?? '{}')
       const audioUrl = playInfo.data.dash.audio[0].baseUrl
 
-      fetch(audioUrl).then(res => res.blob()).then(blob => {
+      fetch(audioUrl).then(async res => await res.blob()).then(blob => {
         const a = document.createElement('a')
         a.href = URL.createObjectURL(blob)
         a.download = `${title}.m4s`

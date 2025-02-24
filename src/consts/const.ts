@@ -188,7 +188,7 @@ Provide an example to illustrate the expected output:
 ]
 \`\`\`
 `,
-[PROMPT_TYPE_SUMMARIZE_DEBATE]: `You are a helpful assistant skilled at generating debates based on video subtitles.
+  [PROMPT_TYPE_SUMMARIZE_DEBATE]: `You are a helpful assistant skilled at generating debates based on video subtitles.
 
 ## Context
 

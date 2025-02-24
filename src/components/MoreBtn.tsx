@@ -11,12 +11,12 @@ import {Placement} from '@popperjs/core/lib/enums'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {setEnvData, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {DEFAULT_USE_PORT, EVENT_EXPAND} from '../consts/const'
+import {EVENT_EXPAND} from '../consts/const'
 import {formatSrtTime, formatTime, formatVttTime} from '../utils/util'
 import {downloadText, openUrl} from '@kky002/kky-util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import { useMessage } from '@/hooks/useMessageService'
 
 interface Props {
@@ -68,7 +68,7 @@ const MoreBtn = (props: Props) => {
   const segments = useAppSelector(state => state.env.segments)
   const url = useAppSelector(state => state.env.url)
   const title = useAppSelector(state => state.env.title)
-  const ctime = useAppSelector(state => state.env.ctime) //时间戳，单位s
+  const ctime = useAppSelector(state => state.env.ctime) // 时间戳，单位s
   const author = useAppSelector(state => state.env.author)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
 
@@ -81,7 +81,7 @@ const MoreBtn = (props: Props) => {
 
     let fileName = title
     let s, suffix
-    let time = ctime ? dayjs(ctime * 1000).format('YYYY-MM-DD HH:mm:ss') : '' // 2024-05-01 12:00:00
+    const time = ctime ? dayjs(ctime * 1000).format('YYYY-MM-DD HH:mm:ss') : '' // 2024-05-01 12:00:00
     if (!downloadType || downloadType === 'text') {
       s = `${title??'无标题'}\n${url??'无链接'}\n${author??'无作者'} ${time}\n\n`
       for (const item of data.body) {
@@ -162,11 +162,11 @@ const MoreBtn = (props: Props) => {
       }).catch(console.error)
     }
     setMoreVisible(false)
-  }, [curSummaryType, data, downloadType, segments, title, url])
+  }, [author, ctime, curSummaryType, data, downloadType, segments, title, url])
 
   const downloadAudioCallback = useCallback(() => {
     sendInject(null, 'DOWNLOAD_AUDIO', {})
-  }, [])
+  }, [sendInject])
 
   const selectCallback = useCallback((e: any) => {
     dispatch(setTempData({

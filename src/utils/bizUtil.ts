@@ -115,7 +115,7 @@ export const getSummaryStr = (summary: Summary) => {
     s += content.map(item => {
       return (item.side === 'pro'?'正方：':'反方：') + item.content + '\n'
     }).join('\n')
-  } 
+  }
   return s
 }
 

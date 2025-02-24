@@ -1,12 +1,12 @@
 import {ExtensionMessage, InjectMessage, AppMessage} from '@kky002/kky-message'
 
-//extension
+// extension
 interface ExtensionCloseSidePanelMessage extends ExtensionMessage {
-  method: 'CLOSE_SIDE_PANEL';
+  method: 'CLOSE_SIDE_PANEL'
 }
 
 interface ExtensionAddTaskMessage extends ExtensionMessage<{ taskDef: TaskDef }, Task> {
-  method: 'ADD_TASK';
+  method: 'ADD_TASK'
 }
 
 interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }, {
@@ -15,76 +15,73 @@ interface ExtensionGetTaskMessage extends ExtensionMessage<{ taskId: string }, {
 } | {
   code: 'not_found'
 }> {
-  method: 'GET_TASK';
+  method: 'GET_TASK'
 }
 
 interface ExtensionShowFlagMessage extends ExtensionMessage<{ show: boolean }> {
-  method: 'SHOW_FLAG';
+  method: 'SHOW_FLAG'
 }
 
-export type AllExtensionMessages = ExtensionCloseSidePanelMessage | ExtensionAddTaskMessage | ExtensionGetTaskMessage | ExtensionShowFlagMessage
+interface ExtensionGetTabIdMessage extends ExtensionMessage<{ show: boolean }> {
+  method: 'GET_TAB_ID'
+}
 
+export type AllExtensionMessages = ExtensionGetTabIdMessage | ExtensionCloseSidePanelMessage | ExtensionAddTaskMessage | ExtensionGetTaskMessage | ExtensionShowFlagMessage
 
-
-
-//inject
+// inject
 interface InjectToggleDisplayMessage extends InjectMessage<{}> {
-  method: 'TOGGLE_DISPLAY';
+  method: 'TOGGLE_DISPLAY'
 }
 
 interface InjectFoldMessage extends InjectMessage<{ fold: boolean }> {
-  method: 'FOLD';
+  method: 'FOLD'
 }
 
 interface InjectMoveMessage extends InjectMessage<{ time: number, togglePause: boolean }> {
-  method: 'MOVE';
+  method: 'MOVE'
 }
 
 interface InjectGetSubtitleMessage extends InjectMessage<{ info: any }> {
-  method: 'GET_SUBTITLE';
+  method: 'GET_SUBTITLE'
 }
 
 interface InjectGetVideoStatusMessage extends InjectMessage<{}> {
-  method: 'GET_VIDEO_STATUS';
+  method: 'GET_VIDEO_STATUS'
 }
 
 interface InjectGetVideoElementInfoMessage extends InjectMessage<{}> {
-  method: 'GET_VIDEO_ELEMENT_INFO';
+  method: 'GET_VIDEO_ELEMENT_INFO'
 }
 
 interface InjectRefreshVideoInfoMessage extends InjectMessage<{ force: boolean }> {
-  method: 'REFRESH_VIDEO_INFO';
+  method: 'REFRESH_VIDEO_INFO'
 }
 
 interface InjectUpdateTransResultMessage extends InjectMessage<{ result: string }> {
-  method: 'UPDATE_TRANS_RESULT';
+  method: 'UPDATE_TRANS_RESULT'
 }
 
 interface InjectHideTransMessage extends InjectMessage<{}> {
-  method: 'HIDE_TRANS';
+  method: 'HIDE_TRANS'
 }
 
 interface InjectPlayMessage extends InjectMessage<{ play: boolean }> {
-  method: 'PLAY';
+  method: 'PLAY'
 }
 
 interface InjectDownloadAudioMessage extends InjectMessage<{}> {
-  method: 'DOWNLOAD_AUDIO';
+  method: 'DOWNLOAD_AUDIO'
 }
 
 export type AllInjectMessages = InjectToggleDisplayMessage | InjectFoldMessage | InjectMoveMessage | InjectGetSubtitleMessage | InjectGetVideoStatusMessage | InjectGetVideoElementInfoMessage | InjectRefreshVideoInfoMessage | InjectUpdateTransResultMessage | InjectHideTransMessage | InjectPlayMessage | InjectDownloadAudioMessage
 
-
-
-
-//app
+// app
 interface AppSetInfosMessage extends AppMessage<{ infos: any }> {
-  method: 'SET_INFOS';
+  method: 'SET_INFOS'
 }
 
 interface AppSetVideoInfoMessage extends AppMessage<{ url: string, title: string, aid: number | null, ctime: number | null, author?: string, pages: any, infos: any }> {
-  method: 'SET_VIDEO_INFO';
+  method: 'SET_VIDEO_INFO'
 }
 
 export type AllAPPMessages = AppSetInfosMessage | AppSetVideoInfoMessage
-

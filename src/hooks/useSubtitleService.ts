@@ -45,7 +45,7 @@ const useSubtitleService = () => {
   const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
   const {sendInject} = useMessage(!!envData.sidePanel)
 
-  //如果reviewActions达到15次，则设置reviewed为false
+  // 如果reviewActions达到15次，则设置reviewed为false
   useEffect(() => {
     if (reviewed === undefined && reviewActions && reviewActions >= 15) {
       dispatch(setTempData({
@@ -74,7 +74,7 @@ const useSubtitleService = () => {
       dispatch(setCurInfo(infos[0]))
       dispatch(setCurFetched(false))
     }
-  }, [curInfo, dispatch, envData.autoExpand, envReady, fold, infos])
+  }, [curInfo, dispatch, envData.autoExpand, envReady, fold, infos, envData.sidePanel])
   // 获取
   useEffect(() => {
     if (curInfo && !curFetched) {
@@ -86,15 +86,17 @@ const useSubtitleService = () => {
         dispatch(setCurFetched(true))
         dispatch(setData(data))
 
-        console.log('subtitle', data)
+        console.debug('subtitle', data)
       })
     }
-  }, [curFetched, curInfo])
+  }, [curFetched, curInfo, dispatch, sendInject])
 
   useAsyncEffect(async () => {
     // 初始获取列表
-    sendInject(null, 'REFRESH_VIDEO_INFO', {force: true})
-  }, [])
+    if (envReady) {
+      sendInject(null, 'REFRESH_VIDEO_INFO', {force: true})
+    }
+  }, [envReady, sendInject])
 
   useAsyncEffect(async () => {
     // 更新设置信息
@@ -103,11 +105,11 @@ const useSubtitleService = () => {
       if (envData.sidePanel) {
         // get screen height
         dispatch(setTotalHeight(window.innerHeight))
-      }else {
+      } else {
         dispatch(setTotalHeight(Math.min(Math.max(info.totalHeight, TOTAL_HEIGHT_MIN), TOTAL_HEIGHT_MAX)))
       }
     })
-  }, [envData.sidePanel, infos])
+  }, [envData.sidePanel, infos, sendInject])
 
   // 更新当前位置
   useEffect(() => {
@@ -212,7 +214,7 @@ const useSubtitleService = () => {
     } else {
       sendInject(null, 'HIDE_TRANS', {})
     }
-  }, [autoTranslate, curIdx, hideOnDisableAutoTranslate, transResults])
+  }, [autoTranslate, curIdx, hideOnDisableAutoTranslate, sendInject, transResults])
 }
 
 export default useSubtitleService

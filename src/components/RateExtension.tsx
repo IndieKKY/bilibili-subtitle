@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { FaStar } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io';
-import { setTempData } from '../redux/envReducer';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { openUrl } from '@kky002/kky-util';
-import { isEdgeBrowser } from '../utils/util';
+import React, { useState } from 'react'
+import { FaStar } from 'react-icons/fa'
+import { IoMdClose } from 'react-icons/io'
+import { setTempData } from '../redux/envReducer'
+import { useAppDispatch, useAppSelector } from '../hooks/redux'
+import { openUrl } from '@kky002/kky-util'
+import { isEdgeBrowser } from '../utils/util'
 
 const RateExtension: React.FC = () => {
   const dispatch = useAppDispatch()
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
   const reviewed = useAppSelector(state => state.env.tempData.reviewed)
 
   const handleRateClick = () => {
@@ -21,9 +21,9 @@ const RateExtension: React.FC = () => {
     } else {
       openUrl('https://chromewebstore.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp/reviews')
     }
-  };
+  }
 
-  if (reviewed === true || reviewed === undefined) return null;
+  if (reviewed === true || reviewed === undefined) return null
 
   return (
     <div className="relative bg-gradient-to-r from-primary to-secondary text-primary-content p-4 rounded-lg shadow-lg text-sm transition-all duration-300 ease-in-out hover:shadow-xl">
@@ -52,7 +52,7 @@ const RateExtension: React.FC = () => {
         </span>
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default RateExtension;
+export default RateExtension

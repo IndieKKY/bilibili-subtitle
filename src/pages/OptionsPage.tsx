@@ -29,8 +29,8 @@ import {useEventChecked} from '@kky002/kky-hooks'
 import { FaChevronDown, FaChevronUp, FaGripfire } from 'react-icons/fa'
 import { useMessage } from '@/hooks/useMessageService'
 
-const OptionCard = ({ title, children, defaultExpanded = true }: { title: React.ReactNode; children: React.ReactNode; defaultExpanded?: boolean }) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+const OptionCard = ({ title, children, defaultExpanded = true }: { title: React.ReactNode, children: React.ReactNode, defaultExpanded?: boolean }) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
   return (
     <div className="card bg-base-200 shadow-xl mb-4">
@@ -42,8 +42,8 @@ const OptionCard = ({ title, children, defaultExpanded = true }: { title: React.
         {isExpanded && <div className="mt-4">{children}</div>}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const FormItem = (props: {
   title: ShowElement

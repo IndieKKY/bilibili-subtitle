@@ -3,7 +3,11 @@ module.exports = {
   darkMode: 'class',
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        xs: '13px',
+      },
+    },
   },
   plugins: [
     require('tailwind-scrollbar-hide'),

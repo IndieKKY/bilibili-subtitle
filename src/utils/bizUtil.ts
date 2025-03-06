@@ -119,16 +119,6 @@ export const getSummaryStr = (summary: Summary) => {
   return s
 }
 
-export const getServerUrl = (serverUrl?: string) => {
-  if (!serverUrl) {
-    return 'https://api.openai.com'
-  }
-  if (serverUrl.endsWith('/')) {
-    serverUrl = serverUrl.slice(0, -1)
-  }
-  return serverUrl
-}
-
 export const getModel = (envData: EnvData) => {
   if (envData.model === 'custom') {
     return envData.customModel

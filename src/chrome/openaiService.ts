@@ -7,13 +7,17 @@ const getServerUrl = (serverUrl?: string) => {
   if (serverUrl.endsWith('/')) {
     serverUrl = serverUrl.slice(0, -1)
   }
+  //如果serverUrl不以/vxxx结尾，则添加/v1
+  if (!/\/v\d+$/.test(serverUrl.toLowerCase())) {
+    serverUrl += '/v1'
+  }
   return serverUrl
 }
 
 export const handleChatCompleteTask = async (task: Task) => {
   const data = task.def.data
   const serverUrl = getServerUrl(task.def.serverUrl)
-  const resp = await fetch(`${serverUrl}/v1/chat/completions`, {
+  const resp = await fetch(`${serverUrl}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

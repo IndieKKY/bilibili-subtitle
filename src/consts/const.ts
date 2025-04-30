@@ -84,7 +84,7 @@ video subtitles:
 {{subtitles}}
 \`\`\``,
   [PROMPT_TYPE_SUMMARIZE_OVERVIEW]: `You are a helpful assistant that summarize key points of video subtitle.
-Summarize 3 to 8 brief key points in language '{{language}}'.
+Summarize key points in language '{{language}}'.
 Answer in markdown json format.
 The emoji should be related to the key point and 1 char length.
 
@@ -112,7 +112,7 @@ The video's subtitles:
 {{subtitles}}
 '''`,
   [PROMPT_TYPE_SUMMARIZE_KEYPOINT]: `You are a helpful assistant that summarize key points of video subtitle.
-Summarize brief key points in language '{{language}}'.
+Summarize key points in language '{{language}}'.
 Answer in markdown json format.
 
 example output format:

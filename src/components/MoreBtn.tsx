@@ -156,6 +156,9 @@ const MoreBtn = (props: Props) => {
     }
     if (download) {
       downloadText(s, fileName+'.'+suffix)
+
+      console.log("downloaded ", fileName);
+
     } else {
       navigator.clipboard.writeText(s).then(() => {
         toast.success('复制成功')

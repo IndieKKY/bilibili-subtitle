@@ -35,7 +35,11 @@ export const handleChatCompleteTask = async (task: Task) => {
 
 export const handleGeminiChatCompleteTask = async (task: Task) => {
   const data = task.def.data
+
+  console.log("sending data to gemini ", data);
+
   const resp = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent', {
+  // const resp = await fetch('https://vector090.../mock/gemini/resp.json', { // fuyc test
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -43,5 +47,8 @@ export const handleGeminiChatCompleteTask = async (task: Task) => {
     },
     body: JSON.stringify(data),
   })
+
   task.resp = await resp.json()
+
+  console.log("got gemini resp ", resp);
 }

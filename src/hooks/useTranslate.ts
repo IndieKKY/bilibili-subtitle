@@ -30,6 +30,9 @@ import {useMemoizedFn} from 'ahooks/es'
 import {extractJsonArray, extractJsonObject, getModel} from '../utils/bizUtil'
 import {formatTime} from '../utils/util'
 import { useMessage } from './useMessageService'
+
+import {downloadText} from '@kky002/kky-util'
+
 const useTranslate = () => {
   const dispatch = useAppDispatch()
   const data = useAppSelector(state => state.env.data)
@@ -316,6 +319,28 @@ const useTranslate = () => {
     dispatch(setSummaryStatus({segmentStartIdx: task.def.extra.startIdx, type: summaryType, status: 'done'}))
     dispatch(setSummaryError({segmentStartIdx: task.def.extra.startIdx, type: summaryType, error: task.error}))
     console.debug('setSummary', task.def.extra.startIdx, summaryType, obj, task.error)
+
+
+
+    // fuyc
+    chrome.storage.sync.get(['aid', 'cid'], function (items) {
+      console.log('video id got', items);
+      if(null==content){
+        content="";
+      }
+      downloadText(content, "summarize_" + task.def?.extra?.summaryType + "_" + items.aid + "_" + items.cid + ".json");
+
+      // no need. file is enough
+    //   var laserExtensionId = "elknmbnpkohjjeidgfjooboekgicmjom";
+    //   console.log("send msg to extension", laserExtensionId);
+    //   chrome.runtime.sendMessage(laserExtensionId, { summaryType: task.def?.extra?.summaryType, content: content },
+    //     function (response) {
+    //       console.log(response);
+    //     }
+    //   );
+
+    });
+
   })
 
   const handleAsk = useMemoizedFn((task: Task, content?: string) => {
@@ -348,7 +373,7 @@ const useTranslate = () => {
           handleTranslate(task, content)
         } else if (taskType === 'summarize') { // 总结
           handleSummarize(task, content)
-        } else if (taskType === 'ask') { // 总结
+        } else if (taskType === 'ask') { // 
           handleAsk(task, content)
         }
       }

@@ -16,6 +16,7 @@ export default () => {
           index: 'index.html',
         },
       },
+      minify: false, // fuyc. set this during dev
     },
     resolve: {
       alias: {

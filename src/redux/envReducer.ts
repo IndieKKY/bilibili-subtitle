@@ -156,6 +156,7 @@ export const slice = createSlice({
         }
       }
     },
+
     setSummaryContent: (state, action: PayloadAction<{
       segmentStartIdx: number
       type: SummaryType
@@ -164,6 +165,9 @@ export const slice = createSlice({
       const segment = find(state.segments, {startIdx: action.payload.segmentStartIdx})
       if (segment != null) {
         let summary = segment.summaries[action.payload.type]
+
+        console.log("setSummaryContent", summary, action);
+
         if (!summary) {
           summary = {
             type: action.payload.type,
@@ -176,6 +180,7 @@ export const slice = createSlice({
         }
       }
     },
+
     setSummaryStatus: (state, action: PayloadAction<{
       segmentStartIdx: number
       type: SummaryType

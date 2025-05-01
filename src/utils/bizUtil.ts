@@ -89,6 +89,9 @@ export const isSummaryEmpty = (summary: Summary) => {
 }
 
 export const getSummaryStr = (summary: Summary) => {
+
+  console.log("getSummaryStr", summary);
+
   let s = ''
   if (summary.type === 'overview') {
     const content: OverviewItem[] = summary.content ?? []

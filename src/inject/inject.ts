@@ -186,6 +186,11 @@ const debug = (...args: any[]) => {
           })
         }
 
+        console.log("get subtitle url for aid", aid, "cid", cid, "author", author, "title", title); // fuyc
+        chrome.storage.sync.set({ 'aid': aid, 'cid': cid }, function () {
+          console.log('video id saved');
+        });
+
         // pagesMap
         pagesMap = {}
         pages.forEach(page => {

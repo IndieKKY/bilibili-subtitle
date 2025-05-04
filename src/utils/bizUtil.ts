@@ -195,12 +195,56 @@ export const getSummarize = (title: string | undefined, segments: Segment[] | un
 }
 
 /**
- * @param time '03:10'
+ * 将 MM:SS 或 HH:MM:SS 格式的时间字符串转换为总秒数。
+ * @param time '03:10' 或 '01:03:10' 格式的时间字符串
+ * @returns number 总秒数，如果格式无效则返回 0 或 NaN (根据下面选择)。
+ *                 建议添加更严格的错误处理，例如抛出错误。
  */
 export const parseStrTimeToSeconds = (time: string): number => {
-  const parts = time.split(':')
-  return parseInt(parts[0]) * 60 + parseInt(parts[1])
-}
+  // 1. 基本输入验证 (可选但推荐)
+  if (!time || typeof time !== 'string') {
+    console.warn(`Invalid input type for time: ${typeof time}`);
+    return 0; // 或者 return NaN;
+  }
+
+  const parts = time.split(':');
+  const partCount = parts.length;
+
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
+
+  try {
+    if (partCount === 2) {
+      // 格式: MM:SS
+      minutes = parseInt(parts[0]);
+      seconds = parseInt(parts[1]);
+    } else if (partCount === 3) {
+      // 格式: HH:MM:SS
+      hours = parseInt(parts[0]);
+      minutes = parseInt(parts[1]);
+      seconds = parseInt(parts[2]);
+    } else {
+      // 格式无效
+      console.warn(`Invalid time format: "${time}". Expected MM:SS or HH:MM:SS.`);
+      return 0; // 或者 return NaN;
+    }
+
+    // 2. 验证解析出的部分是否为有效数字
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+        console.warn(`Invalid numeric values in time string: "${time}"`);
+        return 0; // 或者 return NaN;
+    }
+
+    // 3. 计算总秒数
+    return hours * 3600 + minutes * 60 + seconds;
+
+  } catch (error) {
+    // 捕获潜在的错误 (虽然在此逻辑中不太可能，但以防万一)
+    console.error(`Error parsing time string: "${time}"`, error);
+    return 0; // 或者 return NaN;
+  }
+};
 
 /**
  * @param time '00:04:11,599' or '00:04:11.599' or '04:11,599' or '04:11.599'

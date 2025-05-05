@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import {
   ASK_ENABLED_DEFAULT,
   CUSTOM_MODEL_TOKENS,
+  DEFAULT_SERVER_URL_GEMINI,
   DEFAULT_SERVER_URL_OPENAI,
   GEMINI_TOKENS,
   LANGUAGE_DEFAULT,
@@ -255,11 +256,17 @@ const OptionsPage = () => {
         </FormItem>}
         {(!aiTypeValue || aiTypeValue === 'openai') && <div>
           <div className='desc text-sm text-center'>
-            <div className='flex justify-center font-semibold'>【官方地址】</div>
+            <div className='flex justify-center font-semibold'>【OpenAI官方地址】</div>
             <div>官方网址：<a className='link link-primary' href='https://platform.openai.com/' target='_blank'
                              rel="noreferrer">点击访问</a></div>
             <div>服务器地址：<a className='link link-primary'
                                onClick={() => setServerUrlValue(DEFAULT_SERVER_URL_OPENAI)}
+                               rel='noreferrer'>点击设置</a></div>
+            <div className='flex justify-center font-semibold'>【Gemini官方地址】</div>
+            <div>官方网址：<a className='link link-primary' href='https://aistudio.google.com/apikey' target='_blank'
+                             rel="noreferrer">点击访问</a></div>
+            <div>服务器地址：<a className='link link-primary'
+                               onClick={() => setServerUrlValue(DEFAULT_SERVER_URL_GEMINI)}
                                rel='noreferrer'>点击设置</a></div>
             <div className='flex justify-center font-semibold'>【第三方国内代理】</div>
             <div>代理网址：<a className='link link-primary' href='https://api.kksj.org/register?aff=ucVc'

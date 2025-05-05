@@ -7,6 +7,10 @@ const getServerUrl = (serverUrl?: string) => {
   if (serverUrl.endsWith('/')) {
     serverUrl = serverUrl.slice(0, -1)
   }
+  //如果serverUrl以https://generativelanguage.googleapis.com开头，则直接返回
+  if (serverUrl.toLowerCase().startsWith('https://generativelanguage.googleapis.com')) {
+    return serverUrl
+  }
   //如果serverUrl不以/vxxx结尾，则添加/v1
   if (!/\/v\d+$/.test(serverUrl.toLowerCase())) {
     serverUrl += '/v1'

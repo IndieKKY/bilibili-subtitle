@@ -268,6 +268,7 @@ export const SUMMARIZE_LANGUAGE_DEFAULT = 'cn'
 export const SUMMARIZE_ALL_THRESHOLD = 5
 export const ASK_ENABLED_DEFAULT = true
 export const DEFAULT_SERVER_URL_OPENAI = 'https://api.openai.com'
+export const DEFAULT_SERVER_URL_GEMINI = 'https://generativelanguage.googleapis.com/v1beta/openai/'
 export const CUSTOM_MODEL_TOKENS = 16385
 
 export const MODEL_TIP = '推荐gpt-4o-mini，能力强，价格低，token上限大'

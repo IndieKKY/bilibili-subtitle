@@ -6,7 +6,6 @@ import {
   CUSTOM_MODEL_TOKENS,
   DEFAULT_SERVER_URL_GEMINI,
   DEFAULT_SERVER_URL_OPENAI,
-  GEMINI_TOKENS,
   LANGUAGE_DEFAULT,
   LANGUAGES,
   MODEL_DEFAULT,
@@ -80,7 +79,6 @@ const OptionsPage = () => {
   const {value: summarizeFloatValue, onChange: setSummarizeFloatValue} = useEventChecked(envData.summarizeFloat)
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
   const [serverUrlValue, setServerUrlValue] = useState(envData.serverUrl)
-  const [geminiApiKeyValue, { onChange: onChangeGeminiApiKeyValue }] = useEventTarget({initialValue: envData.geminiApiKey??''})
   const [languageValue, { onChange: onChangeLanguageValue }] = useEventTarget({initialValue: envData.language??LANGUAGE_DEFAULT})
   const [modelValue, { onChange: onChangeModelValue }] = useEventTarget({initialValue: envData.model??MODEL_DEFAULT})
   const [customModelValue, { onChange: onChangeCustomModelValue }] = useEventTarget({initialValue: envData.customModel})
@@ -89,7 +87,6 @@ const OptionsPage = () => {
   const [hideOnDisableAutoTranslateValue, setHideOnDisableAutoTranslateValue] = useState(envData.hideOnDisableAutoTranslate)
   const [themeValue, setThemeValue] = useState(envData.theme)
   const [fontSizeValue, setFontSizeValue] = useState(envData.fontSize)
-  const [aiTypeValue, setAiTypeValue] = useState(envData.aiType)
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
   const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
@@ -110,11 +107,8 @@ const OptionsPage = () => {
     return list
   }, [])
   const apiKeySetted = useMemo(() => {
-    if (aiTypeValue === 'gemini') {
-      return !!geminiApiKeyValue
-    }
     return !!apiKeyValue
-  }, [aiTypeValue, apiKeyValue, geminiApiKeyValue])
+  }, [apiKeyValue])
 
   const onChangeHideOnDisableAutoTranslate = useCallback((e: any) => {
     setHideOnDisableAutoTranslateValue(e.target.checked)
@@ -125,13 +119,11 @@ const OptionsPage = () => {
       sidePanel: sidePanelValue,
       manualInsert: !autoInsertValue,
       autoExpand: autoExpandValue,
-      aiType: aiTypeValue,
       apiKey: apiKeyValue,
       serverUrl: serverUrlValue,
       model: modelValue,
       customModel: customModelValue,
       customModelTokens: customModelTokensValue,
-      geminiApiKey: geminiApiKeyValue,
       translateEnable: translateEnableValue,
       language: languageValue,
       hideOnDisableAutoTranslate: hideOnDisableAutoTranslateValue,
@@ -154,7 +146,7 @@ const OptionsPage = () => {
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, aiTypeValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, geminiApiKeyValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
 
   const onCancel = useCallback(() => {
     window.close()
@@ -200,14 +192,6 @@ const OptionsPage = () => {
     setFontSizeValue('large')
   }, [])
 
-  const onSelOpenai = useCallback(() => {
-    setAiTypeValue('openai')
-  }, [])
-
-  const onSelGemini = useCallback(() => {
-    setAiTypeValue('gemini')
-  }, [])
-
   return (
     <div className='container mx-auto max-w-3xl p-4'>
       <OptionCard title="通用配置">
@@ -236,25 +220,19 @@ const OptionsPage = () => {
             <button onClick={onSelFontSize2} className={classNames('btn btn-sm no-animation', fontSizeValue === 'large'?'btn-active':'')}>加大</button>
           </div>
         </FormItem>
-        <FormItem title='AI类型' tip='OPENAI质量更高'>
-          <div className="btn-group">
-            <button onClick={onSelOpenai} className={classNames('btn btn-sm', (!aiTypeValue || aiTypeValue === 'openai')?'btn-active':'')}>OpenAI</button>
-            <button onClick={onSelGemini} className={classNames('btn btn-sm', aiTypeValue === 'gemini'?'btn-active':'')}>Gemini</button>
-          </div>
-        </FormItem>
       </OptionCard>
 
       <OptionCard title="AI 配置">
-        {(!aiTypeValue || aiTypeValue === 'openai') && <FormItem title='ApiKey' htmlFor='apiKey'>
+        {<FormItem title='ApiKey' htmlFor='apiKey'>
           <input id='apiKey' type='text' className='input input-sm input-bordered w-full' placeholder='sk-xxx'
                  value={apiKeyValue} onChange={onChangeApiKeyValue}/>
         </FormItem>}
-        {(!aiTypeValue || aiTypeValue === 'openai') && <FormItem title='服务器' htmlFor='serverUrl'>
+        {<FormItem title='服务器' htmlFor='serverUrl'>
           <input id='serverUrl' type='text' className='input input-sm input-bordered w-full'
                  placeholder={DEFAULT_SERVER_URL_OPENAI} value={serverUrlValue}
                  onChange={e => setServerUrlValue(e.target.value)}/>
         </FormItem>}
-        {(!aiTypeValue || aiTypeValue === 'openai') && <div>
+        {<div>
           <div className='desc text-sm text-center'>
             <div className='flex justify-center font-semibold'>【OpenAI官方地址】</div>
             <div>官方网址：<a className='link link-primary' href='https://platform.openai.com/' target='_blank'
@@ -279,13 +257,13 @@ const OptionsPage = () => {
             <div className='text-amber-600 flex justify-center items-center'><FaGripfire/>国内可访问，无需🪜<FaGripfire/></div>
           </div>
         </div>}
-        {(!aiTypeValue || aiTypeValue === 'openai') && <FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>
+        {<FormItem title='模型选择' htmlFor='modelSel' tip='注意，不同模型有不同价格与token限制'>
           <select id='modelSel' className="select select-sm select-bordered" value={modelValue}
                   onChange={onChangeModelValue}>
             {MODELS.map(model => <option key={model.code} value={model.code}>{model.name}</option>)}
           </select>
         </FormItem>}
-        {(!aiTypeValue || aiTypeValue === 'openai') && <div className='desc text-sm'>
+        {<div className='desc text-sm'>
           {MODEL_TIP}
         </div>}
         {modelValue === 'custom' && <FormItem title='模型名' htmlFor='customModel'>
@@ -298,20 +276,6 @@ const OptionsPage = () => {
                  value={customModelTokensValue}
                  onChange={e => setCustomModelTokensValue(e.target.value ? parseInt(e.target.value) : undefined)}/>
         </FormItem>}
-        {aiTypeValue === 'gemini' && <FormItem title='ApiKey' htmlFor='geminiApiKey'>
-          <input id='geminiApiKey' type='text' className='input input-sm input-bordered w-full' placeholder='xxx'
-                 value={geminiApiKeyValue} onChange={onChangeGeminiApiKeyValue}/>
-        </FormItem>}
-        {aiTypeValue === 'gemini' && <div>
-          <div className='desc text-sm'>
-            <div>官方网址：<a className='link link-primary' href='https://makersuite.google.com/app/apikey'
-                             target='_blank'
-                             rel="noreferrer">Google AI Studio</a> (目前免费)
-            </div>
-            <div className='text-sm text-error flex items-center'><IoWarning className='text-sm text-warning'/>谷歌模型安全要求比较高，有些视频可能无法生成总结!
-            </div>
-          </div>
-        </div>}
       </OptionCard>
 
       <OptionCard title={<div className='flex items-center'>
@@ -379,7 +343,7 @@ const OptionsPage = () => {
           </div>
         </FormItem>
         <div className='desc text-sm'>
-          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{aiTypeValue === 'gemini'?GEMINI_TOKENS:(MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知')}</span>
+          当前选择的模型的分段字数上限是<span className='font-semibold font-mono'>{MODEL_MAP[modelValue??MODEL_DEFAULT]?.tokens??'未知'}</span>
           （太接近上限总结会报错）
         </div>
       </OptionCard>

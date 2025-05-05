@@ -105,7 +105,7 @@ const Body = () => {
   }, [dispatch])
 
   const onSummarizeAll = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
+    const apiKey = envData.apiKey
     if (!apiKey) {
       toast.error('请先在选项页面设置ApiKey!')
       return
@@ -127,7 +127,7 @@ const Body = () => {
       }
       toast.success(`已添加${segments_.length}个总结任务!`)
     }
-  }, [addSummarizeTask, curSummaryType, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])
+  }, [addSummarizeTask, curSummaryType, envData.apiKey, segments])
 
   const onFoldAll = useCallback(() => {
     dispatch(setFoldAll(!foldAll))
@@ -146,13 +146,13 @@ const Body = () => {
   }, [asks, dispatch, foldAll, segments])
 
   const toggleAutoTranslateCallback = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
+    const apiKey = envData.apiKey
     if (apiKey) {
       dispatch(setAutoTranslate(!autoTranslate))
     } else {
       toast.error('请先在选项页面设置ApiKey!')
     }
-  }, [autoTranslate, dispatch, envData.aiType, envData.apiKey, envData.geminiApiKey])
+  }, [autoTranslate, dispatch, envData.apiKey])
 
   const onEnableAutoScroll = useCallback(() => {
     dispatch(setAutoScroll(true))
@@ -185,7 +185,7 @@ const Body = () => {
 
   const onAsk = useCallback(() => {
     if ((envData.askEnabled ?? ASK_ENABLED_DEFAULT) && searchText) {
-      const apiKey = envData.aiType === 'gemini' ? envData.geminiApiKey : envData.apiKey
+      const apiKey = envData.apiKey
       if (apiKey) {
         if (segments != null && segments.length > 0) {
           const id = v4()
@@ -201,7 +201,7 @@ const Body = () => {
         toast.error('请先在选项页面设置ApiKey!')
       }
     }
-  }, [addAskTask, dispatch, envData.aiType, envData.apiKey, envData.askEnabled, envData.geminiApiKey, searchText, segments])
+  }, [addAskTask, dispatch, envData.apiKey, envData.askEnabled, searchText, segments])
 
   // service
   useKeyService()

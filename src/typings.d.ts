@@ -11,15 +11,12 @@ interface EnvData {
   autoExpand?: boolean
   flagDot?: boolean
 
-  aiType?: 'openai' | 'gemini'
   // openai
   apiKey?: string
   serverUrl?: string
   model?: string
   customModel?: string
   customModelTokens?: number
-  // gemini
-  geminiApiKey?: string
 
   translateEnable?: boolean
   language?: string
@@ -54,7 +51,7 @@ interface TempData {
 }
 
 interface TaskDef {
-  type: 'chatComplete' | 'geminiChatComplete'
+  type: 'chatComplete'
   serverUrl?: string
   data: any
   extra?: any

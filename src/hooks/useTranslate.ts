@@ -88,24 +88,9 @@ const useTranslate = () => {
         prompt = prompt.replaceAll('{{subtitles}}', lineStr)
 
         const taskDef: TaskDef = {
-          type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
+          type: 'chatComplete',
           serverUrl: envData.serverUrl,
-          data: envData.aiType === 'gemini'
-            ?{
-                contents: [
-                  {
-                    parts: [
-                      {
-                        text: prompt
-                      }
-                    ]
-                  }
-                ],
-                generationConfig: {
-                  maxOutputTokens: 2048
-                }
-              }
-            :{
+          data: {
                 model: getModel(envData),
                 messages: [
                   {
@@ -120,7 +105,6 @@ const useTranslate = () => {
           extra: {
             type: 'translate',
             apiKey: envData.apiKey,
-            geminiApiKey: envData.geminiApiKey,
             startIdx,
             size: lines.length,
           }
@@ -165,24 +149,9 @@ const useTranslate = () => {
       prompt = prompt.replaceAll('{{segment}}', segment.text)
 
       const taskDef: TaskDef = {
-        type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
+        type: 'chatComplete',
         serverUrl: envData.serverUrl,
-        data: envData.aiType === 'gemini'
-          ?{
-              contents: [
-                {
-                  parts: [
-                    {
-                      text: prompt
-                    }
-                  ]
-                }
-              ],
-              generationConfig: {
-                maxOutputTokens: 2048
-              }
-            }
-          :{
+        data: {
               model: getModel(envData),
               messages: [
                 {
@@ -199,7 +168,6 @@ const useTranslate = () => {
           summaryType: type,
           startIdx: segment.startIdx,
           apiKey: envData.apiKey,
-          geminiApiKey: envData.geminiApiKey,
         }
       }
       console.debug('addSummarizeTask', taskDef)
@@ -220,24 +188,9 @@ const useTranslate = () => {
       prompt = prompt.replaceAll('{{question}}', question)
 
       const taskDef: TaskDef = {
-        type: envData.aiType === 'gemini'?'geminiChatComplete':'chatComplete',
+        type: 'chatComplete',
         serverUrl: envData.serverUrl,
-        data: envData.aiType === 'gemini'
-          ?{
-              contents: [
-                {
-                  parts: [
-                    {
-                      text: prompt
-                    }
-                  ]
-                }
-              ],
-              generationConfig: {
-                maxOutputTokens: 2048
-              }
-            }
-          :{
+        data: {
               model: getModel(envData),
               messages: [
                 {
@@ -253,7 +206,6 @@ const useTranslate = () => {
           type: 'ask',
           // startIdx: segment.startIdx,
           apiKey: envData.apiKey,
-          geminiApiKey: envData.geminiApiKey,
           askId: id,
         }
       }
@@ -335,7 +287,7 @@ const useTranslate = () => {
       console.debug('getTask', taskResp.task)
       const task: Task = taskResp.task
       const taskType: string | undefined = task.def.extra?.type
-      const content = envData.aiType === 'gemini'?task.resp?.candidates[0]?.content?.parts[0]?.text?.trim():task.resp?.choices?.[0]?.message?.content?.trim()
+      const content = task.resp?.choices?.[0]?.message?.content?.trim()
       if (task.status === 'done') {
         // 异常提示
         if (task.error) {
@@ -355,7 +307,7 @@ const useTranslate = () => {
     } else {
       dispatch(delTaskId(taskId))
     }
-  }, [dispatch, envData.aiType, handleAsk, handleSummarize, handleTranslate, sendExtension])
+  }, [dispatch, handleAsk, handleSummarize, handleTranslate, sendExtension])
 
   return {getFetch, getTask, addTask, addSummarizeTask, addAskTask}
 }

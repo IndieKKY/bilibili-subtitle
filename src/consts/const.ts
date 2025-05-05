@@ -284,7 +284,6 @@ export const MODELS = [{
   code: 'custom',
   name: '自定义',
 }]
-export const GEMINI_TOKENS = 32768
 export const MODEL_DEFAULT = MODELS[0].code
 export const MODEL_MAP: {[key: string]: typeof MODELS[number]} = {}
 for (const model of MODELS) {

@@ -4,10 +4,8 @@ import { openOptionsPage } from '../utils/chromeUtils'
 
 const ApiKeyReminder: React.FC = () => {
   const apiKey = useAppSelector(state => state.env.envData.apiKey)
-  const geminiApiKey = useAppSelector(state => state.env.envData.geminiApiKey)
-  const aiType = useAppSelector(state => state.env.envData.aiType)
 
-  if ((aiType === 'gemini' && geminiApiKey) || (aiType !== 'gemini' && apiKey)) {
+  if (apiKey) {
     return null
   }
 

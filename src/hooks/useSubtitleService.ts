@@ -16,7 +16,7 @@ import {
   setTempData,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
-import {EVENT_EXPAND, GEMINI_TOKENS, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../consts/const'
+import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE} from '../consts/const'
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
 import { useMessage } from './useMessageService'
@@ -152,11 +152,7 @@ const useSubtitleService = () => {
       if (envData.summarizeEnable) { // 分段
         let size = envData.words
         if (!size) { // 默认
-          if (envData.aiType === 'gemini') {
-            size = GEMINI_TOKENS*WORDS_RATE
-          } else {
-            size = getModelMaxTokens(envData)*WORDS_RATE
-          }
+          size = getModelMaxTokens(envData)*WORDS_RATE
         }
         size = Math.max(size, WORDS_MIN)
 

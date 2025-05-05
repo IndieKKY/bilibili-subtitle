@@ -73,13 +73,13 @@ const Summarize = (props: {
   const {addSummarizeTask} = useTranslate()
 
   const onGenerate = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    const apiKey = envData.apiKey
     if (apiKey) {
       addSummarizeTask(curSummaryType, segment).catch(console.error)
     } else {
       toast.error('请先在选项页面设置ApiKey!')
     }
-  }, [addSummarizeTask, curSummaryType, envData.aiType, envData.apiKey, envData.geminiApiKey, segment])
+  }, [addSummarizeTask, curSummaryType, envData.apiKey, segment])
 
   const onCopy = useCallback(() => {
     if (summary != null) {

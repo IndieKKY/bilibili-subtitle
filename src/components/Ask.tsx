@@ -18,7 +18,7 @@ const Ask = (props: {
   const {addAskTask} = useTranslate()
 
   const onRegenerate = useCallback(() => {
-    const apiKey = envData.aiType === 'gemini'?envData.geminiApiKey:envData.apiKey
+    const apiKey = envData.apiKey
     if (apiKey) {
       if (segments != null && segments.length > 0) {
         addAskTask(ask.id, segments[0], ask.question).catch(console.error)
@@ -26,7 +26,7 @@ const Ask = (props: {
     } else {
       toast.error('请先在选项页面设置ApiKey!')
     }
-  }, [addAskTask, ask.id, ask.question, envData.aiType, envData.apiKey, envData.geminiApiKey, segments])
+  }, [addAskTask, ask.id, ask.question, envData.apiKey, segments])
 
   const onAskFold = useCallback(() => {
     dispatch(mergeAskInfo({

@@ -75,6 +75,9 @@ const MoreBtn = (props: Props) => {
   const {sendInject} = useMessage(!!envData.sidePanel)
 
   const downloadCallback = useCallback((download: boolean) => {
+
+    console.log("downloadCallback data", data);
+
     if (data == null) {
       return
     }

@@ -323,14 +323,34 @@ const useTranslate = () => {
 
 
     // fuyc
+    // download summary json file
     chrome.storage.sync.get(['aid', 'cid'], function (items) {
       console.log('video id got', items);
-      if(null==content){
-        content="";
+      if(null==content || ""==content){
+        console.log("no summary content");
+        // content="";
+        return;
       }
+
       downloadText(content, "summarize_" + task.def?.extra?.summaryType + "_" + items.aid + "_" + items.cid + ".json");
 
-      // no need. file is enough
+      // also copy to clipboard
+      // navigator.clipboard.writeText(content).catch(console.error)
+      // downloadCallback(false);
+      try {
+        let obj = JSON.parse(content)
+        let sum = "";
+        for(let i=0; i<obj.length; i++){
+          let ct = obj[i];
+          sum+=ct.emoji+" "+ct.time+" "+ct.key+"\n";
+        }
+        console.log("to copy to clipboard", sum);
+        navigator.clipboard.writeText(sum).catch(console.error)
+      } catch (e) {
+        console.log(e);
+      }
+
+      // message is no need. file is enough
     //   var laserExtensionId = "elknmbnpkohjjeidgfjooboekgicmjom";
     //   console.log("send msg to extension", laserExtensionId);
     //   chrome.runtime.sendMessage(laserExtensionId, { summaryType: task.def?.extra?.summaryType, content: content },

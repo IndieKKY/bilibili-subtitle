@@ -39,12 +39,13 @@ export const handleGeminiChatCompleteTask = async (task: Task) => {
   console.log("sending data to gemini ", data);
 
   const resp = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent', {
-  // const resp = await fetch('https://vector090.../mock/gemini/resp.json', { // fuyc test
+  // const resp = await fetch('https://ve.pp.ua:54/mock/gemini/resp.json', { // fuyc test data
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-goog-api-key': task.def.extra.geminiApiKey,
     },
+    // mode: 'no-cors', // fuyc. not work for real calling
     body: JSON.stringify(data),
   })
 

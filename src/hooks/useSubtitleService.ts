@@ -113,19 +113,22 @@ const useSubtitleService = () => {
 
   // 更新当前位置
   useEffect(() => {
-    let curIdx
+    let newCurIdx
     if (((data?.body) != null) && currentTime) {
       for (let i=0; i<data.body.length; i++) {
         const item = data.body[i]
         if (item.from && currentTime < item.from) {
           break
         } else {
-          curIdx = i
+          newCurIdx = i
         }
       }
     }
-    dispatch(setCurIdx(curIdx))
-  }, [currentTime, data?.body, dispatch])
+    // 只有当索引发生变化时才更新状态
+    if (newCurIdx !== curIdx) {
+      dispatch(setCurIdx(newCurIdx))
+    }
+  }, [currentTime, data?.body, dispatch, curIdx])
 
   // 需要滚动 => segment自动展开
   useEffect(() => {
@@ -193,7 +196,10 @@ const useSubtitleService = () => {
   // 每0.5秒更新当前视频时间
   useInterval(() => {
     sendInject(null, 'GET_VIDEO_STATUS', {}).then(status => {
-      dispatch(setCurrentTime(status.currentTime))
+      // 只有当时间发生显著变化时才更新状态（差异大于0.1秒），避免不必要的重新渲染
+      if (currentTime == null || Math.abs(status.currentTime - currentTime) > 0.1) {
+        dispatch(setCurrentTime(status.currentTime))
+      }
     })
   }, 500)
 

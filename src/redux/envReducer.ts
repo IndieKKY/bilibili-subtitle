@@ -23,7 +23,6 @@ interface EnvState {
   totalHeight: number
   curIdx?: number // 从0开始
   needScroll?: boolean
-  currentTime?: number
   infos?: any[]
   curInfo?: any
   curFetched?: boolean
@@ -263,9 +262,6 @@ export const slice = createSlice({
     setNeedScroll: (state, action: PayloadAction<boolean>) => {
       state.needScroll = action.payload
     },
-    setCurrentTime: (state, action: PayloadAction<number | undefined>) => {
-      state.currentTime = action.payload
-    },
     setUrl: (state, action: PayloadAction<string | undefined>) => {
       state.url = action.payload
     },
@@ -337,7 +333,6 @@ export const {
   setCurIdx,
   setEnvData,
   setEnvReady,
-  setCurrentTime,
   setInfos,
   setCurInfo,
   setCurFetched,

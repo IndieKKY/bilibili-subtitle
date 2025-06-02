@@ -4,15 +4,11 @@ import {
   setCurFetched,
   setCurIdx,
   setCurInfo,
-  setCurrentTime,
   setData,
-  setInfos,
   setNoVideo,
   setSegmentFold,
   setSegments,
-  setTitle,
   setTotalHeight,
-  setUrl,
   setTempData,
 } from '../redux/envReducer'
 import {EventBusContext} from '../Router'
@@ -20,6 +16,8 @@ import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE}
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
 import { useMessage } from './useMessageService'
+import { setCurrentTime } from '../redux/currentTimeReducer'
+import { RootState } from '../store'
 
 /**
  * Service是单例，类似后端的服务概念
@@ -31,10 +29,10 @@ const useSubtitleService = () => {
   const curFetched = useAppSelector(state => state.env.curFetched)
   const fold = useAppSelector(state => state.env.fold)
   const envReady = useAppSelector(state => state.env.envReady)
-  const envData = useAppSelector(state => state.env.envData)
-  const data = useAppSelector(state => state.env.data)
-  const currentTime = useAppSelector(state => state.env.currentTime)
-  const curIdx = useAppSelector(state => state.env.curIdx)
+  const envData = useAppSelector((state: RootState) => state.env.envData)
+  const data = useAppSelector((state: RootState) => state.env.data)
+  const currentTime = useAppSelector((state: RootState) => state.currentTime.currentTime)
+  const curIdx = useAppSelector((state: RootState) => state.env.curIdx)
   const eventBus = useContext(EventBusContext)
   const needScroll = useAppSelector(state => state.env.needScroll)
   const segments = useAppSelector(state => state.env.segments)

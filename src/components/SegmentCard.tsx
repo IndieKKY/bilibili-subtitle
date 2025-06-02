@@ -13,6 +13,7 @@ import SegmentItem from './SegmentItem'
 import {stopPopFunc} from '../utils/util'
 import useSubtitle from '../hooks/useSubtitle'
 import DebateChat from './DebateChat'
+import { RootState } from '../store'
 
 const SummarizeItemOverview = (props: {
   segment: Segment
@@ -25,7 +26,7 @@ const SummarizeItemOverview = (props: {
 
   const {move} = useSubtitle()
   const time = parseStrTimeToSeconds(overviewItem.time)
-  const currentTime = useAppSelector(state => state.env.currentTime)
+  const currentTime = useAppSelector((state: RootState) => state.currentTime.currentTime)
   const isIn = useMemo(() => {
     if (currentTime != null) {
       // check in current segment

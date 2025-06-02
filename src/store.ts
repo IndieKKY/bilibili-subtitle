@@ -1,9 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit'
 import envReducer from './redux/envReducer'
+import currentTimeReducer from './redux/currentTimeReducer'
 
 const store = configureStore({
   reducer: {
     env: envReducer,
+    currentTime: currentTimeReducer,
   },
 })
 

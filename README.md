@@ -19,8 +19,9 @@
 
 ## 下载扩展
 
-- [chrome商店](https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp)
-- [edge商店](https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan)
+- [Chrome商店](https://chrome.google.com/webstore/detail/bciglihaegkdhoogebcdblfhppoilclp)
+- [Edge商店](https://microsoftedge.microsoft.com/addons/detail/lignnlhlpiefmcjkdkmfjdckhlaiajan)
+- [Firefox商店](https://addons.mozilla.org/zh-CN/firefox/addon/bilibili-subtitle/)
 
 ## 使用说明
 

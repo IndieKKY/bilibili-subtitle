@@ -23,6 +23,7 @@ interface EnvState {
   totalHeight: number
   curIdx?: number // 从0开始
   needScroll?: boolean
+  chapters?: Chapter[]
   infos?: any[]
   curInfo?: any
   curFetched?: boolean
@@ -274,6 +275,9 @@ export const slice = createSlice({
     setAuthor: (state, action: PayloadAction<string | undefined>) => {
       state.author = action.payload
     },
+    setChapters: (state, action: PayloadAction<Chapter[]>) => {
+      state.chapters = action.payload
+    },
     setInfos: (state, action: PayloadAction<any[]>) => {
       state.infos = action.payload
     },
@@ -346,6 +350,7 @@ export const {
   mergeAskInfo,
   setCtime,
   setAuthor,
+  setChapters,
 } = slice.actions
 
 export default slice.reducer

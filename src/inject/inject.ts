@@ -161,6 +161,21 @@ const debug = (...args: any[]) => {
       if (aidOrBvid) {
         // aid,pages
         let cid: string | undefined
+        /**
+         * [
+    {
+        "type": 2,
+        "from": 0,
+        "to": 152, //单位秒
+        "content": "发现美",
+        "imgUrl": "http://i0.hdslb.com/bfs/vchapter/29168372111_0.jpg",
+        "logoUrl": "",
+        "team_type": "",
+        "team_name": ""
+    }
+]
+         */
+        let chapters: any[] = []
         let subtitles
         if (aidOrBvid.toLowerCase().startsWith('av')) { // avxxx
           aid = parseInt(aidOrBvid.slice(2))
@@ -170,6 +185,7 @@ const debug = (...args: any[]) => {
           author = pages[0].owner?.name
           title = pages[0].part
           await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid}&cid=${cid!}`, { credentials: 'include' }).then(async res => await res.json()).then(res => {
+            chapters = res.data.view_points ?? []
             subtitles = res.data.subtitle.subtitles
           })
         } else { // bvxxx
@@ -182,9 +198,13 @@ const debug = (...args: any[]) => {
             pages = res.data.pages
           })
           await fetch(`https://api.bilibili.com/x/player/wbi/v2?aid=${aid!}&cid=${cid!}`, { credentials: 'include' }).then(async res => await res.json()).then(res => {
+            chapters = res.data.view_points ?? []
             subtitles = res.data.subtitle.subtitles
           })
         }
+
+        //筛选chapters里type为2的
+        chapters = chapters.filter(chapter => chapter.type === 2)
 
         // pagesMap
         pagesMap = {}
@@ -202,6 +222,7 @@ const debug = (...args: any[]) => {
           ctime,
           author,
           pages,
+          chapters,
           infos: subtitles,
         })
       }

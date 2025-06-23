@@ -80,7 +80,7 @@ interface AppSetInfosMessage extends AppMessage<{ infos: any }> {
   method: 'SET_INFOS'
 }
 
-interface AppSetVideoInfoMessage extends AppMessage<{ url: string, title: string, aid: number | null, ctime: number | null, author?: string, pages: any, infos: any }> {
+interface AppSetVideoInfoMessage extends AppMessage<{ url: string, title: string, aid: number | null, ctime: number | null, author?: string, pages: any, chapters: any, infos: any }> {
   method: 'SET_VIDEO_INFO'
 }
 

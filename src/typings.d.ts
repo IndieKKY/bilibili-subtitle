@@ -88,6 +88,12 @@ interface TranscriptItem {
   idx: number
 }
 
+interface Chapter {
+  from: number
+  to: number
+  content: string // 标题
+}
+
 interface Segment {
   items: TranscriptItem[]
   startIdx: number // 从1开始

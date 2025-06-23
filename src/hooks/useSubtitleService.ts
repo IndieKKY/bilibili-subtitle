@@ -31,6 +31,7 @@ const useSubtitleService = () => {
   const envReady = useAppSelector(state => state.env.envReady)
   const envData = useAppSelector((state: RootState) => state.env.envData)
   const data = useAppSelector((state: RootState) => state.env.data)
+  const chapters = useAppSelector((state: RootState) => state.env.chapters)
   const currentTime = useAppSelector((state: RootState) => state.currentTime.currentTime)
   const curIdx = useAppSelector((state: RootState) => state.env.curIdx)
   const eventBus = useContext(EventBusContext)
@@ -158,24 +159,78 @@ const useSubtitleService = () => {
         size = Math.max(size, WORDS_MIN)
 
         segments = []
-        let transcriptItems: TranscriptItem[] = []
-        let totalLength = 0
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i]
-          transcriptItems.push(item)
-          totalLength += item.content.length
-          if (totalLength >= size || i === items.length-1) { // new segment or last
-            // add
-            segments.push({
-              items: transcriptItems,
-              startIdx: transcriptItems[0].idx,
-              endIdx: transcriptItems[transcriptItems.length - 1].idx,
-              text: getWholeText(transcriptItems.map(item => item.content)),
-              summaries: {},
+
+        // 如果有章节信息，按章节分割
+        if (chapters && chapters.length > 0) {
+          for (let chapterIdx = 0; chapterIdx < chapters.length; chapterIdx++) {
+            const chapter = chapters[chapterIdx]
+            const nextChapter = chapters[chapterIdx + 1]
+            
+            // 找到属于当前章节的字幕项
+            const chapterItems = items.filter(item => {
+              const itemTime = item.from
+              return itemTime >= chapter.from && (nextChapter ? itemTime < nextChapter.from : true)
             })
-            // reset
-            transcriptItems = []
-            totalLength = 0
+
+            if (chapterItems.length === 0) continue
+
+            // 如果章节内容过长，需要进一步分割
+            const chapterText = getWholeText(chapterItems.map(item => item.content))
+            if (chapterText.length <= size) {
+              // 章节内容不长，作为一个segment
+              segments.push({
+                items: chapterItems,
+                startIdx: chapterItems[0].idx,
+                endIdx: chapterItems[chapterItems.length - 1].idx,
+                text: chapterText,
+                chapterTitle: chapter.content,
+                summaries: {},
+              })
+            } else {
+              // 章节内容过长，需要分割成多个segment
+              let transcriptItems: TranscriptItem[] = []
+              let totalLength = 0
+              for (let i = 0; i < chapterItems.length; i++) {
+                const item = chapterItems[i]
+                transcriptItems.push(item)
+                totalLength += item.content.length
+                if (totalLength >= size || i === chapterItems.length - 1) {
+                  segments.push({
+                    items: transcriptItems,
+                    startIdx: transcriptItems[0].idx,
+                    endIdx: transcriptItems[transcriptItems.length - 1].idx,
+                    text: getWholeText(transcriptItems.map(item => item.content)),
+                    chapterTitle: chapter.content,
+                    summaries: {},
+                  })
+                  // reset
+                  transcriptItems = []
+                  totalLength = 0
+                }
+              }
+            }
+          }
+        } else {
+          // 没有章节信息，按原来的逻辑分割
+          let transcriptItems: TranscriptItem[] = []
+          let totalLength = 0
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i]
+            transcriptItems.push(item)
+            totalLength += item.content.length
+            if (totalLength >= size || i === items.length-1) { // new segment or last
+              // add
+              segments.push({
+                items: transcriptItems,
+                startIdx: transcriptItems[0].idx,
+                endIdx: transcriptItems[transcriptItems.length - 1].idx,
+                text: getWholeText(transcriptItems.map(item => item.content)),
+                summaries: {},
+              })
+              // reset
+              transcriptItems = []
+              totalLength = 0
+            }
           }
         }
       } else { // 都放一个分段
@@ -189,7 +244,7 @@ const useSubtitleService = () => {
       }
     }
     dispatch(setSegments(segments))
-  }, [data?.body, dispatch, envData])
+  }, [data?.body, dispatch, envData, chapters])
 
   // 每0.5秒更新当前视频时间
   useInterval(() => {

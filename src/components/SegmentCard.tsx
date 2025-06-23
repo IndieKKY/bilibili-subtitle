@@ -1,6 +1,6 @@
 import {MutableRefObject, useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setFloatKeyPointsSegIdx, setSegmentFold, setTempData} from '../redux/envReducer'
+import {setFloatKeyPointsSegIdx, setNeedScroll, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
 import {FaClipboardList, FaComments} from 'react-icons/fa'
 import {SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../consts/const'
@@ -159,6 +159,7 @@ const SegmentCard = (props: {
     }
     return undefined
   }, [curSummaryType, segment.summaries])
+  const {move} = useSubtitle()
 
   const onFold = useCallback(() => {
     dispatch(setSegmentFold({
@@ -166,6 +167,21 @@ const SegmentCard = (props: {
       fold: !segment.fold
     }))
   }, [dispatch, segment.fold, segment.startIdx])
+
+  const onChapterClick = useCallback(() => {
+    if (segment.items && segment.items.length > 0) {
+      // 展开当前segment
+      if (segment.fold) {
+        dispatch(setSegmentFold({
+          segmentStartIdx: segment.startIdx,
+          fold: false
+        }))
+      }
+      
+      const firstItem = segment.items[0]
+      move(firstItem.from, false)
+    }
+  }, [dispatch, move, segment.fold, segment.items, segment.startIdx])
 
   // 检测设置floatKeyPointsSegIdx
   useEffect(() => {
@@ -212,6 +228,10 @@ const SegmentCard = (props: {
 
   return <div
     className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1', showCurrent && 'shadow shadow-md')}>
+    {/* 章节标题 */}
+    {segment.chapterTitle && <div className='text-center py-1 px-2 bg-primary/10 rounded text-sm font-semibold text-primary border-b border-primary/20 cursor-pointer hover:bg-primary/20 transition-colors' onClick={onChapterClick}>
+      {segment.chapterTitle}
+    </div>}
     <div className='relative flex justify-center min-h-[20px]'>
       {segments != null && segments.length > 0 &&
         <div className='absolute left-0 top-0 bottom-0 text-xs select-none flex-center desc'>

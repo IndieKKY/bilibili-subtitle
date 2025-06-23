@@ -100,6 +100,7 @@ interface Segment {
   endIdx: number
   text: string
   fold?: boolean
+  chapterTitle?: string // 章节标题
   summaries: {
     [type: string]: Summary
   }

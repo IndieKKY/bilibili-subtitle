@@ -77,6 +77,7 @@ const OptionsPage = () => {
   const {value: askEnabledValue, onChange: setAskEnabledValue} = useEventChecked(envData.askEnabled??ASK_ENABLED_DEFAULT)
   const {value: cnSearchEnabledValue, onChange: setCnSearchEnabledValue} = useEventChecked(envData.cnSearchEnabled)
   const {value: summarizeFloatValue, onChange: setSummarizeFloatValue} = useEventChecked(envData.summarizeFloat)
+  const {value: chapterModeValue, onChange: setChapterModeValue} = useEventChecked(envData.chapterMode ?? true)
   const [apiKeyValue, { onChange: onChangeApiKeyValue }] = useEventTarget({initialValue: envData.apiKey??''})
   const [serverUrlValue, setServerUrlValue] = useState(envData.serverUrl)
   const [languageValue, { onChange: onChangeLanguageValue }] = useEventTarget({initialValue: envData.language??LANGUAGE_DEFAULT})
@@ -139,6 +140,7 @@ const OptionsPage = () => {
       searchEnabled: searchEnabledValue,
       cnSearchEnabled: cnSearchEnabledValue,
       askEnabled: askEnabledValue,
+      chapterMode: chapterModeValue,
     }))
     toast.success('保存成功')
     sendExtension(null, 'CLOSE_SIDE_PANEL')
@@ -146,7 +148,7 @@ const OptionsPage = () => {
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue])
+  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue, chapterModeValue])
 
   const onCancel = useCallback(() => {
     window.close()
@@ -207,6 +209,10 @@ const OptionsPage = () => {
           <input id='autoExpand' type='checkbox' className='toggle toggle-primary' checked={autoExpandValue}
                  onChange={setAutoExpandValue}/>
         </FormItem>}
+        <FormItem title='章节模式' htmlFor='chapterMode' tip='如果视频包含章节，则会按章节分割(会导致总结只能按章节来)'>
+          <input id='chapterMode' type='checkbox' className='toggle toggle-primary' checked={chapterModeValue}
+                 onChange={setChapterModeValue}/>
+        </FormItem>
         <FormItem title='主题'>
           <div className="btn-group">
             <button onClick={onSelTheme1} className={classNames('btn btn-sm no-animation', (!themeValue || themeValue === 'system')?'btn-active':'')}>系统</button>

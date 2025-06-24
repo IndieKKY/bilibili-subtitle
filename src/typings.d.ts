@@ -30,6 +30,9 @@ interface EnvData {
   theme?: 'system' | 'light' | 'dark'
   fontSize?: 'normal' | 'large'
 
+  // chapter
+  chapterMode?: boolean // 是否启用章节模式，undefined/null/true表示启用，false表示禁用
+
   // search
   searchEnabled?: boolean
   cnSearchEnabled?: boolean

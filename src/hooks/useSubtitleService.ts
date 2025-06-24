@@ -160,8 +160,8 @@ const useSubtitleService = () => {
 
         segments = []
 
-        // 如果有章节信息，按章节分割
-        if (chapters && chapters.length > 0) {
+        // 如果启用章节模式且有章节信息，按章节分割
+        if ((envData.chapterMode ?? true) && chapters && chapters.length > 0) {
           for (let chapterIdx = 0; chapterIdx < chapters.length; chapterIdx++) {
             const chapter = chapters[chapterIdx]
             const nextChapter = chapters[chapterIdx + 1]

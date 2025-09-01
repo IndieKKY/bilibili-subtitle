@@ -91,17 +91,17 @@ const useTranslate = () => {
           type: 'chatComplete',
           serverUrl: envData.serverUrl,
           data: {
-                model: getModel(envData),
-                messages: [
-                  {
-                    role: 'user',
-                    content: prompt,
-                  }
-                ],
-                temperature: 0.25,
-                n: 1,
-                stream: false,
-              },
+            model: getModel(envData),
+            messages: [
+              {
+                role: 'user',
+                content: prompt,
+              }
+            ],
+            temperature: 0.25,
+            n: 1,
+            stream: false,
+          },
           extra: {
             type: 'translate',
             apiKey: envData.apiKey,
@@ -152,17 +152,17 @@ const useTranslate = () => {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
         data: {
-              model: getModel(envData),
-              messages: [
-                {
-                  role: 'user',
-                  content: prompt,
-                }
-              ],
-              temperature: 0.5,
-              n: 1,
-              stream: false,
-            },
+          model: getModel(envData),
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            }
+          ],
+          temperature: 0.5,
+          n: 1,
+          stream: false,
+        },
         extra: {
           type: 'summarize',
           summaryType: type,
@@ -191,17 +191,17 @@ const useTranslate = () => {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
         data: {
-              model: getModel(envData),
-              messages: [
-                {
-                  role: 'user',
-                  content: prompt,
-                }
-              ],
-              temperature: 0.5,
-              n: 1,
-              stream: false,
-            },
+          model: getModel(envData),
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            }
+          ],
+          temperature: 0.5,
+          n: 1,
+          stream: false,
+        },
         extra: {
           type: 'ask',
           // startIdx: segment.startIdx,
@@ -223,9 +223,18 @@ const useTranslate = () => {
     let map: {[key: string]: string} = {}
     try {
       content = extractJsonObject(content)
-      map = JSON.parse(content)
+      const parsed = JSON.parse(content)
+
+      // 类型守卫：验证解析结果是否为预期的对象格式
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        map = parsed
+      } else {
+        console.warn('Translation response is not a valid object format')
+        map = {}
+      }
     } catch (e) {
-      console.debug(e)
+      console.debug('Translation parsing failed:', e instanceof Error ? e.message : String(e))
+      map = {}
     }
     const {startIdx, size} = task.def.extra
     if (startIdx != null) {
@@ -256,8 +265,24 @@ const useTranslate = () => {
     let obj
     try {
       obj = JSON.parse(content)
+
+      // 类型守卫：验证总结结果格式
+      if (summaryType === 'brief') {
+        if (!obj || typeof obj !== 'object' || Array.isArray(obj) || !('summary' in obj)) {
+          console.warn('Brief summary response format invalid')
+          task.error = 'failed'
+          obj = null
+        }
+      } else {
+        if (!Array.isArray(obj)) {
+          console.warn('Summary response is not a valid array format')
+          task.error = 'failed'
+          obj = null
+        }
+      }
     } catch (e) {
       task.error = 'failed'
+      console.warn('Summarization parsing failed:', e instanceof Error ? e.message : String(e))
     }
 
     dispatch(setSummaryContent({

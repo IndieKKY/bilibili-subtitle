@@ -177,7 +177,7 @@ const SegmentCard = (props: {
           fold: false
         }))
       }
-      
+
       const firstItem = segment.items[0]
       move(firstItem.from, false)
     }

@@ -203,7 +203,7 @@ const debug = (...args: any[]) => {
           })
         }
 
-        //筛选chapters里type为2的
+        // 筛选chapters里type为2的
         chapters = chapters.filter(chapter => chapter.type === 2)
 
         // pagesMap

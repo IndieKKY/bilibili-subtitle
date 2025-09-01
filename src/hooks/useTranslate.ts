@@ -91,17 +91,17 @@ const useTranslate = () => {
           type: 'chatComplete',
           serverUrl: envData.serverUrl,
           data: {
-                model: getModel(envData),
-                messages: [
-                  {
-                    role: 'user',
-                    content: prompt,
-                  }
-                ],
-                temperature: 0.25,
-                n: 1,
-                stream: false,
-              },
+            model: getModel(envData),
+            messages: [
+              {
+                role: 'user',
+                content: prompt,
+              }
+            ],
+            temperature: 0.25,
+            n: 1,
+            stream: false,
+          },
           extra: {
             type: 'translate',
             apiKey: envData.apiKey,
@@ -152,17 +152,17 @@ const useTranslate = () => {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
         data: {
-              model: getModel(envData),
-              messages: [
-                {
-                  role: 'user',
-                  content: prompt,
-                }
-              ],
-              temperature: 0.5,
-              n: 1,
-              stream: false,
-            },
+          model: getModel(envData),
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            }
+          ],
+          temperature: 0.5,
+          n: 1,
+          stream: false,
+        },
         extra: {
           type: 'summarize',
           summaryType: type,
@@ -191,17 +191,17 @@ const useTranslate = () => {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
         data: {
-              model: getModel(envData),
-              messages: [
-                {
-                  role: 'user',
-                  content: prompt,
-                }
-              ],
-              temperature: 0.5,
-              n: 1,
-              stream: false,
-            },
+          model: getModel(envData),
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            }
+          ],
+          temperature: 0.5,
+          n: 1,
+          stream: false,
+        },
         extra: {
           type: 'ask',
           // startIdx: segment.startIdx,
@@ -225,7 +225,8 @@ const useTranslate = () => {
       content = extractJsonObject(content)
       map = JSON.parse(content)
     } catch (e) {
-      console.debug(e)
+      console.debug('Translation parsing failed:', e)
+      map = {}
     }
     const {startIdx, size} = task.def.extra
     if (startIdx != null) {
@@ -258,6 +259,7 @@ const useTranslate = () => {
       obj = JSON.parse(content)
     } catch (e) {
       task.error = 'failed'
+      console.warn('Summarization parsing failed:', e)
     }
 
     dispatch(setSummaryContent({

@@ -337,31 +337,6 @@ export const extractJsonObject = (content: string) => {
   return content
 }
 
-export const safeJsonParse = (content: string, fallback: any = null) => {
-  try {
-    // 尝试直接解析
-    return JSON.parse(content)
-  } catch (e) {
-    try {
-      // 尝试提取JSON对象后解析
-      const extracted = extractJsonObject(content)
-      return JSON.parse(extracted)
-    } catch (e2) {
-      try {
-        // 尝试清理内容后解析
-        const cleaned = content.trim()
-        if (cleaned.startsWith('{') && cleaned.endsWith('}')) {
-          return JSON.parse(cleaned)
-        }
-      } catch (e3) {
-        // 所有尝试都失败，返回fallback
-        console.warn('Failed to parse JSON after multiple attempts:', e3 instanceof Error ? e3.message : String(e3))
-        return fallback
-      }
-    }
-  }
-}
-
 export const extractJsonArray = (content: string) => {
   // get content between ``` and ```
   const start = content.indexOf('```')

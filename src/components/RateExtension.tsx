@@ -26,7 +26,7 @@ const RateExtension: React.FC = () => {
   if (reviewed === true || reviewed === undefined) return null
 
   return (
-    <div className="relative bg-gradient-to-r from-primary to-secondary text-primary-content p-4 rounded-lg shadow-lg text-sm transition-all duration-300 ease-in-out hover:shadow-xl">
+    <div className="relative bg-gradient-to-r from-primary to-secondary text-primary-content m-2 p-4 rounded-lg shadow-lg text-sm transition-all duration-300 ease-in-out hover:shadow-xl">
       <button
         onClick={() => {
           dispatch(setTempData({

@@ -66,7 +66,7 @@ const Body = () => {
   // const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const searchText = useAppSelector(state => state.env.searchText)
   const asks = useAppSelector(state => state.env.asks)
-  const {disconnected} = useMessaging(DEFAULT_USE_PORT)
+  const { disconnected } = useMessaging(DEFAULT_USE_PORT)
   // const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
@@ -265,8 +265,8 @@ const Body = () => {
     </div>}
 
     {disconnected && <div className='flex flex-col justify-center items-center gap-2 text-sm bg-red-400 rounded mx-2'>
-        <span className='flex items-center gap-1 text-white'><AiOutlineCloseCircle className='text-white' />已断开连接</span>
-      </div>}
+      <span className='flex items-center gap-1 text-white'><AiOutlineCloseCircle className='text-white' />已断开连接</span>
+    </div>}
 
     {/* auto scroll btn */}
     {!autoScroll && <div
@@ -300,124 +300,8 @@ const Body = () => {
 
       <ApiKeyReminder />
 
-      {/* <div className='flex flex-col items-center text-center pt-1 pb-2'> */}
-      {/*  <div className='font-semibold text-accent'>💡<span className='underline underline-offset-4'>提示</span>💡</div> */}
-      {/*  <div className='text-sm desc px-2'>可以尝试将<span className='text-amber-600 font-semibold'>概览</span>生成的内容粘贴到<span */}
-      {/*    className='text-secondary/75 font-semibold'>视频评论</span>里，发布后看看有什么效果🥳 */}
-      {/*  </div> */}
-      {/*  {(segments?.length ?? 0) > 0 && <button className='mt-1.5 btn btn-xs btn-info' */}
-      {/*                                          onClick={onCopy}>点击复制生成的{SUMMARIZE_TYPES[curSummaryType].name}<RiFileCopy2Line/> */}
-      {/*  </button>} */}
-      {/* </div> */}
-      <div className='flex flex-col'>
-         <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-          <div className='font-semibold text-accent flex items-center gap-1'><img src='/bibigpt.png'
-                                                                                  alt='BibiGPT logo'
-                                                                                  className='w-8 h-8'/>BibiGPT
-          </div>
-          <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>网页</span>版的字幕列表，支持<span
-            className='font-semibold'>任意</span>视频提取字幕总结（包括没有字幕的视频）
-          </div>
-          <div className='flex gap-2'>
-            <a title='BibiGPT' href='https://bibigpt.co/r/bilibili'
-               onClick={(e) => {
-                 e.preventDefault()
-                 openUrl('https://bibigpt.co/r/bilibili')
-               }} className='link text-sm text-accent'>✨ BibiGPT ✨</a>
-          </div>
-         </div>
-        <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'>
-          <div className='font-semibold text-accent flex items-center gap-1'><img src='/youtube-caption.png'
-            alt='youtube caption logo'
-            className='w-8 h-8' />YouTube Caption
-          </div>
-          <div className='text-sm px-2 desc'>这是<span className='text-amber-600 font-semibold text-base'>YouTube</span>版的字幕列表
-          </div>
-          <div className='flex gap-2'>
-            <a title='Chrome商店' href='https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
-              onClick={(e) => {
-                e.preventDefault()
-                openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-              }} className='link text-sm text-accent'>Chrome商店</a>
-            <a title='Edge商店'
-              href='https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc'
-              onClick={e => {
-                e.preventDefault()
-                openUrl('https://microsoftedge.microsoft.com/addons/detail/galeejdehabppfgooagmkclpppnbccpc')
-              }} className='link text-sm text-accent'>Edge商店</a>
-            <a title='Crx搜搜(国内可访问)'
-              href='https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf'
-              onClick={(e) => {
-                e.preventDefault()
-                openUrl('https://www.crxsoso.com/webstore/detail/fiaeclpicddpifeflpmlgmbjgaedladf')
-              }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a>
-          </div>
-        </div>
-        {/* <div className='flex flex-col items-center text-center py-2 mx-4 border-t border-t-base-300'> */}
-        {/*  <div className='font-semibold text-accent flex items-center gap-1'><img src='/my-article-summarizer.png' */}
-        {/*                                                                          alt='My Article Summarizer logo' */}
-        {/*                                                                          className='w-8 h-8'/>My Article Summarizer */}
-        {/*  </div> */}
-        {/*  <div className='text-sm px-2 desc'>网页文章总结（有每日免费额度，无需apikey）。</div> */}
-        {/*  <div className='flex gap-2'> */}
-        {/*    <a title='Chrome商店' href='https://chromewebstore.google.com/detail/my-article-summarizer/nanlpakfialleijdidafldapoifndngn' */}
-        {/*       onClick={(e) => { */}
-        {/*         e.preventDefault() */}
-        {/*         openUrl('https://chromewebstore.google.com/detail/my-article-summarizer/nanlpakfialleijdidafldapoifndngn') */}
-        {/*       }} className='link text-sm text-accent'>Chrome商店</a> */}
-        {/*    <a title='Crx搜搜(国内可访问)' */}
-        {/*       href='https://www.crxsoso.com/webstore/detail/nanlpakfialleijdidafldapoifndngn' */}
-        {/*       onClick={(e) => { */}
-        {/*         e.preventDefault() */}
-        {/*         openUrl('https://www.crxsoso.com/webstore/detail/nanlpakfialleijdidafldapoifndngn') */}
-        {/*       }} className='link text-sm text-accent'>Crx搜搜(国内可访问)</a> */}
-        {/*  </div> */}
-        {/* </div> */}
-      </div>
-      <div className='p-2'><RateExtension /></div>
+      <RateExtension />
     </div>
-    {/* recommend */}
-    {/* <div className='p-0.5' style={{ */}
-    {/*  height: `${RECOMMEND_HEIGHT}px` */}
-    {/* }}> */}
-    {/*  {recommendIdx === 0 && <div className='flex items-center gap-1.5 rounded shadow-sm bg-base-200/10'> */}
-    {/*    <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => { */}
-    {/*      e.preventDefault() */}
-    {/*      openUrl('https://bibigpt.co/r/bilibili') */}
-    {/*    }}><img src='/bibigpt.png' */}
-    {/*            alt='BibiGPT logo' */}
-    {/*            className='w-8 h-8'/>✨ BibiGPT ✨</a> */}
-    {/*    <span className='text-sm desc'>支持任意视频的网页版总结。</span> */}
-    {/*  </div>} */}
-    {/*  {recommendIdx === 1 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'> */}
-    {/*    <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => { */}
-    {/*      e.preventDefault() */}
-    {/*      openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf') */}
-    {/*    }}><img src='/youtube-caption.png' */}
-    {/*            alt='youtube caption logo' */}
-    {/*            className='w-8 h-8'/>YouTube Caption</a> */}
-    {/*    <span className='text-sm desc'>YouTube版的字幕列表。</span> */}
-    {/*  </div>} */}
-    {/*  {recommendIdx === 2 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'> */}
-    {/*    <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => { */}
-    {/*      e.preventDefault() */}
-    {/*      openUrl('https://chromewebstore.google.com/detail/nanlpakfialleijdidafldapoifndngn') */}
-    {/*    }}><img src='/my-article-summarizer.png' */}
-    {/*            alt='My Article Summarizer logo' */}
-    {/*            className='w-8 h-8'/>My Article Summarizer</a> */}
-    {/*    <span className='text-sm desc'>网页文章总结。</span> */}
-    {/*  </div>} */}
-    {/*  {recommendIdx === 3 && <div className='flex items-center gap-1 rounded shadow-sm bg-base-200/10'> */}
-    {/*    <a className='link link-accent link-hover font-semibold text-sm flex items-center' onClick={(e) => { */}
-    {/*      e.preventDefault() */}
-    {/*      openUrl('https://api.openai-up.com/register?aff=varM') */}
-    {/*    }}><img src='/openai-up.ico' */}
-    {/*            alt='Openai Up logo' */}
-    {/*            className='w-8 h-8'/>Openai代理</a> */}
-    {/*    <span className='text-sm desc flex items-center'>目前价格不到官方的6折<FaGripfire */}
-    {/*      className='text-amber-600'/></span> */}
-    {/*  </div>} */}
-    {/* </div> */}
   </div>
 }
 

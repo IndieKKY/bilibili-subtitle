@@ -3,7 +3,7 @@ import { FaStar } from 'react-icons/fa'
 import { IoMdClose } from 'react-icons/io'
 import { setTempData } from '../redux/envReducer'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { openUrl } from '@kky002/kky-util'
+import { openUrl } from '../utils/env_util'
 import { isEdgeBrowser } from '../utils/util'
 
 const RateExtension: React.FC = () => {

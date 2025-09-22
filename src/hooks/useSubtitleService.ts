@@ -165,7 +165,7 @@ const useSubtitleService = () => {
           for (let chapterIdx = 0; chapterIdx < chapters.length; chapterIdx++) {
             const chapter = chapters[chapterIdx]
             const nextChapter = chapters[chapterIdx + 1]
-            
+
             // 找到属于当前章节的字幕项
             const chapterItems = items.filter(item => {
               const itemTime = item.from

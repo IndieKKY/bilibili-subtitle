@@ -20,4 +20,4 @@ export const slice = createSlice({
 
 export const { setCurrentTime } = slice.actions
 
-export default slice.reducer 
+export default slice.reducer

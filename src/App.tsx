@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import 'tippy.js/dist/tippy.css'
 import {useAppDispatch, useAppSelector} from './hooks/redux'
 import {setEnvData, setEnvReady, setTempData, setTempReady} from './redux/envReducer'
 import {cloneDeep} from 'lodash-es'
 import {STORAGE_ENV, STORAGE_TEMP} from './consts/const'
 import OptionsPage from './pages/OptionsPage'
-import {handleJson} from '@kky002/kky-util'
-import {useLocalStorage} from '@kky002/kky-hooks'
+import {handleJson} from './utils/util'
 import {Toaster} from 'react-hot-toast'
 import useMessageService from './hooks/useMessageService'
 import MainPage from './pages/MainPage'
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
   const dispatch = useAppDispatch()

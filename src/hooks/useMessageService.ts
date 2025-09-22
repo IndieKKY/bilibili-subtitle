@@ -1,7 +1,7 @@
 import { setAuthor, setChapters, setCtime, setCurFetched, setCurInfo, setData, setInfos, setTitle, setUrl } from '@/redux/envReducer'
 import { useAppDispatch, useAppSelector } from './redux'
 import { AllAPPMessages, AllExtensionMessages, AllInjectMessages } from '@/message-typings'
-import { useMessaging, useMessagingService } from '@kky002/kky-message'
+import { useMessaging, useMessagingService } from '../message'
 import { useMemoizedFn } from 'ahooks'
 
 const useMessageService = () => {

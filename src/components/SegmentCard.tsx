@@ -1,6 +1,6 @@
 import {MutableRefObject, useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
-import {setFloatKeyPointsSegIdx, setNeedScroll, setSegmentFold, setTempData} from '../redux/envReducer'
+import {setFloatKeyPointsSegIdx, setSegmentFold, setTempData} from '../redux/envReducer'
 import classNames from 'classnames'
 import {FaClipboardList, FaComments} from 'react-icons/fa'
 import {SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../consts/const'
@@ -177,7 +177,7 @@ const SegmentCard = (props: {
           fold: false
         }))
       }
-      
+
       const firstItem = segment.items[0]
       move(firstItem.from, false)
     }

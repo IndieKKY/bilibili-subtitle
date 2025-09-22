@@ -1,5 +1,5 @@
 import {APP_DOM_ID, CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYPES} from '../consts/const'
-import {isDarkMode} from '@kky002/kky-util'
+import {isDarkMode} from '../utils/env_util'
 import toast from 'react-hot-toast'
 import {findIndex} from 'lodash-es'
 export const debug = (...args: any[]) => {
@@ -203,48 +203,47 @@ export const getSummarize = (title: string | undefined, segments: Segment[] | un
 export const parseStrTimeToSeconds = (time: string): number => {
   // 1. 基本输入验证 (可选但推荐)
   if (!time || typeof time !== 'string') {
-    console.warn(`Invalid input type for time: ${typeof time}`);
-    return 0; // 或者 return NaN;
+    console.warn(`Invalid input type for time: ${typeof time}`)
+    return 0 // 或者 return NaN;
   }
 
-  const parts = time.split(':');
-  const partCount = parts.length;
+  const parts = time.split(':')
+  const partCount = parts.length
 
-  let hours = 0;
-  let minutes = 0;
-  let seconds = 0;
+  let hours = 0
+  let minutes = 0
+  let seconds = 0
 
   try {
     if (partCount === 2) {
       // 格式: MM:SS
-      minutes = parseInt(parts[0]);
-      seconds = parseInt(parts[1]);
+      minutes = parseInt(parts[0])
+      seconds = parseInt(parts[1])
     } else if (partCount === 3) {
       // 格式: HH:MM:SS
-      hours = parseInt(parts[0]);
-      minutes = parseInt(parts[1]);
-      seconds = parseInt(parts[2]);
+      hours = parseInt(parts[0])
+      minutes = parseInt(parts[1])
+      seconds = parseInt(parts[2])
     } else {
       // 格式无效
-      console.warn(`Invalid time format: "${time}". Expected MM:SS or HH:MM:SS.`);
-      return 0; // 或者 return NaN;
+      console.warn(`Invalid time format: "${time}". Expected MM:SS or HH:MM:SS.`)
+      return 0 // 或者 return NaN;
     }
 
     // 2. 验证解析出的部分是否为有效数字
     if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-        console.warn(`Invalid numeric values in time string: "${time}"`);
-        return 0; // 或者 return NaN;
+      console.warn(`Invalid numeric values in time string: "${time}"`)
+      return 0 // 或者 return NaN;
     }
 
     // 3. 计算总秒数
-    return hours * 3600 + minutes * 60 + seconds;
-
+    return hours * 3600 + minutes * 60 + seconds
   } catch (error) {
     // 捕获潜在的错误 (虽然在此逻辑中不太可能，但以防万一)
-    console.error(`Error parsing time string: "${time}"`, error);
-    return 0; // 或者 return NaN;
+    console.error(`Error parsing time string: "${time}"`, error)
+    return 0 // 或者 return NaN;
   }
-};
+}
 
 /**
  * @param time '00:04:11,599' or '00:04:11.599' or '04:11,599' or '04:11.599'

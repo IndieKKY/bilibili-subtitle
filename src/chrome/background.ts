@@ -2,7 +2,7 @@ import {v4} from 'uuid'
 import {handleTask, initTaskService, tasksMap} from './taskService'
 import { DEFAULT_USE_PORT, STORAGE_ENV} from '@/consts/const'
 import { AllExtensionMessages } from '@/message-typings'
-import { ExtensionMessaging, TAG_TARGET_INJECT } from '@kky002/kky-message'
+import { ExtensionMessaging, TAG_TARGET_INJECT } from '../message'
 
 const setBadgeOk = async (tabId: number, ok: boolean) => {
   await chrome.action.setBadgeText({

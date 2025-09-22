@@ -1,6 +1,6 @@
 import { TOTAL_HEIGHT_DEF, HEADER_HEIGHT, TOTAL_HEIGHT_MIN, TOTAL_HEIGHT_MAX, IFRAME_ID, STORAGE_ENV, DEFAULT_USE_PORT } from '@/consts/const'
 import { AllExtensionMessages, AllInjectMessages, AllAPPMessages } from '@/message-typings'
-import { InjectMessaging } from '@kky002/kky-message'
+import { InjectMessaging } from '../message'
 
 const debug = (...args: any[]) => {
   console.debug('[Inject]', ...args)
@@ -203,7 +203,7 @@ const debug = (...args: any[]) => {
           })
         }
 
-        //筛选chapters里type为2的
+        // 筛选chapters里type为2的
         chapters = chapters.filter(chapter => chapter.type === 2)
 
         // pagesMap

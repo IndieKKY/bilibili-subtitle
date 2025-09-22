@@ -25,9 +25,9 @@ import {IoWarning} from 'react-icons/all'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'
-import {useEventChecked} from '@kky002/kky-hooks'
 import { FaChevronDown, FaChevronUp, FaGripfire } from 'react-icons/fa'
 import { useMessage } from '@/hooks/useMessageService'
+import useEventChecked from '@/hooks/useEventChecked'
 
 const OptionCard = ({ title, children, defaultExpanded = true }: { title: React.ReactNode, children: React.ReactNode, defaultExpanded?: boolean }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)

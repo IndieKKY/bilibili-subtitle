@@ -1,4 +1,4 @@
-import {ExtensionMessage, InjectMessage, AppMessage} from '@kky002/kky-message'
+import {ExtensionMessage, InjectMessage, AppMessage} from './message'
 
 // extension
 interface ExtensionCloseSidePanelMessage extends ExtensionMessage {

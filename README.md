@@ -31,7 +31,7 @@
 安装扩展后，在哔哩哔哩网站观看视频时，视频右侧会显示字幕列表面板。
 
 ### 使用本地Ollama模型
-如果你使用本地Ollama模型，需要配置环境变量：`OLLAMA_ORIGINS=chrome-extension://bciglihaegkdhoogebcdblfhppoilclp`，否则访问会出现403错误。
+如果你使用本地Ollama模型，需要配置环境变量：`OLLAMA_ORIGINS=chrome-extension://*,moz-extension://*,safari-web-extension://*`，否则访问会出现403错误。
 
 然后在插件配置里，apiKey随便填一个，服务器地址填`http://localhost:11434`，模型选自定义，然后填入自定义模型名如`llama2`。
 

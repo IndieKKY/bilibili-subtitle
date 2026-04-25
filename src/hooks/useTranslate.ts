@@ -90,6 +90,7 @@ const useTranslate = () => {
         const taskDef: TaskDef = {
           type: 'chatComplete',
           serverUrl: envData.serverUrl,
+          backend: envData.backend,
           data: {
             model: getModel(envData),
             messages: [
@@ -151,6 +152,7 @@ const useTranslate = () => {
       const taskDef: TaskDef = {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
+        backend: envData.backend,
         data: {
           model: getModel(envData),
           messages: [
@@ -190,6 +192,7 @@ const useTranslate = () => {
       const taskDef: TaskDef = {
         type: 'chatComplete',
         serverUrl: envData.serverUrl,
+        backend: envData.backend,
         data: {
           model: getModel(envData),
           messages: [

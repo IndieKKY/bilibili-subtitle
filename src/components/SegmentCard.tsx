@@ -5,13 +5,19 @@ import classNames from 'classnames'
 import {FaClipboardList, FaComments} from 'react-icons/fa'
 import {SUMMARIZE_THRESHOLD, SUMMARIZE_TYPES} from '../consts/const'
 import useTranslate from '../hooks/useTranslate'
-import {BsDashSquare, BsPlusSquare, CgFileDocument, FaQuestion, GrOverview, RiFileCopy2Line} from 'react-icons/all'
+import { BsDashSquare, BsPlusSquare } from 'react-icons/bs'
+import { CgFileDocument } from 'react-icons/cg'
+import { FaQuestion } from 'react-icons/fa'
+import { GrOverview } from 'react-icons/gr'
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5'
+import { RiFileCopy2Line } from 'react-icons/ri'
 import toast from 'react-hot-toast'
 import {getLastTime, getSummaryStr, isSummaryEmpty, parseStrTimeToSeconds} from '../utils/bizUtil'
 import {useInViewport} from 'ahooks'
 import SegmentItem from './SegmentItem'
 import {stopPopFunc} from '../utils/util'
 import useSubtitle from '../hooks/useSubtitle'
+import useBookmarkService from '../hooks/useBookmarkService'
 import DebateChat from './DebateChat'
 import { RootState } from '../store'
 
@@ -160,6 +166,7 @@ const SegmentCard = (props: {
     return undefined
   }, [curSummaryType, segment.summaries])
   const {move} = useSubtitle()
+  const {isSegmentBookmarked, addSegmentBookmark} = useBookmarkService()
 
   const onFold = useCallback(() => {
     dispatch(setSegmentFold({
@@ -226,6 +233,13 @@ const SegmentCard = (props: {
     }))
   }, [dispatch])
 
+  const onBookmarkSegment = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    addSegmentBookmark(segment)
+  }, [addSegmentBookmark, segment])
+
+  const isSegmentBookmarkedValue = isSegmentBookmarked(segment.startIdx)
+
   return <div
     className={classNames('border border-base-300 bg-base-200/25 rounded flex flex-col m-1.5 p-1.5 gap-1', showCurrent && 'shadow shadow-md')}>
     {/* 章节标题 */}
@@ -248,8 +262,23 @@ const SegmentCard = (props: {
         <a className={classNames('tab tab-lifted tab-xs', curSummaryType === 'debate' && 'tab-active')} onClick={onSelDebate}><FaComments/>辩论</a>
         <a className="tab tab-lifted tab-xs tab-disabled cursor-default"></a>
       </div>}
-      <div
-        className='absolute right-0 top-0 bottom-0 text-xs desc-lighter select-none flex-center'>{getLastTime(segment.items[segment.items.length - 1].to - segment.items[0].from)}</div>
+      <div className='absolute right-0 top-0 bottom-0 text-xs desc-lighter select-none flex-center items-center gap-1'>
+        <button
+          className={classNames(
+            'btn btn-ghost btn-xs btn-circle p-0.5',
+            isSegmentBookmarkedValue ? 'text-primary' : 'text-base-content/50'
+          )}
+          onClick={onBookmarkSegment}
+          title={isSegmentBookmarkedValue ? '取消收藏段落' : '收藏段落'}
+        >
+          {isSegmentBookmarkedValue ? (
+            <IoBookmark className='text-base' />
+          ) : (
+            <IoBookmarkOutline className='text-base' />
+          )}
+        </button>
+        <span>{getLastTime(segment.items[segment.items.length - 1].to - segment.items[0].from)}</span>
+      </div>
     </div>
     {summarizeEnable && <div ref={summarizeRef}>
       <Summarize segment={segment} segmentIdx={segmentIdx} summary={summary}/>
@@ -267,6 +296,7 @@ const SegmentCard = (props: {
                                                                                isIn={curIdx === segment.startIdx + idx}
                                                                                needScroll={needScroll && curIdx === segment.startIdx + idx}
                                                                                last={idx === segment.items.length - 1}
+                                                                               segmentStartIdx={segment.startIdx}
         />)}
         {segments != null && segments.length > 0 && <div className='flex justify-center'><a className='link text-xs'
                                                                                             onClick={onFold}>点击折叠{segment.items.length}行</a>

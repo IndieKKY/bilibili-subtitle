@@ -52,6 +52,20 @@ interface EnvState {
 
   // 当前视频是否计算过操作
   reviewAction: boolean
+
+  // 收藏相关
+  bookmarks: BookmarkItem[]
+  bookmarkSegments: BookmarkSegment[]
+  bookmarksReady: boolean
+
+  // 缓存相关
+  cachedSubtitles: CachedSubtitle[]
+  cachedReady: boolean
+
+  // 搜索高亮
+  highlightMatches: boolean
+  showBookmarksPanel: boolean
+  showExportPanel: boolean
 }
 
 const initialState: EnvState = {
@@ -81,6 +95,17 @@ const initialState: EnvState = {
   asks: [],
 
   reviewAction: false,
+
+  bookmarks: [],
+  bookmarkSegments: [],
+  bookmarksReady: false,
+
+  cachedSubtitles: [],
+  cachedReady: false,
+
+  highlightMatches: true,
+  showBookmarksPanel: false,
+  showExportPanel: false,
 }
 
 export const slice = createSlice({
@@ -302,6 +327,73 @@ export const slice = createSlice({
     setInputting: (state, action: PayloadAction<boolean>) => {
       state.inputting = action.payload
     },
+
+    setBookmarks: (state, action: PayloadAction<BookmarkItem[]>) => {
+      state.bookmarks = action.payload
+    },
+    addBookmark: (state, action: PayloadAction<BookmarkItem>) => {
+      const existingIndex = state.bookmarks.findIndex(b => b.id === action.payload.id)
+      if (existingIndex === -1) {
+        state.bookmarks.push(action.payload)
+      }
+    },
+    removeBookmark: (state, action: PayloadAction<string>) => {
+      state.bookmarks = state.bookmarks.filter(b => b.id !== action.payload)
+    },
+    updateBookmark: (state, action: PayloadAction<Partial<BookmarkItem> & { id: string }>) => {
+      const idx = state.bookmarks.findIndex(b => b.id === action.payload.id)
+      if (idx >= 0) {
+        state.bookmarks[idx] = { ...state.bookmarks[idx], ...action.payload }
+      }
+    },
+    setBookmarksReady: (state, action: PayloadAction<boolean>) => {
+      state.bookmarksReady = action.payload
+    },
+
+    setBookmarkSegments: (state, action: PayloadAction<BookmarkSegment[]>) => {
+      state.bookmarkSegments = action.payload
+    },
+    addBookmarkSegment: (state, action: PayloadAction<BookmarkSegment>) => {
+      const existingIndex = state.bookmarkSegments.findIndex(b => b.id === action.payload.id)
+      if (existingIndex === -1) {
+        state.bookmarkSegments.push(action.payload)
+      }
+    },
+    removeBookmarkSegment: (state, action: PayloadAction<string>) => {
+      state.bookmarkSegments = state.bookmarkSegments.filter(b => b.id !== action.payload)
+    },
+
+    setCachedSubtitles: (state, action: PayloadAction<CachedSubtitle[]>) => {
+      state.cachedSubtitles = action.payload
+    },
+    addCachedSubtitle: (state, action: PayloadAction<CachedSubtitle>) => {
+      const existingIndex = state.cachedSubtitles.findIndex(
+        c => c.videoId === action.payload.videoId && c.lan === action.payload.lan
+      )
+      if (existingIndex === -1) {
+        state.cachedSubtitles.push(action.payload)
+      } else {
+        state.cachedSubtitles[existingIndex] = action.payload
+      }
+    },
+    removeCachedSubtitle: (state, action: PayloadAction<{ videoId: string; lan: string }>) => {
+      state.cachedSubtitles = state.cachedSubtitles.filter(
+        c => !(c.videoId === action.payload.videoId && c.lan === action.payload.lan)
+      )
+    },
+    setCachedReady: (state, action: PayloadAction<boolean>) => {
+      state.cachedReady = action.payload
+    },
+
+    setHighlightMatches: (state, action: PayloadAction<boolean>) => {
+      state.highlightMatches = action.payload
+    },
+    setShowBookmarksPanel: (state, action: PayloadAction<boolean>) => {
+      state.showBookmarksPanel = action.payload
+    },
+    setShowExportPanel: (state, action: PayloadAction<boolean>) => {
+      state.showExportPanel = action.payload
+    },
   },
 })
 
@@ -351,6 +443,24 @@ export const {
   setCtime,
   setAuthor,
   setChapters,
+
+  setBookmarks,
+  addBookmark,
+  removeBookmark,
+  updateBookmark,
+  setBookmarksReady,
+  setBookmarkSegments,
+  addBookmarkSegment,
+  removeBookmarkSegment,
+
+  setCachedSubtitles,
+  addCachedSubtitle,
+  removeCachedSubtitle,
+  setCachedReady,
+
+  setHighlightMatches,
+  setShowBookmarksPanel,
+  setShowExportPanel,
 } = slice.actions
 
 export default slice.reducer

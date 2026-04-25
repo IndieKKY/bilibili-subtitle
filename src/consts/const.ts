@@ -259,6 +259,53 @@ export const TITLE_HEIGHT = 24
 export const SEARCH_BAR_HEIGHT = 32
 export const RECOMMEND_HEIGHT = 36
 
+export const FONT_SIZE_SMALL = 'small'
+export const FONT_SIZE_NORMAL = 'normal'
+export const FONT_SIZE_LARGE = 'large'
+export const FONT_SIZE_XLARGE = 'xlarge'
+export const FONT_SIZE_CUSTOM = 'custom'
+
+export const FONT_SIZE_OPTIONS = [{
+  code: FONT_SIZE_SMALL,
+  name: '小',
+  size: 11,
+}, {
+  code: FONT_SIZE_NORMAL,
+  name: '普通',
+  size: 12,
+}, {
+  code: FONT_SIZE_LARGE,
+  name: '大',
+  size: 14,
+}, {
+  code: FONT_SIZE_XLARGE,
+  name: '特大',
+  size: 16,
+}, {
+  code: FONT_SIZE_CUSTOM,
+  name: '自定义',
+  size: 12,
+}]
+export const FONT_SIZE_DEFAULT = FONT_SIZE_NORMAL
+export const CUSTOM_FONT_SIZE_MIN = 10
+export const CUSTOM_FONT_SIZE_MAX = 24
+export const CUSTOM_FONT_SIZE_DEFAULT = 12
+
+export const TRANS_DISPLAY_DUAL = 'dual'
+export const TRANS_DISPLAY_OPTIONS = [{
+  code: 'originPrimary',
+  name: '原文为主',
+}, {
+  code: 'targetPrimary',
+  name: '翻译为主',
+}, {
+  code: 'target',
+  name: '仅翻译',
+}, {
+  code: TRANS_DISPLAY_DUAL,
+  name: '双语对照',
+}]
+
 export const WORDS_RATE = 0.75
 export const WORDS_MIN = 500
 export const WORDS_MAX = 16000

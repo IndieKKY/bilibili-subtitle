@@ -45,7 +45,11 @@ interface InjectGetSubtitleMessage extends InjectMessage<{ info: any }> {
   method: 'GET_SUBTITLE'
 }
 
-interface InjectGetVideoStatusMessage extends InjectMessage<{}> {
+interface InjectGetVideoStatusMessage extends InjectMessage<{}, {
+  paused: boolean
+  currentTime: number
+  playbackRate: number
+}> {
   method: 'GET_VIDEO_STATUS'
 }
 

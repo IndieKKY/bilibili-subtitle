@@ -16,7 +16,7 @@ import {EVENT_EXPAND, TOTAL_HEIGHT_MAX, TOTAL_HEIGHT_MIN, WORDS_MIN, WORDS_RATE}
 import {useAsyncEffect, useInterval} from 'ahooks'
 import {getModelMaxTokens, getWholeText} from '../utils/bizUtil'
 import { useMessage } from './useMessageService'
-import { setCurrentTime } from '../redux/currentTimeReducer'
+import { setCurrentTime, setPlaybackRate } from '../redux/currentTimeReducer'
 import { RootState } from '../store'
 
 /**
@@ -33,6 +33,7 @@ const useSubtitleService = () => {
   const data = useAppSelector((state: RootState) => state.env.data)
   const chapters = useAppSelector((state: RootState) => state.env.chapters)
   const currentTime = useAppSelector((state: RootState) => state.currentTime.currentTime)
+  const playbackRate = useAppSelector((state: RootState) => state.currentTime.playbackRate)
   const curIdx = useAppSelector((state: RootState) => state.env.curIdx)
   const eventBus = useContext(EventBusContext)
   const needScroll = useAppSelector(state => state.env.needScroll)
@@ -246,10 +247,12 @@ const useSubtitleService = () => {
     dispatch(setSegments(segments))
   }, [data?.body, dispatch, envData, chapters])
 
-  // 每0.5秒更新当前视频时间
+  // 每0.5秒更新当前视频时间（根据播放速度动态调整）
   useInterval(() => {
     sendInject(null, 'GET_VIDEO_STATUS', {}).then(status => {
-      // 只有当时间发生显著变化时才更新状态（差异大于0.1秒），避免不必要的重新渲染
+      if (status.playbackRate !== undefined && status.playbackRate !== playbackRate) {
+        dispatch(setPlaybackRate(status.playbackRate))
+      }
       if (currentTime == null || Math.abs(status.currentTime - currentTime) > 0.1) {
         dispatch(setCurrentTime(status.currentTime))
       }

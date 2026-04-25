@@ -312,7 +312,8 @@ const debug = (...args: any[]) => {
       if (video != null) {
         return {
           paused: video.paused,
-          currentTime: video.currentTime
+          currentTime: video.currentTime,
+          playbackRate: video.playbackRate
         }
       }
     },

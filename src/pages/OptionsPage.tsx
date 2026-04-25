@@ -6,6 +6,11 @@ import {
   CUSTOM_MODEL_TOKENS,
   DEFAULT_SERVER_URL_GEMINI,
   DEFAULT_SERVER_URL_OPENAI,
+  FONT_SIZE_OPTIONS,
+  CUSTOM_FONT_SIZE_MIN,
+  CUSTOM_FONT_SIZE_MAX,
+  CUSTOM_FONT_SIZE_DEFAULT,
+  TRANS_DISPLAY_OPTIONS,
   LANGUAGE_DEFAULT,
   LANGUAGES,
   MODEL_DEFAULT,
@@ -88,6 +93,7 @@ const OptionsPage = () => {
   const [hideOnDisableAutoTranslateValue, setHideOnDisableAutoTranslateValue] = useState(envData.hideOnDisableAutoTranslate)
   const [themeValue, setThemeValue] = useState(envData.theme)
   const [fontSizeValue, setFontSizeValue] = useState(envData.fontSize)
+  const [customFontSizeValue, setCustomFontSizeValue] = useState<number>(envData.customFontSize ?? CUSTOM_FONT_SIZE_DEFAULT)
   const [transDisplayValue, setTransDisplayValue] = useState(envData.transDisplay)
   const [wordsValue, setWordsValue] = useState<number | undefined>(envData.words)
   const [fetchAmountValue, setFetchAmountValue] = useState(envData.fetchAmount??TRANSLATE_FETCH_DEFAULT)
@@ -136,6 +142,7 @@ const OptionsPage = () => {
       words: wordsValue,
       fetchAmount: fetchAmountValue,
       fontSize: fontSizeValue,
+      customFontSize: customFontSizeValue,
       prompts: promptsValue,
       searchEnabled: searchEnabledValue,
       cnSearchEnabled: cnSearchEnabledValue,
@@ -144,11 +151,10 @@ const OptionsPage = () => {
     }))
     toast.success('保存成功')
     sendExtension(null, 'CLOSE_SIDE_PANEL')
-    // 3秒后关闭
     setTimeout(() => {
       window.close()
     }, 3000)
-  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue, chapterModeValue])
+  }, [dispatch, sendExtension, sidePanelValue, autoInsertValue, autoExpandValue, apiKeyValue, serverUrlValue, modelValue, customModelValue, customModelTokensValue, translateEnableValue, languageValue, hideOnDisableAutoTranslateValue, themeValue, transDisplayValue, summarizeEnableValue, summarizeFloatValue, summarizeLanguageValue, wordsValue, fetchAmountValue, fontSizeValue, customFontSizeValue, promptsValue, searchEnabledValue, cnSearchEnabledValue, askEnabledValue, chapterModeValue])
 
   const onCancel = useCallback(() => {
     window.close()
@@ -162,16 +168,21 @@ const OptionsPage = () => {
     setWordsValue(parseInt(e.target.value))
   }, [])
 
-  const onSel1 = useCallback(() => {
-    setTransDisplayValue('originPrimary')
+  const onSelTransDisplay = useCallback((value: EnvData['transDisplay']) => {
+    setTransDisplayValue(value)
   }, [])
 
-  const onSel2 = useCallback(() => {
-    setTransDisplayValue('targetPrimary')
+  const onSelFontSize = useCallback((value: EnvData['fontSize']) => {
+    setFontSizeValue(value)
   }, [])
 
-  const onSel3 = useCallback(() => {
-    setTransDisplayValue('target')
+  const onCustomFontSizeChange = useCallback((e: any) => {
+    let value = parseInt(e.target.value)
+    if (isNaN(value)) {
+      value = CUSTOM_FONT_SIZE_DEFAULT
+    }
+    value = Math.max(CUSTOM_FONT_SIZE_MIN, Math.min(CUSTOM_FONT_SIZE_MAX, value))
+    setCustomFontSizeValue(value)
   }, [])
 
   const onSelTheme1 = useCallback(() => {
@@ -184,14 +195,6 @@ const OptionsPage = () => {
 
   const onSelTheme3 = useCallback(() => {
     setThemeValue('dark')
-  }, [])
-
-  const onSelFontSize1 = useCallback(() => {
-    setFontSizeValue('normal')
-  }, [])
-
-  const onSelFontSize2 = useCallback(() => {
-    setFontSizeValue('large')
   }, [])
 
   return (
@@ -221,9 +224,31 @@ const OptionsPage = () => {
           </div>
         </FormItem>
         <FormItem title='字体大小'>
-          <div className="btn-group">
-            <button onClick={onSelFontSize1} className={classNames('btn btn-sm no-animation', (!fontSizeValue || fontSizeValue === 'normal')?'btn-active':'')}>普通</button>
-            <button onClick={onSelFontSize2} className={classNames('btn btn-sm no-animation', fontSizeValue === 'large'?'btn-active':'')}>加大</button>
+          <div className='flex flex-col gap-2'>
+            <div className="btn-group">
+              {FONT_SIZE_OPTIONS.map(option => (
+                <button
+                  key={option.code}
+                  onClick={() => onSelFontSize(option.code as EnvData['fontSize'])}
+                  className={classNames('btn btn-sm no-animation', (!fontSizeValue && option.code === 'normal') || fontSizeValue === option.code ? 'btn-active' : '')}
+                >
+                  {option.name}
+                </button>
+              ))}
+            </div>
+            {fontSizeValue === 'custom' && (
+              <div className='flex items-center gap-2'>
+                <input
+                  type='number'
+                  className='input input-sm input-bordered w-20'
+                  min={CUSTOM_FONT_SIZE_MIN}
+                  max={CUSTOM_FONT_SIZE_MAX}
+                  value={customFontSizeValue}
+                  onChange={onCustomFontSizeChange}
+                />
+                <span className='desc text-sm'>px (范围: {CUSTOM_FONT_SIZE_MIN}-{CUSTOM_FONT_SIZE_MAX})</span>
+              </div>
+            )}
           </div>
         </FormItem>
       </OptionCard>
@@ -308,11 +333,17 @@ const OptionsPage = () => {
             </div>
           </div>
         </FormItem>
-        <FormItem title='翻译显示'>
+        <FormItem title='翻译显示' tip='双语对照模式需要开启自动翻译'>
           <div className="btn-group">
-            <button onClick={onSel1} className={classNames('btn btn-sm no-animation', (!transDisplayValue || transDisplayValue === 'originPrimary')?'btn-active':'')}>原文为主</button>
-            <button onClick={onSel2} className={classNames('btn btn-sm no-animation', transDisplayValue === 'targetPrimary'?'btn-active':'')}>翻译为主</button>
-            <button onClick={onSel3} className={classNames('btn btn-sm no-animation', transDisplayValue === 'target'?'btn-active':'')}>仅翻译</button>
+            {TRANS_DISPLAY_OPTIONS.map(option => (
+              <button
+                key={option.code}
+                onClick={() => onSelTransDisplay(option.code as EnvData['transDisplay'])}
+                className={classNames('btn btn-sm no-animation', (!transDisplayValue && option.code === 'originPrimary') || transDisplayValue === option.code ? 'btn-active' : '')}
+              >
+                {option.name}
+              </button>
+            ))}
           </div>
         </FormItem>
         <FormItem title='隐藏翻译' tip='取消自动翻译时,隐藏已翻译内容' htmlFor='hideOnDisableAutoTranslate'>

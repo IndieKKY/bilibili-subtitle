@@ -21,14 +21,15 @@ interface EnvData {
   translateEnable?: boolean
   language?: string
   hideOnDisableAutoTranslate?: boolean
-  transDisplay?: 'target' | 'originPrimary' | 'targetPrimary'
+  transDisplay?: 'target' | 'originPrimary' | 'targetPrimary' | 'dual'
   fetchAmount?: number
   summarizeEnable?: boolean
   summarizeLanguage?: string
   words?: number
   summarizeFloat?: boolean
   theme?: 'system' | 'light' | 'dark'
-  fontSize?: 'normal' | 'large'
+  fontSize?: 'small' | 'normal' | 'large' | 'xlarge' | 'custom'
+  customFontSize?: number
 
   // chapter
   chapterMode?: boolean // 是否启用章节模式，undefined/null/true表示启用，false表示禁用

@@ -1,4 +1,14 @@
-import {APP_DOM_ID, CUSTOM_MODEL_TOKENS, MODEL_DEFAULT, MODEL_MAP, SUMMARIZE_TYPES} from '../consts/const'
+import {
+  APP_DOM_ID,
+  CUSTOM_MODEL_TOKENS,
+  MODEL_DEFAULT,
+  MODEL_MAP,
+  SUMMARIZE_TYPES,
+  FONT_SIZE_OPTIONS,
+  FONT_SIZE_DEFAULT,
+  CUSTOM_FONT_SIZE_DEFAULT,
+  TRANS_DISPLAY_DUAL,
+} from '../consts/const'
 import {isDarkMode} from '../utils/env_util'
 import toast from 'react-hot-toast'
 import {findIndex} from 'lodash-es'
@@ -15,9 +25,40 @@ export const getTransText = (transResult: TransResult, hideOnDisableAutoTranslat
   }
 }
 
+/**
+ * 获取字体大小像素值
+ */
+export const getFontSizePx = (fontSize: EnvData['fontSize'], customFontSize: EnvData['customFontSize']): number => {
+  if (fontSize === 'custom') {
+    return customFontSize ?? CUSTOM_FONT_SIZE_DEFAULT
+  }
+  const option = FONT_SIZE_OPTIONS.find(opt => opt.code === fontSize)
+  return option?.size ?? FONT_SIZE_OPTIONS.find(opt => opt.code === FONT_SIZE_DEFAULT)?.size ?? 12
+}
+
+/**
+ * 获取字体大小的CSS类名
+ */
+export const getFontSizeClass = (fontSize: EnvData['fontSize']): string => {
+  switch (fontSize) {
+    case 'small':
+      return 'text-[11px]'
+    case 'normal':
+      return 'text-xs'
+    case 'large':
+      return 'text-sm'
+    case 'xlarge':
+      return 'text-base'
+    case 'custom':
+      return ''
+    default:
+      return 'text-xs'
+  }
+}
+
 export const getDisplay = (transDisplay_: EnvData['transDisplay'], content: string, transText: string | undefined) => {
   const transDisplay = transDisplay_ ?? 'originPrimary'
-  let main, sub
+  let main, sub, isDual = false
   // main
   if (transText && (transDisplay === 'targetPrimary' || transDisplay === 'target')) {
     main = transText
@@ -34,6 +75,13 @@ export const getDisplay = (transDisplay_: EnvData['transDisplay'], content: stri
         sub = content
       }
       break
+    case TRANS_DISPLAY_DUAL:
+      if (transText) {
+        main = content
+        sub = transText
+        isDual = true
+      }
+      break
     default:
       break
   }
@@ -41,6 +89,7 @@ export const getDisplay = (transDisplay_: EnvData['transDisplay'], content: stri
   return {
     main,
     sub,
+    isDual,
   }
 }
 

@@ -1,4 +1,6 @@
-import {AiOutlineCloseCircle, BsDashSquare, BsPlusSquare, FaQuestion} from 'react-icons/all'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { BsDashSquare, BsPlusSquare } from 'react-icons/bs'
+import { FaQuestion } from 'react-icons/fa'
 import classNames from 'classnames'
 import Markdown from '../components/Markdown'
 import React, {useCallback} from 'react'

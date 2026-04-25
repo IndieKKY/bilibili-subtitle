@@ -12,8 +12,9 @@ const SegmentItem = (props: {
   isIn: boolean
   needScroll?: boolean
   last: boolean
+  segmentStartIdx?: number
 }) => {
-  const {bodyRef, item, idx, isIn, needScroll, last} = props
+  const {bodyRef, item, idx, isIn, needScroll, last, segmentStartIdx} = props
   const dispatch = useAppDispatch()
   const ref = useRef<any>()
   const {move} = useSubtitle()
@@ -80,6 +81,7 @@ const SegmentItem = (props: {
         isIn={isIn}
         moveCallback={moveCallback}
         move2Callback={move2Callback}
+        segmentStartIdx={segmentStartIdx}
       />
     }
   </span>

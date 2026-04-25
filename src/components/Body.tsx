@@ -9,17 +9,15 @@ import {
   setNeedScroll,
   setSearchText,
   setSegmentFold,
+  setShowExportPanel,
   setTempData
 } from '../redux/envReducer'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import {
-  AiOutlineAim,
-  AiOutlineCloseCircle,
-  FaRegArrowAltCircleDown,
-  IoWarning,
-  MdExpand,
-  RiTranslate
-} from 'react-icons/all'
+import { AiOutlineAim, AiOutlineCloseCircle } from 'react-icons/ai'
+import { FaRegArrowAltCircleDown } from 'react-icons/fa'
+import { IoWarning } from 'react-icons/io5'
+import { MdExpand } from 'react-icons/md'
+import { RiTranslate } from 'react-icons/ri'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import SegmentCard from './SegmentCard'
@@ -40,6 +38,8 @@ import { v4 } from 'uuid'
 import RateExtension from '../components/RateExtension'
 import ApiKeyReminder from './ApiKeyReminder'
 import { useMessaging } from '../message'
+import BookmarksPanel from './BookmarksPanel'
+import ExportPanel from './ExportPanel'
 
 const Body = () => {
   const dispatch = useAppDispatch()
@@ -67,6 +67,12 @@ const Body = () => {
   const searchText = useAppSelector(state => state.env.searchText)
   const asks = useAppSelector(state => state.env.asks)
   const { disconnected } = useMessaging(DEFAULT_USE_PORT)
+  const showBookmarksPanel = useAppSelector(state => state.env.showBookmarksPanel)
+  const showExportPanel = useAppSelector(state => state.env.showExportPanel)
+
+  const onCloseExportPanel = useCallback(() => {
+    dispatch(setShowExportPanel(false))
+  }, [dispatch])
   // const recommendIdx = useMemo(() => random(0, 3), [])
   const showSearchInput = useMemo(() => {
     return (segments != null && segments.length > 0) && (envData.searchEnabled ? envData.searchEnabled : (envData.askEnabled ?? ASK_ENABLED_DEFAULT))
@@ -302,6 +308,10 @@ const Body = () => {
 
       <RateExtension />
     </div>
+
+    {showBookmarksPanel && <BookmarksPanel />}
+
+    {showExportPanel && <ExportPanel onClose={onCloseExportPanel} />}
   </div>
 }
 

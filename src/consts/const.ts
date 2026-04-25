@@ -367,3 +367,37 @@ export const LANGUAGES_MAP: {[key: string]: typeof LANGUAGES[number]} = {}
 for (const language of LANGUAGES) {
   LANGUAGES_MAP[language.code] = language
 }
+
+export const AI_BACKENDS: { code: AIBackendType; name: string; desc: string }[] = [
+  {
+    code: 'openai',
+    name: 'OpenAI 兼容',
+    desc: '兼容 OpenAI API 格式的后端（包括 Claude、Gemini 等）'
+  },
+  {
+    code: 'ollama',
+    name: 'Ollama 本地',
+    desc: '本地运行的 Ollama 模型'
+  },
+  {
+    code: 'generic',
+    name: '通用接口',
+    desc: '通用 HTTP 接口，支持自定义配置'
+  }
+]
+
+export const DEFAULT_OLLAMA_URL = 'http://localhost:11434'
+
+export const STORAGE_BOOKMARKS = 'bilibili-subtitle_bookmarks'
+export const STORAGE_BOOKMARK_SEGMENTS = 'bilibili-subtitle_bookmark_segments'
+export const STORAGE_CACHED_SUBTITLES = 'bilibili-subtitle_cached_subtitles'
+
+export const EXPORT_FORMATS: { code: ExportConfig['format']; name: string; desc: string }[] = [
+  { code: 'txt', name: '纯文本', desc: '简单的文本格式' },
+  { code: 'srt', name: 'SRT', desc: '标准字幕格式' },
+  { code: 'vtt', name: 'WebVTT', desc: '网页字幕格式' },
+  { code: 'json', name: 'JSON', desc: '结构化数据格式' },
+  { code: 'csv', name: 'CSV', desc: '逗号分隔值格式' }
+]
+
+export const HIGHLIGHT_CLASS = 'bg-yellow-200 dark:bg-yellow-700'

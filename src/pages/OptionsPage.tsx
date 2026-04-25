@@ -21,7 +21,7 @@ import {
   TRANSLATE_FETCH_STEP,
   WORDS_RATE,
 } from '../consts/const'
-import {IoWarning} from 'react-icons/all'
+import { IoWarning } from 'react-icons/io5'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import {useBoolean, useEventTarget} from 'ahooks'

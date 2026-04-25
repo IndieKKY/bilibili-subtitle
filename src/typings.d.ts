@@ -11,6 +11,9 @@ interface EnvData {
   autoExpand?: boolean
   flagDot?: boolean
 
+  // ai backend
+  backend?: AIBackendType
+
   // openai
   apiKey?: string
   serverUrl?: string
@@ -56,6 +59,7 @@ interface TempData {
 interface TaskDef {
   type: 'chatComplete'
   serverUrl?: string
+  backend?: AIBackendType
   data: any
   extra?: any
 }
@@ -167,4 +171,59 @@ interface DebateMessage {
 
 interface DebateProps {
   messages: DebateMessage[]
+}
+
+type AIBackendType = 'openai' | 'ollama' | 'generic'
+
+interface AIModelConfig {
+  backend: AIBackendType
+  serverUrl?: string
+  apiKey?: string
+  model?: string
+  customModel?: string
+  customModelTokens?: number
+}
+
+interface BookmarkItem {
+  id: string
+  videoId: string
+  videoTitle?: string
+  segmentStartIdx?: number
+  itemIdx?: number
+  from: number
+  to: number
+  content: string
+  translatedContent?: string
+  createdAt: number
+  note?: string
+}
+
+interface BookmarkSegment {
+  id: string
+  videoId: string
+  videoTitle?: string
+  segmentStartIdx: number
+  startIdx: number
+  endIdx: number
+  items: TranscriptItem[]
+  createdAt: number
+  note?: string
+}
+
+interface CachedSubtitle {
+  videoId: string
+  videoTitle?: string
+  cid: string
+  lan: string
+  lanDoc: string
+  subtitleUrl: string
+  data: Transcript
+  cachedAt: number
+}
+
+interface ExportConfig {
+  format: 'txt' | 'srt' | 'vtt' | 'json' | 'csv'
+  includeTime: boolean
+  includeTranslation: boolean
+  includeNotes: boolean
 }
